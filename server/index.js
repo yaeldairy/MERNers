@@ -2,14 +2,24 @@ const express = require('express') //import express. To set up a simple express 
 const app = express()
 const cors = require ('cors')
 const mongoose = require('mongoose');
-const Flight = require ('./models/flight.js');
+const Flight = require ('./db/models/flight.js');
 //Connecting to database
 mongoose.connect('mongodb+srv://Merners:Mern123@aclairlinereservation.gje3t.mongodb.net/Airline-Reservation?retryWrites=true&w=majority',{
     useNewURLParser : true
 })
 
-app.use(express.json()) // allows us to recieve json files
-app.use(cors()) //connects our front and back ends
+app.use(cors({origin: ['http://localhost:3000']}));  // allows us to recieve json files
+app.use(cors());  //connects our front and back ends
+
+const adminRouter = require('./router/admin')
+const userRouter = require('./router/user')
+const generalRouter = require('./router/general')
+
+app.use('/', generalRouter)
+app.use('/admin', adminRouter)
+app.use('/user', userRouter)
+
+
 
 app.get('/insertTest', async (req,res) => {
     const flight = new Flight ({
