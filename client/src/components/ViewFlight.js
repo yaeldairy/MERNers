@@ -59,14 +59,14 @@ export default function ViewFlight(param){
     //     "date": "12/5/2021",
     //     "nOfEconomy": 2,
     //     "nOfBusiness": 0};
-    const rows = {"flightNum": flight.flightNum,
-        "deptAirport": flight.deptAirport,
-        "arrAirport": flight.arrAirport,
-        "deptTime": flight.deptTime,
-        "arrTime": flight.arrTime,
-        "date": flight.date,
-        "nOfEconomy": flight.nOfEconomy,
-        "nOfBusiness": flight.nOfBusiness
+    const rows = {flightNum: flight.flightNum,
+        deptAirport: flight.deptAirport,
+        arrAirport: flight.arrAirport,
+        deptTime: flight.deptTime,
+        arrTime: flight.arrTime,
+        date: flight.date,
+        nOfEconomy: flight.nOfEconomy,
+        nOfBusiness: flight.nOfBusiness
     };
 
       return(
