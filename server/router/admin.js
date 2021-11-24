@@ -9,6 +9,7 @@ router.get('/flights', controller.allFlights)
 router.patch('/updateFlight', controller.updateFlight)
 router.post('/deleteFlight', controller.deleteFlight)
 
+router.get('/updateFlight',controller.updateFlight)
 
 
 
