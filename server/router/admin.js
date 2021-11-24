@@ -7,6 +7,7 @@ const controller= require ('../controller/admin')
 
 router.get('/flights', controller.allFlights)
 
+router.get('/updateFlight',controller.updateFlight)
 
 
 

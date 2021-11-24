@@ -1,28 +1,109 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { List, Divider,Typography } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import FlightListItem from './FlightListItem';
+import {Button, Modal, Card ,Tooltip} from 'antd';
+import { SearchOutlined, PlusOutlined  } from '@ant-design/icons';
+import SearchForm from './SearchForm';
+const { Title, Text } = Typography;
+
+const title=(<Title  level={2} >Flights</Title> )
+
 
 
 export default function Flights (){
 
     const [flights, setFlights]= useState(null);
+    const [displayed, setDisplayed] = useState(null);
     const [error, setError]= useState(false)
-
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    
     useEffect(() => {
    
-        axios.get('http://localhost:3001/admin/flights')
-          .then((res) => {
-            setFlights(res.date)
-            
-          })
-          .catch((e) => {
-            setError(true)
-    
-          })
-    
-      }, []);
+      axios.get('http://localhost:3001/admin/flights')
+        .then((res) => {
+          console.log(res.data)
+          setFlights(res.data)
+          setDisplayed(res.data)
+          
+        })
+        .catch((e) => {
+          setError(true) 
+        })
+  
+    }, []);
+
+    const showModal = () => {
+      setIsModalVisible(true);
+    };
+  
+    const handleOk = (flight) => {
+
+      setIsModalVisible(false);
+
+      setDisplayed(flights.filter((f)=>{
+        console.log("flights")
+        console.log(flights)
+        for (const property in flight) {
+
+          console.log(`${property}: ${flight[property]}`);
+          if(flight[property]!=='' && f[property]!=flight[property]){
+            console.log("I was here")
+            return false
+          }
+        }
+        return true;
+
+      }))
+    };
+  
+    const handleCancel = () => {
+      setIsModalVisible(false);
+    };
+
+
+      const searchButton=(
+      <div>
+     <Tooltip title="create flight">
+      <Button shape="circle" icon={<PlusOutlined />} />
+     </Tooltip>
+     <Tooltip title="search">
+       <Button style={{marginLeft:'10px'}} onClick={showModal} shape="circle" icon={<SearchOutlined />} />
+     </Tooltip>
+     </div>)
+
+      if (error) {
+        return (<h1>oops, There seems to have been a network error</h1>)
+      }
 
       return (
-          <h1>Hello</h1>
+        <div>
+            
+    <Card title={title} bordered={true} style={{ width: 1000 }} extra={searchButton}>
+       { !displayed ? <LoadingOutlined style={{ fontSize: 50 }} spin /> :
+        <div className='activities-list'>
+           <List
+            itemLayout="vertical"
+            size="large"
+            pagination={{ pageSize: 5 }}
+            dataSource={displayed}
+            renderItem={ flight => (    
+            <FlightListItem flight={flight}/> )} /> 
+         </div>}
+     
+    </Card>
+
+    <Modal 
+      title="Search Flights"
+      visible={isModalVisible} 
+      onOk={handleOk}
+      onCancel={handleCancel}
+      footer={[ /*add modal buttons here */ ]}>
+        <SearchForm handleOk={handleOk} />
+    </Modal>
+            
+        </div>  
       )
 
     
