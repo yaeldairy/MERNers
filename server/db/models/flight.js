@@ -38,6 +38,16 @@ nOfBusiness: {
 
 })
 
-const Flight = mongoose.model('Flight',flightSchema); //this variable now represents an instance of the collection (the one in the DB)
+const Flight = mongoose.model('Flight',flightSchema);
+//this variable now represents an instance of the collection (the one in the DB)
 // we'll be able to use this variable to pass things into db and get things from DB
-module.exports = Flight;
+
+//For cleanliness, this is a method that takes data and creates a flight
+//TODO do I need to handle anything here?
+exports.createFlight = (flightData) => {
+    const flight = new Flight(flightData);
+    return flight.save();
+};
+
+
+// module.exports = Flight;

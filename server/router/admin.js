@@ -6,7 +6,7 @@ const controller= require ('../controller/admin')
 
 
 router.get('/flights', controller.allFlights)
-
+router.post('/flights', [controller.insertFlight]);
 
 
 

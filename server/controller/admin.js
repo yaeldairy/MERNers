@@ -16,3 +16,14 @@ exports.allFlights = (req, res)=> {
     })
     
 }
+
+//TODO make sure the catching is correct
+exports.insertFlight = (req, res) => {
+    Flight.createFlight(req.body)
+        .then((result) => {
+            res.status(201).send({id: result._id});
+        })
+        .catch((err)=>{
+            res.status(300).send(err.message);
+        })
+};
