@@ -6,6 +6,7 @@ import FlightListItem from './FlightListItem';
 import {Button, Modal, Card ,Tooltip} from 'antd';
 import { SearchOutlined, PlusOutlined  } from '@ant-design/icons';
 import SearchForm from './SearchForm';
+import { Link } from 'react-router-dom'
 const { Title, Text } = Typography;
 
 const title=(<Title  level={2} >Flights</Title> )
@@ -66,7 +67,10 @@ export default function Flights (){
       const searchButton=(
       <div>
      <Tooltip title="create flight">
-      <Button shape="circle" icon={<PlusOutlined />} />
+      <Button shape="circle" >
+         <Link to={{pathname:`newFlight`}}  >
+         <PlusOutlined />  
+          </Link></Button>
      </Tooltip>
      <Tooltip title="search">
        <Button style={{marginLeft:'10px'}} onClick={showModal} shape="circle" icon={<SearchOutlined />} />
@@ -80,7 +84,7 @@ export default function Flights (){
       return (
         <div>
             
-    <Card title={title} bordered={true} style={{ width: 1000 }} extra={searchButton}>
+    <Card title={title} bordered={true} style={{ marginLeft:'5%' , marginRight:'5%', marginTop:'5%' }} extra={searchButton}>
        { !displayed ? <LoadingOutlined style={{ fontSize: 50 }} spin /> :
         <div className='activities-list'>
            <List

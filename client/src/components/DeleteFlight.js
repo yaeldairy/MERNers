@@ -8,22 +8,7 @@ export default function DeleteFlight (){
 
   function handlerr(e)  {
     e.preventDefault()
-    //const objectId = mongoose.Types.ObjectId("619d2081e14be00bceb61741");
-  //  axios({
-  //       method: 'post',
-  //       url: 'https://localhost:3001/admin/deleteFlight',
-  //       data: {
-  //        id : "619d2081e14be00bceb61741"
-  //       }
-  //     }).then((res)=>{
-  //         console.log(res)
-  //         console.log("flight deleted")
 
-  //     }).catch((err)=>{
-  //         console.log(err)
-  //         console.log("couldn't update flight")
-
-  //     })
 
       axios({
         method: 'POST',
@@ -47,12 +32,7 @@ export default function DeleteFlight (){
 
 
       return (
-        //   <div>
-        //   <Popconfirm onConfirm={handlerr()} title="Are you sure you want to cancel this flight？" okText="Yes"  cancelText="No">
-        //     <Button>Delete</Button>
-        //     </Popconfirm>
-        //     </div>
-           
+               
                <div>
                <Popconfirm title="Are you sure you want to delete this flight?" onConfirm={(e)=>{handlerr(e)}} okText="Yes" cancelText="No">
                   <a href="#">Delete</a>

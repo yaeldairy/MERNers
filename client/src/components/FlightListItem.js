@@ -3,6 +3,7 @@ import 'antd/dist/antd.css';
 import { Button, Card, Divider, List, Typography } from 'antd';
 import { CarryOutOutlined, SketchOutlined } from '@ant-design/icons';
 import { FaPlane , FaLongArrowAltRight} from "react-icons/fa"
+import { Link } from 'react-router-dom'
 const { Title, Text } = Typography;
 
 const buttonStyle= {
@@ -28,8 +29,9 @@ function FlightListItem({flight}) {
       type="inner"
       title={title}
       extra={<Button type="primary" style={buttonStyle}>
-      Flight details
-       {/*add link to flight page */}
+      <Link to={{pathname:`/viewFlight/${flight.flightNum}`}} params={{ flight }}>
+         Flight Details
+      </Link>
       </Button>}
     >
    

@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useParams} from "react-router-dom";
 import axios from 'axios';
 
 import Stack from '@mui/material/Stack';
@@ -18,75 +19,83 @@ const Item = styled(Paper)(({ theme }) => ({
   
 
 
-export default function ViewFlight(param){
-    const [flight, setFlight] = useState([]);//stores flight details
+export default function ViewFlight(){
+
+     const { flight } = useParams();
+    //const [flight, setFlight] = useState([]);//stores flight details
     const [loading, setLoading] = useState(false);//loading state
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        setLoading(true);
-        if (param==null)
-            setError(true);
-        else
-            setFlight(param);
-        setLoading(false);
-        // fetchData();
-      },[]);// fetched data on render
+    useEffect(()=>{
+      console.log("ya deen omy")
+      console.log(flight)},[])
 
-    const rows = {flightNum: flight.flightNum,
-        deptAirport: flight.deptAirport,
-        arrAirport: flight.arrAirport,
-        deptTime: flight.deptTime,
-        arrTime: flight.arrTime,
-        date: flight.date,
-        nOfEconomy: flight.nOfEconomy,
-        nOfBusiness: flight.nOfBusiness
-    };
+    // useEffect(() => {
+      
+    //     setLoading(true);
+    //     if (param==null)
+    //         setError(true);
+    //     else
+    //         setFlight(param);
+    //     setLoading(false);
+    //     console.log(flight)
+    //     // fetchData();
+    //   },[]);// fetched data on render
 
-      return(
-        <>{error? (<div> ERROR </div>):(
-          loading? (<div>Loading... </div>):
-          (
-          <div>
-              <Item>Flight: {rows.flightNum}</Item>
-              <Stack direction="row">
-                  <Item>Departure</Item>
-                  <Item justifyContent="flex-end">{rows.deptAirport}</Item>
-              </Stack>
-              <Stack direction="row">
-                  <Item>Arrival</Item>
-                  <Item justifyContent="flex-end">{rows.arrAirport}</Item>
-              </Stack>
-              <Stack direction="row">
-                  <Item>Departure Time</Item>
-                  <Item justifyContent="flex-end">{rows.deptTime}</Item>
-              </Stack>
-              <Stack direction="row">
-                  <Item>Arrival Time</Item>
-                  <Item justifyContent="flex-end">{rows.arrTime}</Item>
-              </Stack>
-              <Stack direction="row">
-                  <Item>Date</Item>
-                  <Item justifyContent="flex-end">{rows.date}</Item>
-              </Stack>
-              <Stack direction="row">
-                  <Item>Economy seats left</Item>
-                  <Item justifyContent="flex-end">{rows.nOfEconomy}</Item>
-              </Stack>
-              <Stack direction="row">
-                  <Item>Business seats left</Item>
-                  <Item justifyContent="flex-end">{rows.nOfBusiness}</Item>
-              </Stack>
-              <Button>
-                Update
-              </Button>
-              <Button>
-                Delete
-              </Button>
-          </div>
-        ))}
-        </>
-      )
-      ;
+    // const rows = {flightNum: flight.flightNum,
+    //     deptAirport: flight.deptAirport,
+    //     arrAirport: flight.arrAirport,
+    //     deptTime: flight.deptTime,
+    //     arrTime: flight.arrTime,
+    //     date: flight.date,
+    //     nOfEconomy: flight.nOfEconomy,
+    //     nOfBusiness: flight.nOfBusiness
+    // };
+
+      return(<h1>YASATER</h1>)
+        // <>{error? (<div> ERROR </div>):(
+        //   loading? (<div>Loading... </div>):
+        //   (
+        //   <div>
+        //       <Item>Flight: {rows.flightNum}</Item>
+        //       <Stack direction="row">
+        //           <Item>Departure</Item>
+        //           <Item justifyContent="flex-end">{rows.deptAirport}</Item>
+        //       </Stack>
+        //       <Stack direction="row">
+        //           <Item>Arrival</Item>
+        //           <Item justifyContent="flex-end">{rows.arrAirport}</Item>
+        //       </Stack>
+        //       <Stack direction="row">
+        //           <Item>Departure Time</Item>
+        //           <Item justifyContent="flex-end">{rows.deptTime}</Item>
+        //       </Stack>
+        //       <Stack direction="row">
+        //           <Item>Arrival Time</Item>
+        //           <Item justifyContent="flex-end">{rows.arrTime}</Item>
+        //       </Stack>
+        //       <Stack direction="row">
+        //           <Item>Date</Item>
+        //           <Item justifyContent="flex-end">{rows.date}</Item>
+        //       </Stack>
+        //       <Stack direction="row">
+        //           <Item>Economy seats left</Item>
+        //           <Item justifyContent="flex-end">{rows.nOfEconomy}</Item>
+        //       </Stack>
+        //       <Stack direction="row">
+        //           <Item>Business seats left</Item>
+        //           <Item justifyContent="flex-end">{rows.nOfBusiness}</Item>
+        //       </Stack>
+        //       <Button>
+        //         Update
+        //       </Button>
+        //       <Button>
+        //         Delete
+        //       </Button>
+        //   </div>
+        // ))}
+        //</>
+      //)
+      
 
 }

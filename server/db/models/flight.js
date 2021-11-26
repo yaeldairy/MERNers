@@ -49,4 +49,4 @@ exports.createFlight = (flightData) => {
 
  //this variable now represents an instance of the collection (the one in the DB)
 // we'll be able to use this variable to pass things into db and get things from DB
-// module.exports = Flight;
+module.exports = Flight;

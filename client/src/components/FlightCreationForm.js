@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'; //use effect is for renders
-import { Form, Input, Button, DatePicker, Checkbox, TimePicker, message, InputNumber} from 'antd';
+import { Typography, Card, Form, Input, Button, DatePicker, Checkbox, TimePicker, message, InputNumber} from 'antd';
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
+const { Title, Text } = Typography;
+
 
 export default function FlightCreationForm (){
 
@@ -59,6 +61,8 @@ export default function FlightCreationForm (){
     function onFinishFailed (){
         message.error ('Please review input');
     }
+
+    const title=(<Title  level={2} >Create New Flight</Title> )
     
     // onClick = {event => sumbitHandler(event)}
     // useEffect (() => {
@@ -69,7 +73,7 @@ export default function FlightCreationForm (){
 
       return (
         <div>
-            
+    <Card title={title}  style={{marginLeft: '15%', marginRight: '15%', marginTop:'5%'}}    >
         <Form
          onFinish={onFinish}
          onFinishFailed={onFinishFailed}
@@ -114,6 +118,7 @@ export default function FlightCreationForm (){
           Create
         </Button>
         </Form>
+        </Card>
            
         </div>
       )
