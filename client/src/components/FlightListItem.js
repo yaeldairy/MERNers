@@ -29,7 +29,7 @@ function FlightListItem({flight}) {
       type="inner"
       title={title}
       extra={<Button type="primary" style={buttonStyle}>
-      <Link to={{pathname:`/viewFlight/${flight.flightNum}`}} params={{ flight }}>
+      <Link to={{pathname:`/viewFlight/${flight.flightNum}`}} state={{ flight: flight }}>
          Flight Details
       </Link>
       </Button>}

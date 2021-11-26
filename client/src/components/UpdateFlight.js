@@ -3,11 +3,14 @@ import { Form, Input, Button, DatePicker, TimePicker, message, Card, Divider, Ty
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
+import { useLocation, Link } from 'react-router-dom';
 const {Title} = Typography;
 
 
-export default function UpdateFlight(flight){
 
+export default function UpdateFlight(){
+    const location = useLocation();
+    const { flight } = location.state;
     const [flightData, setFlightData] = useState(flight);
   
     function handler (event){
@@ -45,6 +48,7 @@ export default function UpdateFlight(flight){
             .catch((err) =>{
                 console.log(err)
             })
+        
     }
     function onFinishFailed (){
         message.error ('Please review input');
@@ -106,7 +110,9 @@ export default function UpdateFlight(flight){
             </Form.Item>
 
             <Button type="primary" htmlType="submit">
-          Update
+            <Link to={{pathname:`/viewFlight/${flight.flightNum}`}} state={{ flight: flightData }}>
+         Update
+      </Link>
         </Button>
         </Form>
            </Card>
