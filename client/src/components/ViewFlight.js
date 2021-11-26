@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { Redirect } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
@@ -22,17 +21,12 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function ViewFlight(){
 
-    //  const { flight } = useParams();
-    // const [flight, setFlight] = useState();//stores flight details
     const [loading, setLoading] = useState(false);//loading state
     const [error, setError] = useState(null);
-    const [redirect, setRedirect] = useState(false);
-    // const {id} = props.match.params
     const location = useLocation();
     const { flight } = location.state;
 
     function handlerr()  {
-      // e.preventDefault()
         axios({
           method: 'POST',
           url: 'http://localhost:3001/admin/deleteFlight',
@@ -53,17 +47,11 @@ export default function ViewFlight(){
     };
 
     useEffect(() => {
-      console.log("ya deen omy")
-      // console.log(flight)
         setLoading(true);
-
         if (flight==null){
             setError(true);
             return;
         }
-        
-        // else
-        //     setFlight(flight);
         setLoading(false);
         console.log(flight);
       },[]);// fetched data on render
@@ -79,10 +67,9 @@ export default function ViewFlight(){
     };
 
       return(
-      // <h1>yadeen el naby</h1>
         <>{error? (<div> ERROR </div>):(
           loading? (<div>Loading... </div>):
-          (redirect?(<Redirect to = {'/'}/>):(
+          (
           <div>
               <Item>Flight: {rows.flightNum}</Item>
               <Stack direction="row">
@@ -124,7 +111,7 @@ export default function ViewFlight(){
                 </Popconfirm>
                 </Button>
           </div>
-        )))}
+        ))}
         </>
       )
       

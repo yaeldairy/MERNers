@@ -64,13 +64,6 @@ export default function FlightCreationForm (){
     }
 
     const title=(<Title  level={2} >Create New Flight</Title> )
-    
-    // onClick = {event => sumbitHandler(event)}
-    // useEffect (() => {
-    //     console.log(moment(flightData.date).format('DD-MM-YYYY'));
-    // });
-    //moment(date).format('MM-DD-YYYY')
-    //moment(arrTime).format('HH:mm')
 
       return (
         <div>
