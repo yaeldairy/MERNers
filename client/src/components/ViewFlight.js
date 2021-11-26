@@ -26,6 +26,7 @@ export default function ViewFlight(){
     // const [flight, setFlight] = useState();//stores flight details
     const [loading, setLoading] = useState(false);//loading state
     const [error, setError] = useState(null);
+    const [redirect, setRedirect] = useState(false);
     // const {id} = props.match.params
     const location = useLocation();
     const { flight } = location.state;
@@ -39,32 +40,32 @@ export default function ViewFlight(){
             id : flight._id
           }
         }).then((res)=>{
+          window.location.href='/'
           console.log(res)
-          console.log("flight deleted")
-          return <meta http-equiv = "refresh" content = "10; url='http://localhost:3000/' " />
+          console.log("flight deleted")          
   
       }).catch((err)=>{
           console.log(err)
           console.log("couldn't delete flight")
   
       });
-      // return <meta http-equiv = "refresh" content = "10; url='http://localhost:3000/' " />
-      // return <Redirect to = {{ pathname: "/" }}/>
+      
     };
 
     useEffect(() => {
       console.log("ya deen omy")
       // console.log(flight)
         setLoading(true);
+
         if (flight==null){
             setError(true);
             return;
         }
+        
         // else
         //     setFlight(flight);
         setLoading(false);
-        console.log(flight)
-        // fetchData();
+        console.log(flight);
       },[]);// fetched data on render
 
     const rows = {flightNum: flight.flightNum,
@@ -81,7 +82,7 @@ export default function ViewFlight(){
       // <h1>yadeen el naby</h1>
         <>{error? (<div> ERROR </div>):(
           loading? (<div>Loading... </div>):
-          (
+          (redirect?(<Redirect to = {'/'}/>):(
           <div>
               <Item>Flight: {rows.flightNum}</Item>
               <Stack direction="row">
@@ -123,7 +124,7 @@ export default function ViewFlight(){
                 </Popconfirm>
                 </Button>
           </div>
-        ))}
+        )))}
         </>
       )
       

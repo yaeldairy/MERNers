@@ -52,7 +52,8 @@ export default function FlightCreationForm (){
     function onFinish (){
         axios.post('http://localhost:3001/admin/flights', flightData)
             .then((res)=>{
-                console.log(res)   
+                console.log(res) 
+                window.location.href='/'  
             })
             .catch((err) =>{
                 console.log(err)
@@ -104,7 +105,7 @@ export default function FlightCreationForm (){
             <Form.Item name='date' label = 'Departure Date' rules={[{ required: true, message: 'Please select the departure date!' }]}>
                 <DatePicker  style ={{width:'100%'}} format = 'DD-MM-YYYY' picker = 'date' onChange ={event => onChangeDateHandler(event, 'date')}/>
             </Form.Item>
-            <Form.Item name='nOfEconomyInput' label = 'Number of Business Seats'
+            <Form.Item name='nOfEconomyInput' label = 'Number of Economy Seats'
               rules={[{ required: true, message: 'Please input the number of business class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
                 <Input name='nOfEconomy' onChange ={event => handler(event)}/>
             </Form.Item>
