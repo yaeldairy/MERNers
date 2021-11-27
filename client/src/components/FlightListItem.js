@@ -39,8 +39,9 @@ function FlightListItem({flight}) {
     <FaLongArrowAltRight style={{fontSize: '150%', marginTop:'10px'}} />
     <h2>{flight.arrAirport}</h2>
     <div  style={{marginLeft:'30px'}}>
-    <Text style={{fontSize: '120%'}} italic>departure time: {flight.deptTime}</Text>
-    <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>arrival time: {flight.arrTime}</Text>
+    <Text style={{fontSize: '120%'}} italic>Flight date: {flight.date}</Text>
+    <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>Departure time: {flight.deptTime}</Text>
+    <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>Arrival time: {flight.arrTime}</Text>
     </div>
     </div> 
     </Card>
