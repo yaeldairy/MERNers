@@ -1,7 +1,6 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Button, Card, Divider, List, Typography } from 'antd';
-import { CarryOutOutlined, SketchOutlined } from '@ant-design/icons';
+import { Button, Card, Typography } from 'antd';
 import { FaPlane , FaLongArrowAltRight} from "react-icons/fa"
 import { Link } from 'react-router-dom'
 const { Title, Text } = Typography;

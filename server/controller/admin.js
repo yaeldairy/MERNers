@@ -19,9 +19,9 @@ exports.allFlights = (req, res)=> {
 exports.updateFlight =(req,res)=> {
 
     const {_id,flightNum,deptAirport,arrAirport,deptTime,arrTime,date,nOfEconomy,nOfBusiness, nOfFirst} = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     var objectId = mongoose.Types.ObjectId(_id);
-    console.log(objectId);
+    // console.log(objectId);
 
 
     Flight.findByIdAndUpdate(objectId,{flightNum,deptAirport,arrAirport,deptTime,arrTime,date,nOfEconomy,nOfBusiness, nOfFirst},(error, response)=>{
@@ -37,7 +37,7 @@ exports.updateFlight =(req,res)=> {
 exports.deleteFlight =(req,res)=> {
 
     const {id } = req.body;
-    console.log(id)
+    // console.log(id)
     var objectId = mongoose.Types.ObjectId(id);
     Flight.findByIdAndDelete(objectId,(error, response)=>{
         if (response){
@@ -49,10 +49,14 @@ exports.deleteFlight =(req,res)=> {
     })
 }
 //TODO make sure the catching is correct
+ createFlight = (flightData) => {
+    const flight = new Flight(flightData);
+    return flight.save();
+};
+
 exports.insertFlight = (req, res) => {
 
-    const flight = new Flight(req.body);
-     flight.save()
+    createFlight(req.body)
         .then((result) => {
             res.status(201).send({id: result._id});
         })

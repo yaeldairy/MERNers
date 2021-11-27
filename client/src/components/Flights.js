@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { List, Divider,Typography } from 'antd';
+import { List, Typography } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import FlightListItem from './FlightListItem';
 import {Button, Modal, Card ,Tooltip} from 'antd';
 import { SearchOutlined, PlusOutlined  } from '@ant-design/icons';
 import SearchForm from './SearchForm';
 import { Link } from 'react-router-dom'
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
 const title=(<Title  level={2} >Flights</Title> )
 
@@ -24,7 +24,7 @@ export default function Flights (){
    
       axios.get('http://localhost:3001/admin/flights')
         .then((res) => {
-          console.log(res.data)
+          // console.log(res.data)
           setFlights(res.data)
           setDisplayed(res.data)
           
@@ -44,13 +44,13 @@ export default function Flights (){
       setIsModalVisible(false);
 
       setDisplayed(flights.filter((f)=>{
-        console.log("flights")
-        console.log(flights)
+        // console.log("flights")
+        // console.log(flights)
         for (const property in flight) {
 
-          console.log(`${property}: ${flight[property]}`);
+          // console.log(`${property}: ${flight[property]}`);
           if(flight[property]!=='' && f[property]!=flight[property]){
-            console.log("I was here")
+            // console.log("I was here")
             return false
           }
         }

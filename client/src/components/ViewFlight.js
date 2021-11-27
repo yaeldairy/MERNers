@@ -21,7 +21,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function ViewFlight(){
 
-    const [loading, setLoading] = useState(false);//loading state
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const location = useLocation();
     const { flight } = location.state;
@@ -35,12 +35,12 @@ export default function ViewFlight(){
           }
         }).then((res)=>{
           window.location.href='/'
-          console.log(res)
-          console.log("flight deleted")          
+          // console.log(res)
+          // console.log("flight deleted")          
   
       }).catch((err)=>{
-          console.log(err)
-          console.log("couldn't delete flight")
+          // console.log(err)
+          // console.log("couldn't delete flight")
   
       });
       
@@ -53,8 +53,8 @@ export default function ViewFlight(){
             return;
         }
         setLoading(false);
-        console.log(flight);
-      },[]);// fetched data on render
+        // console.log(flight);
+      },[]);
 
     const rows = {flightNum: flight.flightNum,
         deptAirport: flight.deptAirport,

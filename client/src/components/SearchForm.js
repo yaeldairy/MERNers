@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'; //use effect is for renders
-import { Form, Input, Button, DatePicker, Checkbox, TimePicker} from 'antd';
+import React, { useState } from 'react'; //use effect is for renders
+import { Form, Input, Button, DatePicker, TimePicker} from 'antd';
 import "antd/dist/antd.css";
 import moment from 'moment';
-import axios from 'axios';
 
 export default function SearchForm ({handleOk}){
 
     //const [value, functiontoupdatevalue] = useState(initialvalue) 
     //We deconstruct array                   //this returns an array
     
-    let dateFormat = ''
     const [flightData, setFlightData] = useState({
         flightNum: "",
         deptAirport: "", 
@@ -44,8 +42,8 @@ export default function SearchForm ({handleOk}){
     
     //TODO fix the .then and .catch bodies
     function sumbitHandler(event){
-        console.log("flight data")
-        console.log(flightData);
+        // console.log("flight data")
+        // console.log(flightData);
         handleOk(flightData)
       
     }

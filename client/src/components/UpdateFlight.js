@@ -3,7 +3,7 @@ import { Form, Input, Button, DatePicker, TimePicker, message, Card, Divider, Ty
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 const {Title} = Typography;
 
 
@@ -12,6 +12,8 @@ export default function UpdateFlight(){
     const location = useLocation();
     const { flight } = location.state;
     const [flightData, setFlightData] = useState(flight);
+
+    const [form] = Form.useForm();
   
     function handler (event){
        
@@ -40,13 +42,22 @@ export default function UpdateFlight(){
     
     //TODO fix the .then and .catch bodies
     function onFinish (){
-        console.log("finished");
+        const hide = message.loading('Updating Flight...',0)
         axios.patch('http://localhost:3001/admin/updateFlight', flightData)
             .then((res)=>{
-                console.log(res)   
+                hide()
+                form.resetFields();
+                // console.log(res)
+                message.success('Fligh updated successfully. Redirecting...', 2)
+                .then(function () {
+                    window.location.href='/' 
+                }
+                )
             })
             .catch((err) =>{
-                console.log(err)
+                hide()
+                message.error ('Unable to connect to the server. Please try again later.');
+                // console.log(err)
             })
         
     }
@@ -71,6 +82,7 @@ export default function UpdateFlight(){
         }}
          onFinish={onFinish}
          onFinishFailed={onFinishFailed}
+         form = {form}
          > 
 
             <Form.Item name='deptAirportInput' label = 'Departure Airport' 
@@ -116,9 +128,7 @@ export default function UpdateFlight(){
             </Form.Item>
 
             <Button type="primary" htmlType="submit">
-            <Link to={{pathname:`/viewFlight/${flight.flightNum}`}} state={{ flight: flightData }}>
-         Update
-      </Link>
+                Update
         </Button>
         </Form>
            </Card>
