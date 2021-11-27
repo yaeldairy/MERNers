@@ -45,10 +45,10 @@ const Flight = mongoose.model('Flight',flightSchema);
 
 //For cleanliness, this is a method that takes data and creates a flight
 //TODO do I need to handle anything here?
-exports.createFlight = (flightData) => {
-    const flight = new Flight(flightData);
-    return flight.save();
-};
+// exports.createFlight = (flightData) => {
+//     const flight = new Flight(flightData);
+//     return flight.save();
+// };
 
 
  //this variable now represents an instance of the collection (the one in the DB)

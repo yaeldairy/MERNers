@@ -49,10 +49,14 @@ exports.deleteFlight =(req,res)=> {
     })
 }
 //TODO make sure the catching is correct
+ createFlight = (flightData) => {
+    const flight = new Flight(flightData);
+    return flight.save();
+};
+
 exports.insertFlight = (req, res) => {
 
-    const flight = new Flight(req.body);
-     flight.save()
+    createFlight(req.body)
         .then((result) => {
             res.status(201).send({id: result._id});
         })

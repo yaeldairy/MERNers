@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'; //use effect is for renders
-import { Typography, Card, Form, Input, Button, DatePicker, Checkbox, TimePicker, message, InputNumber} from 'antd';
+import {Typography, Card, Form, Input, Button, DatePicker, Checkbox, TimePicker, message, InputNumber} from 'antd';
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
 const { Title, Text } = Typography;
-
-
 export default function FlightCreationForm (){
 
     //const [value, functiontoupdatevalue] = useState(initialvalue) 
@@ -21,8 +19,10 @@ export default function FlightCreationForm (){
         date: "",
         nOfEconomy: 0,
         nOfBusiness: 0,
-        nOfFirst: 0,
+        noOfFirst: 0,
     })
+    
+    const [form] = Form.useForm();
 
     function handler (event){
        
@@ -51,19 +51,29 @@ export default function FlightCreationForm (){
     
     //TODO fix the .then and .catch bodies
     function onFinish (){
+        const hide = message.loading('Creating Flight...',0)
         axios.post('http://localhost:3001/admin/flights', flightData)
             .then((res)=>{
+                hide()
+                form.resetFields();
                 console.log(res) 
-                window.location.href='/'  
+                message.success('Fligh added successfully. Redirecting...', 2)
+                .then(function () {
+                    window.location.href='/' 
+                }
+                )
+                 
             })
             .catch((err) =>{
+                hide()
+                message.error ('Unable to connect to the server. Please try again later.');
                 console.log(err)
             })
     }
     function onFinishFailed (){
         message.error ('Please review input');
     }
-
+    
     const title=(<Title  level={2} >Create New Flight</Title> )
 
       return (
@@ -72,6 +82,7 @@ export default function FlightCreationForm (){
         <Form
          onFinish={onFinish}
          onFinishFailed={onFinishFailed}
+         form = {form}
          > 
             <Form.Item name='flightNumInput' label = 'Flight Number' 
             rules={[{ required: true, message: 'Please input a flight number!' }, {whitespace:true}]}>
@@ -100,17 +111,17 @@ export default function FlightCreationForm (){
                 <DatePicker  style ={{width:'100%'}} format = 'DD-MM-YYYY' picker = 'date' onChange ={event => onChangeDateHandler(event, 'date')}/>
             </Form.Item>
             <Form.Item name='nOfEconomyInput' label = 'Number of Economy Class Seats'
-              rules={[{ required: true, message: 'Please input the number of economy class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
+              rules={[{ required: true, message: 'Please input the number of economy class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Seat count must be a number!'}]}>
                 <Input name='nOfEconomy' onChange ={event => handler(event)}/>
             </Form.Item>
 
              <Form.Item name='nOfBusinessInput' label = 'Number of Business Class Seats'
-              rules={[{ required: true, message: 'Please input the number of business class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
+              rules={[{ required: true, message: 'Please input the number of business class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Seat count must be a number!'}]}>
                 <Input name='nOfBusiness' onChange ={event => handler(event)}/>
             </Form.Item>
 
             <Form.Item name='nOfFirstInput' label = 'Number of First Class Seats'
-              rules={[{ required: true, message: 'Please input the number of first class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
+              rules={[{ required: true, message: 'Please input the number of first class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Seat count must be a number!'}]}>
                 <Input name='nOfFirst' onChange ={event => handler(event)}/>
             </Form.Item>
 
@@ -118,8 +129,8 @@ export default function FlightCreationForm (){
           Create
         </Button>
         </Form>
-        </Card>
-           
+        </Card> 
+
         </div>
       )
 
