@@ -21,6 +21,7 @@ export default function FlightCreationForm (){
         date: "",
         nOfEconomy: 0,
         nOfBusiness: 0,
+        nOfFirst: 0,
     })
 
     function handler (event){
@@ -35,7 +36,7 @@ export default function FlightCreationForm (){
     function onChangeDateHandler (event, name){
         setFlightData({
             ...flightData, //keeps rest as is
-            [name] : moment(event).format('MM-DD-YYYY') //the date is in event and not event.target.value
+            [name] : moment(event).format('DD-MM-YYYY') //the date is in event and not event.target.value
         });
     }
 
@@ -98,14 +99,19 @@ export default function FlightCreationForm (){
             <Form.Item name='date' label = 'Departure Date' rules={[{ required: true, message: 'Please select the departure date!' }]}>
                 <DatePicker  style ={{width:'100%'}} format = 'DD-MM-YYYY' picker = 'date' onChange ={event => onChangeDateHandler(event, 'date')}/>
             </Form.Item>
-            <Form.Item name='nOfEconomyInput' label = 'Number of Economy Seats'
-              rules={[{ required: true, message: 'Please input the number of business class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
+            <Form.Item name='nOfEconomyInput' label = 'Number of Economy Class Seats'
+              rules={[{ required: true, message: 'Please input the number of economy class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
                 <Input name='nOfEconomy' onChange ={event => handler(event)}/>
             </Form.Item>
 
-             <Form.Item name='nOfBusinessInput' label = 'Number of Business Seats'
+             <Form.Item name='nOfBusinessInput' label = 'Number of Business Class Seats'
               rules={[{ required: true, message: 'Please input the number of business class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
                 <Input name='nOfBusiness' onChange ={event => handler(event)}/>
+            </Form.Item>
+
+            <Form.Item name='nOfFirstInput' label = 'Number of First Class Seats'
+              rules={[{ required: true, message: 'Please input the number of first class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
+                <Input name='nOfFirst' onChange ={event => handler(event)}/>
             </Form.Item>
 
             <Button type="primary" htmlType="submit">

@@ -25,7 +25,7 @@ export default function UpdateFlight(){
     function onChangeDateHandler (event, name){
         setFlightData({
             ...flightData, //keeps rest as is
-            [name] : moment(event).format('MM-DD-YYYY') //the date is in event and not event.target.value
+            [name] : moment(event).format('DD-MM-YYYY') //the date is in event and not event.target.value
         });
     }
 
@@ -66,7 +66,8 @@ export default function UpdateFlight(){
             arrTime: moment(flightData.arrTime, 'HH:mm'),
             date: moment(flightData.date, 'DD-MM-YYYY'),
             nOfEconomyInput: flightData.nOfEconomy.toString(),
-            nOfBusinessInput: flightData.nOfBusiness.toString()
+            nOfBusinessInput: flightData.nOfBusiness.toString(),
+            nOfFirstInput: flightData.nOfFirst.toString(),
         }}
          onFinish={onFinish}
          onFinishFailed={onFinishFailed}
@@ -98,7 +99,7 @@ export default function UpdateFlight(){
                 <DatePicker 
                 style ={{width:'100%'}} format = 'DD-MM-YYYY' picker = 'date' onChange ={event => onChangeDateHandler(event, 'date')}/>
             </Form.Item>
-            <Form.Item name='nOfEconomyInput' label = 'Number of Business Seats'
+            <Form.Item name='nOfEconomyInput' label = 'Number of Economy Seats'
               rules={[{ required: true, message: 'Please input the number of business class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
                 <Input name='nOfEconomy' onChange ={event => handler(event)}/>
             </Form.Item>
@@ -107,6 +108,11 @@ export default function UpdateFlight(){
               rules={[{ required: true, message: 'Please input the number of business class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
                 <Input name='nOfBusiness' 
                 onChange ={event => handler(event)}/>
+            </Form.Item>
+            
+            <Form.Item name='nOfFirstInput' label = 'Number of First Class Seats' defaultValue = {flightData.nOfFirst}
+              rules={[{ required: true, message: 'Please input the number of first class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Please enter a seat count!'}]}>
+                <Input name='nOfFirst' onChange ={event => handler(event)}/>
             </Form.Item>
 
             <Button type="primary" htmlType="submit">

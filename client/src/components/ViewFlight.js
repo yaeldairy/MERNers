@@ -63,7 +63,8 @@ export default function ViewFlight(){
         arrTime: flight.arrTime,
         date: flight.date,
         nOfEconomy: flight.nOfEconomy,
-        nOfBusiness: flight.nOfBusiness
+        nOfBusiness: flight.nOfBusiness,
+        nOfFirst: flight.nOfFirst
     };
 
       return(
@@ -93,12 +94,16 @@ export default function ViewFlight(){
                   <Item justifyContent="flex-end">{rows.date}</Item>
               </Stack>
               <Stack direction="row">
-                  <Item>Economy seats left</Item>
+                  <Item>Economy class seats left</Item>
                   <Item justifyContent="flex-end">{rows.nOfEconomy}</Item>
               </Stack>
               <Stack direction="row">
-                  <Item>Business seats left</Item>
+                  <Item>Business class seats left</Item>
                   <Item justifyContent="flex-end">{rows.nOfBusiness}</Item>
+              </Stack>
+              <Stack direction="row">
+                  <Item>First class seats left</Item>
+                  <Item justifyContent="flex-end">{rows.nOfFirst}</Item>
               </Stack>
               <Button>
               <Link to={{pathname:`/updateFlight/${flight.flightNum}`}} state={{ flight: flight }}>

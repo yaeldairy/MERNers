@@ -34,6 +34,10 @@ nOfEconomy: {
 nOfBusiness: {
     type:Number,
     required: true
+},
+nOfFirst: {
+    type:Number,
+    required: true
 }
 
 })
