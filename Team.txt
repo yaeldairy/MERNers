@@ -1,0 +1,8 @@
+To achieve the desired fuctionality, some field were added to the schema provided in the Database excel file. The new schema consists of (flightNum,deptAirport,arrAirport,deptTime,arrTime,date,nOfEconomy,nOfBusiness,nOfFirst).
+
+The task distribution for the first sprint was as follows: (numbers refer to the Requirment ID)
+
+Yasser Showita : 3, 4
+Yasmina El-Dairy : 7 (and view flight component)
+Nadeen Hassan : 7, 8, 9
+Habiba Gamil : 5, 6
