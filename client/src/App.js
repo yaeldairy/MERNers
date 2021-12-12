@@ -5,6 +5,8 @@ import {BrowserRouter as Router, Route, Routes,} from 'react-router-dom'
 import FlightCreationForm from './components/FlightCreationForm';
 import ViewFlight from './components/ViewFlight';
 import UpdateFlight from './components/UpdateFlight';
+import UserProfile from './components/RegUser/UserProfile';
+import PurchaseHistory from './components/RegUser/PurchaseHistory';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
       <Route path="/newFlight" element={<FlightCreationForm/>}/>
       <Route path="/viewFlight/:id" element={<ViewFlight/>}/>
       <Route path="/updateFlight/:id" element={<UpdateFlight/>}/>
+      <Route path="/profile/:id/" element={<viewEditProfile/>}/>
+      <Route path="/profile/:id/purchases" element={<PurchaseHistory/>}/>
     </Routes> 
     </div>
     </Router>
