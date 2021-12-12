@@ -10,9 +10,38 @@ const userSchema = new Schema({
     password: {
         type:String, 
         required: true
+    },
+    firstname: {
+        type:String, 
+        required: true
+    },
+    lastname: {
+        type:String, 
+        required: true
+    }, 
+    homeaddress: {
+        type:String, 
+        required: true
+    },
+    countrycode: {
+        type:String, 
+        required: true
+    },
+    telephonenumber: {
+        type:String, 
+        required: true
+    }, 
+    email: {
+        type:String, 
+        required: true
+    },
+    passportnumber: {
+        type:String, 
+        required: true
     }
 
-})
+}
+)
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
