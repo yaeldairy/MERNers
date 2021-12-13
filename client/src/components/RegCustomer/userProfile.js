@@ -28,29 +28,7 @@ export default function UserProfile(){
     const [userData, setUserData] = useState(null);
 
 
-    function editHandler (event){ //onChange ={event => handler(event)}
-      setUserData({
-        ...userData, //keeps rest as is
-        [event.target.name] : event.target.value 
-    });
-    }
-
-    function handler(event)  { 
-        const hide = message.loading('Updating Your Profile...',0)
-        axios.patch('http://localhost:3001/user/updateProfile', userData)
-            .then((res)=>{
-                hide()
-                // console.log(res)
-                message.success('Data updated successfully. Redirecting...', 2)
-                
-            })
-            .catch((err) =>{
-                hide()
-                message.error ('Unable to connect to the server. Please try again later.');
-                // console.log(err)
-            })
-      
-    };
+    
 
     useEffect(() => {
         setLoading(true);
@@ -76,7 +54,7 @@ export default function UserProfile(){
           loading? (<div>Loading... </div>):
           (
           <div>
-              <Item>Hello {userData.firstName} {userData.lastName}!</Item>
+              <Item>Hello {userData.firstname} {userData.lastname}!</Item>
               <Stack direction="row">
                   <Item>Username: </Item>
                   <Item justifyContent="flex-end">{userData.username}</Item>
@@ -84,13 +62,34 @@ export default function UserProfile(){
               <Stack direction="row">
                   <Item>E-mail: </Item>
                   <Item justifyContent="flex-end">{userData.email}</Item>
-                  <Button>Edit</Button>
               </Stack>
+              <Stack direction="row">
+                  <Item>Address: </Item>
+                  <Item justifyContent="flex-end">{userData.homeaddress}</Item>
+              </Stack>
+              <Stack direction="row">
+                  <Item>Telephone Number: </Item>
+                  <Item justifyContent="flex-end">{userData.countrycode}{userData.telephonenumber}</Item>
+              </Stack>
+              <Stack direction="row">
+                  <Item>Passport Number: </Item>
+                  <Item justifyContent="flex-end">{userData.passportnumber}{userData.telephonenumber}</Item>
+              </Stack>
+              <Stack>
+                <Button>
+                <Link to={{pathname:`/profile/${userID}/edit`}} state={{ userData: userData }}>
+                  Edit Info
+                  </Link>
+                </Button>
+                {/* <Button>
+                  Change Password
+                </Button> */}
               <Button>
                   <Link to={{pathname:`/profile/${userID}/purchases`}} state={{ purchases: userData.purchases }}>
                     View Purchases
                   </Link>
               </Button>
+              </Stack>
           </div>
         ))}
         </>

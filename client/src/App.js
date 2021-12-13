@@ -7,6 +7,7 @@ import ViewFlight from './components/ViewFlight';
 import UpdateFlight from './components/UpdateFlight';
 import UserProfile from './components/RegUser/UserProfile';
 import PurchaseHistory from './components/RegUser/PurchaseHistory';
+import EditProfile from './components/RegUser/editProfile';
 
 function App() {
   return (
@@ -17,8 +18,9 @@ function App() {
       <Route path="/newFlight" element={<FlightCreationForm/>}/>
       <Route path="/viewFlight/:id" element={<ViewFlight/>}/>
       <Route path="/updateFlight/:id" element={<UpdateFlight/>}/>
-      <Route path="/profile/:id/" element={<viewEditProfile/>}/>
+      <Route path="/profile/:id/" element={<UserProfile/>}/>
       <Route path="/profile/:id/purchases" element={<PurchaseHistory/>}/>
+      <Route path="/profile/:id/edit" element={<EditProfile/>}/>
     </Routes> 
     </div>
     </Router>
