@@ -5,6 +5,10 @@ router.use(express.json())
 const controller= require ('../controller/general')
 const verifyUser = require ('../Auth/verify.user.middleware')
 
-router.get('/login', [verifyUser.isPasswordAndUserMatch,controller.login]);
+router.post('/login', [verifyUser.isPasswordAndUserMatch,controller.login]);
+
+router.post('/signup', controller.insertUser);
+
+router.get('/flights', controller.allFlights)
 
 module.exports = router

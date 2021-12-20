@@ -1,11 +1,15 @@
 const express = require('express')
+const controller= require ('../controller/admin')
+const verifyToken = require ('../Auth/auth.validation.middleware')
+const permissionMiddleware = require ('../Auth/auth.permission.middleware')
+
 const router = express.Router()
 router.use(express.json())
+router.use(verifyToken.validJWTNeeded)
+router.use(permissionMiddleware.AdminPermission)
 
-const controller= require ('../controller/admin')
+router.get('/test', controller.testRoute);
 
-
-router.get('/flights', controller.allFlights)
 router.patch('/updateFlight', controller.updateFlight)
 router.post('/deleteFlight', controller.deleteFlight)
 router.post('/flights', [controller.insertFlight]);

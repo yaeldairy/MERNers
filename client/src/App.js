@@ -1,10 +1,11 @@
 import './App.css';
 import * as React from 'react'
-import Flights from '../src/components/Flights'
+import Flights from '../src/components/general/Flights'
 import {BrowserRouter as Router, Route, Routes,} from 'react-router-dom'
 import FlightCreationForm from './components/FlightCreationForm';
 import ViewFlight from './components/ViewFlight';
 import UpdateFlight from './components/UpdateFlight';
+import Login from './components/general/Login';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
     <div className="App">
      <Routes>
       <Route path="/" element={<Flights/>}/>
+      <Route path="/login" element={<Login/>}/>
       <Route path="/newFlight" element={<FlightCreationForm/>}/>
       <Route path="/viewFlight/:id" element={<ViewFlight/>}/>
       <Route path="/updateFlight/:id" element={<UpdateFlight/>}/>

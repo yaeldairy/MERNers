@@ -2,19 +2,19 @@ const Flight = require ('../db/models/flight');
 const mongoose= require('mongoose');
 
 
-exports.allFlights = (req, res)=> {
+exports.testRoute = (req, res) => {
+   
+    console.log("req.body.user on next print")
     
-    Flight.find({},(error, response)=>{
+    console.log(req.body.user)
 
-        if (response){      
-            res.status(200).send(response)
-        }
-        else{
-            res.status(400).send(error)
-        }
-    })
-    
-}
+    return res.status(200).send("test route succesfull");
+
+ 
+  };
+
+
+
 
 exports.updateFlight =(req,res)=> {
 
