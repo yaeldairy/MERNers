@@ -37,6 +37,13 @@
   background-color: #ff9601;
 }
 
+.seat.legendSelected{
+  background-color: #93d422;
+}
+
+.seat.legendAvailable{
+  background-color: #dbdbdb ;
+} 
 .FirstClassrow{
   display: flex;
   flex-wrap: nowrap;
@@ -45,16 +52,26 @@
 
 .rowNumber{
  color: #757575;
+ display: inline-block;
 }
 
 .seatSet{
-  flex-basis: 20%;
+  display: inline-block;
 }
 
 .seatMap{
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: auto;
+}
+
+.legendText{
+color: #bdbdbd;
+font-size: 12px;
+display: flex;
+justify-content: flex-start;
+margin-bottom: 0;
 }
 
 .legendSeats{
@@ -82,8 +99,112 @@
   color: #757575;
 }
 
-.seatSelectionLayout{
+.seat.legendSeatFadingTop{
+  background: linear-gradient(#ffffff,70%,#dbdbdb);
+  font-size: 55%;
+  padding: 0px;
+  font-weight: 600;
+  color: #757575;
+}
+.seat.legendSeatFadingBottom{
+  background: linear-gradient(#dbdbdb,30%,#ffffff);
+  font-size: 55%;
+  padding: 0px;
+  font-weight: 600;
+  color: #757575;
+}
+
+.seatSelectionMain{
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
+  flex: 1;
+}
+
+.seatColorGuideLayout{
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  color:#3d4b56;
+}
+
+.colorGuideSeats{
+  display: flex;
+  justify-content: flex-start;
+}
+
+.legendLayout{
+  display: flex;
+  align-items: center; /* makes the centers of the items align */ 
+  justify-content: space-between;
+  flex:1;
+  margin-top: 10px;
+}
+
+.rightHalfSS{
+  background-color: #f9f9f9;
+  align-items: stretch;
+  width: 50%;
+  height: 575px;
+  overflow-y: auto;
+  flex: 1;
+}
+.leftHalfSS{
+  background-color: #ffffff;
+  align-items: stretch;
+  width: 50%;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   justify-content: space-around;
+  margin-left: 50px;
+  margin-top: 50px;
+}
+
+.seatReservationDetails{
+  display: flex;
+  align-items: left;
+  flex-direction: column;
+  flex:1;
+}
+
+.nameStyling{
+  font-size: x-large;
+  color: #3d4b56;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.SRDetialsText{
+  color:#3d4b56;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0;
+}
+
+.selectedSeatStyling{
+  font-size: xx-large;
+  color: #3d4b56;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0;
+  font-weight: bold;
+}
+
+.seatMap.legend{
+  flex:1
+}
+
+.planeStyling{
+  background-color: #ffffff;
+  width: 300px;
+}
+
+.buttonsContainer{
+  margin-top: 75px;
+  margin-right: 50px;
+  justify-content: center;
 }
