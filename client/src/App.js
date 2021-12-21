@@ -6,6 +6,8 @@ import FlightCreationForm from './components/FlightCreationForm';
 import ViewFlight from './components/ViewFlight';
 import UpdateFlight from './components/UpdateFlight';
 import Login from './components/general/Login';
+import Flight from './components/general/Flight';
+import ReturnFlights from './components/general/ReturnFlights';
 
 function App() {
   return (
@@ -14,8 +16,9 @@ function App() {
      <Routes>
       <Route path="/" element={<Flights/>}/>
       <Route path="/login" element={<Login/>}/>
+      <Route path="/returnFlights" element={<ReturnFlights/>}/>
       <Route path="/newFlight" element={<FlightCreationForm/>}/>
-      <Route path="/viewFlight/:id" element={<ViewFlight/>}/>
+      <Route path="/viewFlight/:id" element={ <Flight />}/>
       <Route path="/updateFlight/:id" element={<UpdateFlight/>}/>
     </Routes> 
     </div>

@@ -23,6 +23,10 @@ arrTime: {
     type:String,
     required: true
 },
+duration:{
+    type:String,
+    required: true
+},
 date: {
     type:String, //manipulating date datatype is complex, change if needed
     required: true
@@ -38,6 +42,11 @@ nOfBusiness: {
 nOfFirst: {
     type:Number,
     required: true
+},
+price :{
+    type:Number,
+    required: true
+
 }
 
 })
