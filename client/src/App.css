@@ -1,3 +1,89 @@
 .App {
   text-align: center;
 }
+
+.seat{
+  height: 14px;
+  width: 15px;
+  margin: 3px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: none;
+}
+
+.seat.availableSeat:hover{
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.seat.selectedSeat:hover{
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.seat.availableSeat{
+  background-color: #dbdbdb ;
+}
+
+.seat.unavailableSeat{
+  background-color: #3d4b56 ;
+}
+
+.seat.selectedSeat{
+  background-color: #93d422;
+}
+
+.seat.nCSeat{
+  background-color: #ff9601;
+}
+
+.FirstClassrow{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+}
+
+.rowNumber{
+ color: #757575;
+}
+
+.seatSet{
+  flex-basis: 20%;
+}
+
+.seatMap{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.legendSeats{
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  background-color : rgb(255, 255, 255);
+  overflow: hidden;
+  margin: 50px;
+  box-shadow: 0px 0px 25px 25px rgb(255, 255, 255);
+}
+
+.legendRow{
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content:space-evenly;
+}
+
+
+.seat.legendSeat{
+  background-color: #dbdbdb ;
+  font-size: 55%;
+  padding: 0px;
+  font-weight: 600;
+  color: #757575;
+}
+
+.seatSelectionLayout{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
