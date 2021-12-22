@@ -1,15 +1,19 @@
 import { Card, Button, message, Space } from 'antd';
-import '../App.css';
+import '../../App.css';
 import FirstClassRowSS from './FirstClassRowSS'
 import EconomyClassRowSS from './EconomyClassRowSS'
 import BusinessClassRowSS from './BusinessClassRowSS'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import SSLegend from './SSLegend';
 import SeatReservationDetails from './SeatReservationDetails';
+import {UserContext} from "../../Context";
 import axios from 'axios';
-export default function SeatSelection() {
+
+export default function SeatSelection({flight}) {
+    
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [isDone, setDone] = useState(false);
+    const { cabin, noOfSeats} = useContext(UserContext);
 
     function handleSeatSelected(currentSelectedSeats) {
         setSelectedSeats(currentSelectedSeats);
@@ -43,7 +47,7 @@ export default function SeatSelection() {
     return (
         <div className='seatSelectionMain'>
             <div className='leftHalfSS'>
-                <SeatReservationDetails currentSelectedSeats={selectedSeats} />
+                <SeatReservationDetails selectedSeats={selectedSeats} flight={flight}/>
                 <SSLegend />
                 <div className='buttonsContainer'>
                     <Space size={100}>
@@ -59,15 +63,24 @@ export default function SeatSelection() {
                             <div className='rowNumber'>
                                 <p>First Class</p>
                             </div>
-                            <FirstClassRowSS updateFinalSelectionList={handleSeatSelected} setCompleted={handleCompleted} />
+                            <FirstClassRowSS flight={flight}
+                                             updateFinalSelectionList={handleSeatSelected} 
+                                             setCompleted={handleCompleted}
+                                             totalSeats={cabin =="First" ? noOfSeats.number :0 } />
                             <div className='rowNumber'>
                                 <p>Business Class</p>
                             </div>
-                            <BusinessClassRowSS updateFinalSelectionList={handleSeatSelected} setCompleted={handleCompleted} />
+                            <BusinessClassRowSS flight={flight}
+                                                updateFinalSelectionList={handleSeatSelected} 
+                                                setCompleted={handleCompleted} 
+                                                totalSeats={cabin =="Business" ? noOfSeats.number :0 }/>
                             <div className='rowNumber'>
                                 <p>Economy Class</p>
                             </div>
-                            <EconomyClassRowSS updateFinalSelectionList={handleSeatSelected} setCompleted={handleCompleted} />
+                            <EconomyClassRowSS flight={flight}
+                                               updateFinalSelectionList={handleSeatSelected} 
+                                               setCompleted={handleCompleted}
+                                               totalSeats={cabin =="Economy" ? noOfSeats.number :0 } />
                         </div>
                     </div>
                 </div>

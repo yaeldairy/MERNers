@@ -10,6 +10,7 @@ export const UserProvider = ({children}) => {
   const parsedToken = JSON.parse(token)
   const [accessToken, setAccessToken] = useState(parsedToken || null);
   const [flights, setFlights] = useState(null);
+  const [username, setUsername] = useState(parsedToken || null);
   const [permissionLevel, setPermissionLevel] = useState(parsedToken || null);
   const [departureFlight, setDepartureFlight] = useState(null);
   const [returnFlight, setReturnFlight] = useState(null);
@@ -28,7 +29,8 @@ export const UserProvider = ({children}) => {
         departureFlight, setDepartureFlight,
         returnFlight, setReturnFlight,
         cabin, setCabin,
-        noOfSeats, setSeats
+        noOfSeats, setSeats,
+        username, setUsername
 
       }}
     >

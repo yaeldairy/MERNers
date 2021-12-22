@@ -1,13 +1,19 @@
-import '../App.css';
+import '../../App.css';
 import SeatButton from './SeatButton';
 import React, { useEffect, useState } from 'react'
-export default function BusinessClassRowSS(props) {
-    const totalSeats = 0; //TODO get from DB. This is the total number of seats in the booking
+export default function EconomyClassRowSS({flight,updateFinalSelectionList,setCompleted,totalSeats}) {
+   // const totalSeats = 2; //0 if not selected cabin
     const [selectedSeats, setSelectedSeats] = useState([])
     const [remainingSeats, setRemainingSeats] = useState(totalSeats)
     let rows = [];
-    let seatNumber = 30;
-    let startIndex = 4; //TODO make start index the number of seats in the classes before +1
+    let seatNumber = flight.nOfEconomy;//total number of economy seats
+    let startIndex = flight.nOfFirst+flight.nOfBusiness; //bussiness+first+one
+
+    useEffect(()=>{
+        console.log("Economy seats"+ totalSeats)
+
+    },[])
+
     for (let index = startIndex; index <= startIndex + Math.ceil(seatNumber / 6.0); index++) {
         rows.push(index);
     }
@@ -34,8 +40,15 @@ export default function BusinessClassRowSS(props) {
 
     useEffect(() => {
         console.log(selectedSeats)
-        props.updateFinalSelectionList(selectedSeats);
+        updateFinalSelectionList(selectedSeats);
+        if (remainingSeats == 0){
+            setCompleted(true)
+        }
+        else if (remainingSeats == 1){
+            setCompleted(false)
+        }
     }, [selectedSeats])
+    
     let economyClassSeats = rows.map(row => {
         if (row === rows.length) {
             return (

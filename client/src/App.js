@@ -3,11 +3,11 @@ import * as React from 'react'
 import Flights from '../src/components/general/Flights'
 import {BrowserRouter as Router, Route, Routes,} from 'react-router-dom'
 import PrivateRoute from './components/router/PrivateRoute';
-import Checkout from './components/general/Checkout';
+import Checkout from './components/user/Checkout';
 import FlightCreationForm from './components/FlightCreationForm';
 import ViewFlight from './components/ViewFlight';
 import UpdateFlight from './components/UpdateFlight';
-import SeatSelection from './components/SeatSelection';
+//import SeatSelection from './components/user/SeatSelection';
 import Login from './components/general/Login';
 import Flight from './components/general/Flight';
 import ReturnFlights from './components/general/ReturnFlights';

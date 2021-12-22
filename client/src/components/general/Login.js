@@ -24,7 +24,7 @@ function Login (){
     let navigate = useNavigate();
     const location = useLocation();
     const { path } = location.state;
-    const {setAccessToken, setPermissionLevel} = useContext(UserContext);
+    const {setAccessToken, setPermissionLevel, setUsername} = useContext(UserContext);
     const [loading, setLoading]= useState(false);
     const [error, setError]= useState(false);
     const [success, setSuccess]= useState(false);
@@ -50,6 +50,7 @@ function Login (){
           console.log(response.data)
           setAccessToken(response.data.accessToken)
           setPermissionLevel(response.data.permissionLevel)
+          setUsername(response.data.username)
           localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
           localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken));
           setSuccess(true)

@@ -1,16 +1,22 @@
-import '../App.css';
+import '../../App.css';
 import React, { useEffect, useState } from 'react'
 import SeatButton from './SeatButton';
-export default function FirstClassRowSS(props) {
-    const totalSeats = 0; //TODO get from DB. This is the total number of seats in the booking
+export default function FirstClassRowSS({flight, updateFinalSelectionList,setCompleted,totalSeats}) {
+
+    //const totalSeats = 0; //TODO get from DB. This is the total number of seats in the booking
     const [selectedSeats, setSelectedSeats] = useState([])
     const [remainingSeats, setRemainingSeats] = useState(totalSeats)
 
     let rows = [];
-    let seatNumber = 10; //TODO get this from DB
+    let seatNumber = flight.nOfFirst; //no of seats in first class
     for (let index = 1; index <= Math.ceil(seatNumber / 4.0); index++) {
         rows.push(index);
     }
+    useEffect(()=>{
+        console.log("First seats"+ totalSeats)
+
+    },[])
+
     let missingSeats = ((Math.ceil(seatNumber / 4.0)) * 4) - seatNumber;
     let lastClass = (missingSeats > 0) ? 'seat nCSeat' : 'seat availableSeat';
     let secondLastClass = (missingSeats > 1) ? 'seat nCSeat' : 'seat availableSeat';
@@ -31,7 +37,7 @@ export default function FirstClassRowSS(props) {
 
     useEffect(() => {
         console.log(selectedSeats)
-        props.updateFinalSelectionList(selectedSeats);
+        updateFinalSelectionList(selectedSeats);
     }, [selectedSeats])
 
     let firstClassSeats = rows.map(row => {

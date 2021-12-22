@@ -81,7 +81,7 @@ function ReturnFlights(){
             renderItem={ f => (    
             <FlightListItem flight={f} departureFlight={flight} /> )} /> 
          </Card>
-            }
+          }
          
         </Card>
         

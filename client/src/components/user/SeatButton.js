@@ -1,6 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import { message} from 'antd';
-import '../App.css';
+import '../../App.css';
 
 function SeatButton(props) {
     let takenSeats = ['1A', '2C', '23D'] //TODO replace with array you get from the table

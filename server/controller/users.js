@@ -1,4 +1,5 @@
 const User = require ('../db/models/user');
+const Flight = require ('../db/models/flight');
 const mongoose= require('mongoose');
 
 
@@ -46,8 +47,6 @@ exports.testRoute = (req, res) => {
     const FId = mongoose.Types.ObjectId(_id);
     const flight ={flightId:FId,flightNum,deptAirport,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber,seat:[]};
 
-   
-
     User.findOneAndUpdate({username},{$push:{flights:flight}},(error,response)=>{
         if(response){
             res.status(200).send(response)
@@ -57,5 +56,36 @@ exports.testRoute = (req, res) => {
             res.status(400).send(error)
         }
     })
+}
+exports.addBooking=(req,res)=>{
 
+    const {username}=req.body.user;
+    const {bookingNumber} = req.body;
+    console.log(username)
+    console.log(bookingNumber)
+    User.findOneAndUpdate({username},{$push:{bookingReferences:bookingNumber}},(error,response)=>{
+        console.log(response)
+        if(response){
+            res.status(200).send(response);
+        }
+        else{
+            res.status(400).send(error);
+        }
+    })
+
+}
+exports.updateSeats=(req,res)=>{
+
+    const{flightId,nOfEconomy,nOfBuisness,nOfFirst}=req.body;
+    var userId = mongoose.Types.ObjectId(flightId);
+    Flight.findOneAndUpdate({_id:userId},{nOfEconomy:nOfEconomy , nOfBuisness:nOfBuisness , nOfFirst:nOfFirst},(error,response)=>{
+        if(response){
+          //  console.log(response)
+            res.status(200).send(response);
+        }
+        else{
+           
+            res.status(400).send(error);
+        }
+    })
 }
