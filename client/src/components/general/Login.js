@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Divider } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import {UserContext} from "../../Context";
+import NavBar from '../NavBar';
 import {
     Spin,
     Typography,
@@ -23,11 +24,8 @@ function Login (){
 
     let navigate = useNavigate();
     const location = useLocation();
-    const path = null;
-    if(location.state){
-      const { path } = location.state;
-    }
-    const {setAccessToken, setPermissionLevel} = useContext(UserContext);
+    const { path } = location.state;
+    const {setAccessToken, setPermissionLevel, setUsername} = useContext(UserContext);
     const [loading, setLoading]= useState(false);
     const [error, setError]= useState(false);
     const [success, setSuccess]= useState(false);
@@ -55,6 +53,7 @@ function Login (){
           setPermissionLevel(response.data.permissionLevel)
           setUsername(response.data.username)
           localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
+          localStorage.setItem("username", JSON.stringify(response.data.username));/////
           localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken));
           setSuccess(true)
           setError("Login successfull")

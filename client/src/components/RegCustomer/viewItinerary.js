@@ -1,7 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Row, Col } from 'antd';
-import NavBar from '../NavBar';
 
 
 export default function ReservationHistory() {
@@ -10,7 +9,6 @@ export default function ReservationHistory() {
 
     return (
         <div>
-            <NavBar/>
             <h1>Itinerary for booking {booking}</h1>
             <p>Total amount paid: {amount}</p>
             <Row>

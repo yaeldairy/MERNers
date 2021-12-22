@@ -1,17 +1,44 @@
-import React, { useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { Navigate, useLocation, Link } from 'react-router-dom';
+import { Descriptions } from 'antd';
 
 import { Button } from 'antd';
 import { Row, Col, Divider } from 'antd';
-import NavBar from '../NavBar';
+import { UserContext } from "../../Context";
+import axios from 'axios';
 
 
 
 export default function UserProfile() {
-
+  const { accessToken } = useContext(UserContext);
   const location = useLocation();
-  const { user } = location.state;
-  const [userData, setUserData] = useState(user);
+  const [userData, setUserData] = useState([]);
+ 
+  useEffect(() => {
+    console.log("USERRRRR " +userData)
+    console.log("ACCESS "+ accessToken)
+    // if (accessToken == null)
+    //   return <Navigate to="/login" state={{ path: '/' }} />;
+    if (location.state == null) {
+      axios.get('http://localhost:3001/user/getProfile', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      })
+        .then((res) => {
+          setUserData(res.data);
+          console.log("prof res" + res.data);
+
+        })
+        .catch((err) => {
+          console.log("prof err" + err)
+        })
+    }
+    else {
+      const { user } = location.state;
+      setUserData(user);
+    }
+  },[]);
 
   // const userData =
   // {
@@ -53,30 +80,25 @@ export default function UserProfile() {
   // }
 
   return (
-    <>
       <div>
-        <NavBar/>
         <br />
-        <Row>
-          <Col span={8} >Username: </Col>
-          <Col span={28} >{userData.username}</Col>
-        </Row>
-        <Row>
-          <Col span={8}>E-mail: </Col>
-          <Col span={28}>{userData.email}</Col>
-        </Row>
-        <Row>
-          <Col span={8}>Address: </Col>
-          <Col span={28} justifyContent="flex-end">{userData.homeAddress}</Col>
-        </Row>
-        <Row>
-          <Col span={8}>Telephone Number: </Col>
-          <Col span={28} justifyContent="flex-end">{userData.countryCode}{userData.phoneNumber}</Col>
-        </Row>
-        <Row>
-          <Col span={8}>Passport Number: </Col>
-          <Col span={28} justifyContent="flex-end">{userData.passportNumber}</Col>
-        </Row>
+        <Descriptions  title="Profile Info" style={{ marginBottom:'50px'}} column={1} bordered>
+        <Descriptions.Item label="Username" >
+        {userData.username}
+        </Descriptions.Item>
+        <Descriptions.Item label="Email" >
+        {userData.email}
+        </Descriptions.Item>
+        <Descriptions.Item label="Address" span>
+        {userData.homeAddress}
+        </Descriptions.Item>
+        <Descriptions.Item label="Telephone Number" span>
+        {userData.countryCode}{userData.phoneNumber}
+        </Descriptions.Item>
+        <Descriptions.Item label="Passport Number" >
+        {userData.passportNumber}
+        </Descriptions.Item>
+        </Descriptions>
 
         <Divider />
         <div justify="space-around">
@@ -98,8 +120,6 @@ export default function UserProfile() {
         </div>
 
       </div>
-
-    </>
   )
 
 

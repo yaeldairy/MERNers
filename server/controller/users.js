@@ -39,7 +39,7 @@ exports.selectSeats = (req, res) => {
                                 .then((result) => {
                                     res.status(204).send({});
                                 })
-                                .catch((err)=>{
+                                .catch((err) => {
                                     console.log('Unexpected Internal Error')
                                 })
                         })
@@ -81,34 +81,34 @@ exports.addFlight = async (req, res) => { //TODO check what info they need here 
         }
     })
 }
-exports.addBooking=(req,res)=>{
+exports.addBooking = (req, res) => {
 
-    const {username}=req.body.user;
-    const {bookingNumber} = req.body;
+    const { username } = req.body.user;
+    const { bookingNumber } = req.body;
     console.log(username)
     console.log(bookingNumber)
-    User.findOneAndUpdate({username},{$push:{bookingReferences:bookingNumber}},(error,response)=>{
+    User.findOneAndUpdate({ username }, { $push: { bookingReferences: bookingNumber } }, (error, response) => {
         console.log(response)
-        if(response){
+        if (response) {
             res.status(200).send(response);
         }
-        else{
+        else {
             res.status(400).send(error);
         }
     })
 
 }
-exports.updateSeats=(req,res)=>{
+exports.updateSeats = (req, res) => {
 
-    const{flightId,nOfEconomy,nOfBuisness,nOfFirst}=req.body;
+    const { flightId, nOfEconomy, nOfBuisness, nOfFirst } = req.body;
     var userId = mongoose.Types.ObjectId(flightId);
-    Flight.findOneAndUpdate({_id:userId},{nOfEconomy:nOfEconomy , nOfBuisness:nOfBuisness , nOfFirst:nOfFirst},(error,response)=>{
-        if(response){
-          //  console.log(response)
+    Flight.findOneAndUpdate({ _id: userId }, { nOfEconomy: nOfEconomy, nOfBuisness: nOfBuisness, nOfFirst: nOfFirst }, (error, response) => {
+        if (response) {
+            //  console.log(response)
             res.status(200).send(response);
         }
-        else{
-           
+        else {
+
             res.status(400).send(error);
         }
     })
@@ -117,7 +117,7 @@ exports.updateSeats=(req,res)=>{
 exports.getProfile = (req, res) => {
     // var objectId = mongoose.Types.ObjectId(req.body.username);
 
-    User.findOne({username: req.body.user.username}, (error, response) => {
+    User.findOne({ username: req.body.user.username }, (error, response) => {
 
         if (response) {
             res.status(200).send(response)
@@ -131,10 +131,10 @@ exports.getProfile = (req, res) => {
 
 exports.updateProfile = (req, res) => {
 
-    const { _id, username,password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber } = req.body;
+    const { _id, username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber } = req.body;
     var objectId = mongoose.Types.ObjectId(_id);
 
-    User.findByIdAndUpdate(objectId, { username,password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
+    User.findByIdAndUpdate(objectId, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
         if (response) {
             res.status(200).send(response)
         }
@@ -145,31 +145,8 @@ exports.updateProfile = (req, res) => {
 }
 
 
-exports.cancelFlight = (req, res) => {
-
-    const { uId,booking } = req.body;
-    var userId = mongoose.Types.ObjectId(uId);
-    User.findOneAndUpdate(
-        { _id: userId },
-        { $pull: { flights: {bookingNum: { $in: [booking] }}, bookingReferences: booking } }
-    )
-        .catch(err => {
-            console.log("error")
-            console.log(err);
-        });
-}
-
-exports.sendEmail = (req, res) => {
-    const { email, emailBody } = req.body;
-
-    // const emailBody = `<p>Hello ${userData.firstname} ${userData.lastname},</p>
-    //     <br/>
-    //     <p>This is to confirm the cancellation of your reservation for booking ${booking}, flights ${deptFlight.flightNumber} and ${retFlight.flightNumber}. You will be refunded with an amount of ${amount} within the next 5-7 working days.</p>
-    //     <br/>
-    //     <p>Best wishes,</p>
-    //     <p>ACL Airlines</p>`;
-
-    // create reusable transporter object using the default SMTP transport
+function sendMail(email, emailBody) {
+    //send email
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -190,7 +167,7 @@ exports.sendEmail = (req, res) => {
 
     let mailOptions = {
         // from: '"ACL Airlines" <aclairlines@outlook.com>',
-        from: '"ACL Airlines" <aclairlines@gmail.com>', 
+        from: '"ACL Airlines" <aclairlines@gmail.com>',
         to: email,
         subject: "ACL Airlines notification",
         html: emailBody,
@@ -203,5 +180,95 @@ exports.sendEmail = (req, res) => {
             console.log("success");
         }
     });
+
 }
 
+exports.sendEmail = (req, res) => {
+    const {email, body} = req.body;
+    this.sendMail();
+}
+
+
+exports.cancelReservation = (req, res) => {
+
+    const { uId, booking, deptFlight, retFlight, email, emailBody } = req.body;
+
+    //update user info
+    var userId = mongoose.Types.ObjectId(uId);
+    User.findOneAndUpdate(
+        { _id: userId },
+        { $pull: { flights: { bookingNum: { $in: [booking] } }, bookingReferences: booking } }
+    )
+        .catch(err => {
+            console.log("error")
+            console.log(err);
+        });
+
+
+
+    //update flight info
+    if (deptFlight.cabin == "economy")
+        Flight.findOneAndUpdate(
+            { flightNum: deptFlight.flightNum },
+            { $inc: { noOfEconomy: deptFlight.seats.length } },
+            { $push: { takenSeats: deptFlight.seats } }
+        )
+            .catch(err => {
+                console.log("error")
+                console.log(err);
+            });
+    else if (deptFlight.cabin == "business")
+        Flight.findOneAndUpdate(
+            { flightNum: deptFlight.flightNum },
+            { $inc: { noOfBusiness: deptFlight.seats.length } },
+            { $push: { takenSeats: deptFlight.seats } }
+        )
+            .catch(err => {
+                console.log("error")
+                console.log(err);
+            });
+    else
+        Flight.findOneAndUpdate(
+            { flightNum: deptFlight.flightNum },
+            { $inc: { noOfFirst: deptFlight.seats.length } },
+            { $push: { takenSeats: deptFlight.seats } }
+        )
+            .catch(err => {
+                console.log("error")
+                console.log(err);
+            });
+
+
+    if (retFlight.cabin == "economy")
+        Flight.findOneAndUpdate(
+            { flightNum: retFlight.flightNum },
+            { $inc: { noOfEconomy: retFlight.seats.length } },
+            { $push: { takenSeats: retFlight.seats } }
+        )
+            .catch(err => {
+                console.log("error")
+                console.log(err);
+            });
+    else if (retFlight.cabin == "business")
+        Flight.findOneAndUpdate(
+            { flightNum: retFlight.flightNum },
+            { $inc: { noOfBusiness: retFlight.seats.length } },
+            { $push: { takenSeats: retFlight.seats } }
+        )
+            .catch(err => {
+                console.log("error")
+                console.log(err);
+            });
+    else
+        Flight.findOneAndUpdate(
+            { flightNum: retFlight.flightNum },
+            { $inc: { noOfFirst: retFlight.seats.length } },
+            { $push: { takenSeats: retFlight.seats } }
+        )
+            .catch(err => {
+                console.log("error")
+                console.log(err);
+            });
+
+    this.sendMail(email, emailBody);
+}
