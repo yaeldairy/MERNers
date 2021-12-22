@@ -23,7 +23,7 @@ exports.isPasswordAndUserMatch = async (req, res, next) => {
             if(matched){
               
                 req.body = {
-                    user: username ,
+                    username ,
                     email: response[0].email,
                     permissionLevel: 2,
                 };   
@@ -47,7 +47,7 @@ exports.isPasswordAndUserMatch = async (req, res, next) => {
             if(matched){
 
                 req.body = {
-                    user: username ,
+                    username,
                     email: response[0].email,
                     permissionLevel: 1,
                 };   
