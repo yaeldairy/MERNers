@@ -7,10 +7,11 @@ export const UserContext = createContext();
 export const UserProvider = ({children}) => {
 
   const token = localStorage.getItem("accessToken") || null;
+  const name= localStorage.getItem("username") || null;
   const parsedToken = JSON.parse(token)
   const [accessToken, setAccessToken] = useState(parsedToken || null);
   const [flights, setFlights] = useState(null);
-  const [username, setUsername] = useState(parsedToken || null);
+  const [username, setUsername] = useState(name || null);/////////////
   const [permissionLevel, setPermissionLevel] = useState(parsedToken || null);
   const [departureFlight, setDepartureFlight] = useState(null);
   const [returnFlight, setReturnFlight] = useState(null);

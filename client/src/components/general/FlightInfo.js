@@ -32,7 +32,7 @@ function FlightInfo ({flight}){
           {flight.baggageAllowance}
         </Descriptions.Item>
         <Descriptions.Item label="Price" >
-          {flight.totalPrice}
+          {flight.price}
         </Descriptions.Item>
         </Descriptions>
     )

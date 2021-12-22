@@ -28,12 +28,16 @@ function App() {
                               <Route path="/viewFlight/:id" element={<Flight />} />
                               <Route path="/returnFlight/:id" element={<ReturnFlight />} />
                               <Route path="/updateFlight/:id" element={<UpdateFlight />} />
-                              <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />} />
+
                               {/* <Route path='/checkout' element={<Checkout />} /> */}
                               <Route path="/profile/:username/" element={<UserProfile />} />
                               <Route path="/profile/:username/reservations" element={<ReservationHistory />} />
                               <Route path="/profile/:username/edit" element={<EditProfile />} />
                               <Route path="/profile/:username/reservations/:booking" element={<ViewItinerary />} />
+
+                              <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />}>
+                                    <Route path='/checkout' element={<Checkout />} />
+                              </Route>
                         </Routes>
                   </div>
             </Router>

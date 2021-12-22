@@ -43,9 +43,9 @@ exports.testRoute = (req, res) => {
   exports.addFlight =async(req,res)=> {
 
     const {username}=req.body.user;
-    const {_id,flightNum,deptAirport,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber} = req.body.flight;
+    const {_id,flightNum,deptAirport,type,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber} = req.body.flight;
     const FId = mongoose.Types.ObjectId(_id);
-    const flight ={flightId:FId,flightNum,deptAirport,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber,seat:[]};
+    const flight ={flightId:FId,flightNum,type,deptAirport,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber,seat:[]};
 
     User.findOneAndUpdate({username},{$push:{flights:flight}},(error,response)=>{
         if(response){
