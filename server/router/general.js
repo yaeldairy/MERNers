@@ -10,5 +10,5 @@ router.post('/login', [verifyUser.isPasswordAndUserMatch,controller.login]);
 router.post('/signup', controller.insertUser);
 
 router.get('/flights', controller.allFlights)
-
 module.exports = router
+

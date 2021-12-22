@@ -59,9 +59,9 @@ exports.login = (req, res) => {
 
     const refreshToken = jwt.sign(req.body, "SECRET", { expiresIn: "1d" });
 
-   const {permissionLevel}= req.body
+   const {username, permissionLevel}= req.body
 
-   return res.status(201).send({ permissionLevel, accessToken, refreshToken});
+   return res.status(201).send({username, permissionLevel, accessToken, refreshToken});
 
  };
 
