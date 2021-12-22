@@ -7,7 +7,8 @@ import Checkout from './components/general/Checkout';
 import FlightCreationForm from './components/FlightCreationForm';
 import ViewFlight from './components/ViewFlight';
 import UpdateFlight from './components/UpdateFlight';
-import SeatSelection from './components/SeatSelection';
+import SeatSlection from './components/SeatSelection';
+import Summary from './components/Summary';
 import Login from './components/general/Login';
 import Flight from './components/general/Flight';
 import ReturnFlights from './components/general/ReturnFlights';
@@ -19,6 +20,7 @@ function App() {
     <div className="App">
      <Routes>
       <Route path="/" element={<Flights/>}/>
+      <Route path="/summary" element={<Summary/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/returnFlights" element={<ReturnFlights/>}/>
       <Route path="/newFlight" element={<FlightCreationForm/>}/>

@@ -43,10 +43,9 @@ nOfFirst: {
     type:Number,
     required: true
 },
-price :{
-    type:Number,
+price: {
+    type: String,
     required: true
-
 }
 
 })

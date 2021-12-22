@@ -1,4 +1,4 @@
-import { Button, Card, Typography, Modal, Steps } from 'antd';
+import { Button, Card, Typography, Modal, Steps , Popconfirm} from 'antd';
 import { useEffect , useContext} from 'react';
 import {UserContext} from "../../Context";
 import axios from 'axios';
@@ -82,7 +82,11 @@ function Checkout (){
           <Step title="Return Flight" />
           <Step title="Checkout" />
         </Steps>
-        <Button onClick={onClick} style={{marginTop:'100px'}} type="primary">Book Flight</Button>
+        <Button style={{marginTop:'100px'}} type="primary">
+        <Popconfirm title="Are you sure you want to book this flight?" onConfirm={onClick} okText="Yes" cancelText="No">
+          <a href="#">Confirm</a>
+          </Popconfirm>
+        </Button>
         </Card>
     )
 }
