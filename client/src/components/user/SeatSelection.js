@@ -13,7 +13,7 @@ export default function SeatSelection({flight}) {
     
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [isDone, setDone] = useState(false);
-    const { cabin, noOfSeats} = useContext(UserContext);
+    const {accessToken, username, cabin, noOfSeats} = useContext(UserContext);
 
     function handleSeatSelected(currentSelectedSeats) {
         setSelectedSeats(currentSelectedSeats);
@@ -29,8 +29,25 @@ export default function SeatSelection({flight}) {
         }
         else {
             //TODO pass the parameters correctly
-            axios.patch('http://localhost:3001/user/selectSeats', { userId: '61c0de62c47e7d8fee6ff52d', seats: selectedSeats, flightId: '61a3bc8e819c80059970a284' })
-                .then((res) => {
+            // axios.patch('http://localhost:3001/user/selectSeats', { username: username, seats: selectedSeats, flightId: flight._id })
+            //     .then((res) => {
+            //         // console.log(res)
+            //         message.success('Seats Selected Successfully. Redirecting...', 2)
+            //             .then(function () {
+
+            //             }
+            //             )
+            //     })
+            //     .catch((err) => {
+            //         message.error('Unable to connect to the server. Please try again later.');
+            //     })
+
+            axios({
+                method: 'patch', //should be patch
+                url: 'http://localhost:3001/user/selectSeats',   
+                headers: { Authorization: `Bearer ${accessToken}`},
+                data : { username: username, seats: selectedSeats, flightId: flight._id}})
+                      .then((res) => {
                     // console.log(res)
                     message.success('Seats Selected Successfully. Redirecting...', 2)
                         .then(function () {
@@ -40,8 +57,9 @@ export default function SeatSelection({flight}) {
                 })
                 .catch((err) => {
                     message.error('Unable to connect to the server. Please try again later.');
-                    // console.log(err)
                 })
+
+
         }
     }
     return (

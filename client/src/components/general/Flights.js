@@ -43,13 +43,44 @@ export default function Flights (){
     const handleOk = (flight) => {
 
       setIsModalVisible(false);
+      console.log("flight input to search")
+      console.log(flight)
 
       setDisplayed(flights.filter((f)=>{
-      
+         // console.log("flight current")
+         //console.log(f)
+         //console.log("flight date current"+f.date)
+         console.log(flight)
+
+       
+  
         for (const property in flight) {
-      
-          if(flight[property]!=='' && f[property]!=flight[property]){
+         console.log(property)
+         // console.log(flight[property])
+
+         if(property=="noOfAdults" || property=="noOfChildren"){
+             if(f.nOfBusiness+f.nOfEconomy+f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)){
+               return false;
+             }
+         }
+        else if(property=="cabin"){
            
+           console.log("HENAAAAAAAAA ")
+           console.log(flight[property])
+           switch(flight.cabin){
+            case "First":
+              console.log((f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)));
+              if(f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)){
+              return false;}
+            case "Business":
+              if(f.nOfBusiness < (flight.noOfAdults + flight.noOfChildren))
+              return false;
+            case "Economy":
+              if(f.nOfEconomy < (flight.noOfAdults + flight.noOfChildren))
+              return false;         
+           }
+         }
+         else if(flight[property]!=='' && f[property]!==flight[property]){
             return false
           }
         }

@@ -6,20 +6,60 @@ const mongoose = require('mongoose');
 
 //assuming the request carries and object with both the unique user ID
 //and the seat array
-let patchUser = (id, newUserData) => {
+let patchUser = (username, newUserData) => {
     return User.findOneAndUpdate({
-        _id: id
+        username: username
     }, newUserData);
 };
 
 let patchFlight = (id, updatedTakenSeats) => {
-    return Flight.findOneAndUpdate({
-        _id: id
-    }, updatedTakenSeats);
+    return Flight.findOneAndUpdate(id, updatedTakenSeats);
 };
+// exports.selectSeats = (req, res) => {
+//     let data = req.body
+//     User.findOne({username: data.username})
+//         .then((result) => {
+//             console.log(result)
+//             let flightsArray = result.flights
+//             let flightIndex = flightsArray.findIndex(
+//                 (flight) => (flight.flightId).toString() === data.flightId)
+//             let currentFlight = flightsArray[flightIndex];
+//             currentFlight.seat = data.seats
+//             flightsArray[flightIndex] = currentFlight
+//             let finalFlightsObject = { flights: flightsArray }
+//             console.log(finalFlightsObject)
+//             patchUser(data.username, finalFlightsObject)
+//                 .then((result) => {
+//                     Flights.findById({_id: data.flightId})
+//                         .then((result) => {
+//                             let currentlyTakenSeats = result.takenSeats
+//                             currentlyTakenSeats.concat(data.seats)
+//                             let updatedTakenSeats = { takenSeats: currentlyTakenSeats }
+//                             patchFlight(data.flightId, updatedTakenSeats)
+//                                 .then((result) => {
+//                                     res.status(204).send({});
+//                                 })
+//                                 .catch((err)=>{
+//                                     console.log('Unexpected Internal Error')
+//                                 })
+//                         })
+//                 })
+//                 .catch((err) => {
+//                     res.status(400).send({});
+//                     console.log('1')
+//                 })
+//         }
+//         )
+//         .catch((err)=>{
+//             res.status(400).send({});
+//             console.log('2')
+//         })
+// }
+
 exports.selectSeats = (req, res) => {
-    let data = req.body
-    User.findById(data.userId)
+    console.log('HERE');
+    let data = req.body;
+    User.findOne({ username: data.username })
         .then((result) => {
             let flightsArray = result.flights
             let flightIndex = flightsArray.findIndex(
@@ -28,30 +68,40 @@ exports.selectSeats = (req, res) => {
             currentFlight.seat = data.seats
             flightsArray[flightIndex] = currentFlight
             let finalFlightsObject = { flights: flightsArray }
-            patchUser(data.userId, finalFlightsObject)
-                .then((result) => {
-                    Flights.findById(data.flightId)
-                        .then((result) => {
-                            let currentlyTakenSeats = result.takenSeats
-                            currentlyTakenSeats.concat(data.seats)
+            let errorOccured = false;
+            patchUser(data.username, finalFlightsObject)
+                .then(() => {
+                    Flight.findById(data.flightId)
+                        .then((rslt) => {
+                            let currentlyTakenSeats = rslt.takenSeats
+                            currentlyTakenSeats = currentlyTakenSeats.concat(data.seats)
                             let updatedTakenSeats = { takenSeats: currentlyTakenSeats }
-                            patchFlight(data.flightId, updatedTakenSeats)
-                                .then((result) => {
-                                    res.status(204).send({});
-                                })
-                                .catch((err) => {
-                                    console.log('Unexpected Internal Error')
-                                })
+                            patchFlight({_id : data.flightId}, updatedTakenSeats)
+                            .then(()=>{
+                                res.status(204).send({});
+                            }
+                            )
+                            .catch(()=>{
+                                errorOccured = true;
+                            })
+                        })
+                        .catch(() => {
+                            errorOccured = true;
                         })
                 })
-                .catch((err) => {
-                    res.status(400).send({});
+                .catch(() => {
+                    errorOccured = true;
                 })
+        })
+        .catch(() => {
+            res.status(400).send({});
+            return;
+        })
+        if (errorOccured){
+            res.status(400).send({});
         }
-        )
+
 }
-
-
 exports.testRoute = (req, res) => {
 
     console.log("req.body on next print")
@@ -61,13 +111,10 @@ exports.testRoute = (req, res) => {
     return res.status(200).send("test route succesfull");
 
 
-};
-exports.addFlight = async (req, res) => { //TODO check what info they need here (duration, arrDate)
-
-    const { username } = req.body.user;
-    const { _id, flightNum, deptAirport, arrAirport, deptTime, arrTime, date, totalPrice, noOfSeats, cabin, bookingNumber } = req.body.flight;
+    const {username}=req.body.user;
+    const {_id,flightNum,deptAirport,type,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber} = req.body.flight;
     const FId = mongoose.Types.ObjectId(_id);
-    const flight = { flightId: FId, flightNum, deptAirport, arrAirport, deptTime, arrTime, date, totalPrice, noOfSeats, cabin, bookingNumber, seat: [] };
+    const flight ={flightId:FId,flightNum,type,deptAirport,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber,seat:[]};
 
 
 

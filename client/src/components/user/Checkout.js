@@ -1,4 +1,4 @@
-import { Button, Card, Typography, Modal, Steps } from 'antd';
+import { Button, Card, Typography, Modal, Steps, Popconfirm } from 'antd';
 import { useEffect , useContext, useState} from 'react';
 import {UserContext} from "../../Context";
 import axios from 'axios';
@@ -53,13 +53,27 @@ function Checkout (){
           }      
       }
     }
+    const calculatePrice=(flight)=>{
+      switch(cabin){
+
+        case "First":
+          return (flight.price + 200 )* noOfSeats.number
+        case "Business":
+          return (flight.price + 100 )* noOfSeats.number
+        case "Economy":
+          return (flight.price)* noOfSeats.number
+               
+      }
+
+    }
+     
 
     const onClick = async (e)=> {
 
      e.preventDefault();
      const bookingNumber=generateBookingNumber(7);
      const seats = newSeats(departureFlight);
-
+     console.log(noOfSeats)
      try{
       
       const flightOne = await axios({
@@ -69,7 +83,7 @@ function Checkout (){
         data : { 
           flight:{
             ...departureFlight,
-            price: departureFlight.totalPrice * noOfSeats.number,
+            totalPrice: calculatePrice(departureFlight),
             bookingNumber,
             type: "departure",
             cabin,
@@ -83,7 +97,7 @@ function Checkout (){
         data : { 
           flight:{
             ...returnFlight,
-            price: returnFlight.totalPrice * noOfSeats.number,
+            totalPrice:calculatePrice(returnFlight),
             bookingNumber,
             type: "return",
             cabin,
@@ -126,18 +140,18 @@ function Checkout (){
 
     }
     }
-    useEffect(()=>{
-      const bookingNumber=generateBookingNumber(7);
-     const object = { 
-        ...departureFlight,
-        price: departureFlight.price * noOfSeats.number,
-        bookingNumber,
-        type: "departure",
-        cabin,
-        noOfSeats
-       } 
-       console.log(object)
-    },[])
+    // useEffect(()=>{
+    //   const bookingNumber=generateBookingNumber(7);
+    //  const object = { 
+    //     ...departureFlight,
+    //     price: departureFlight.price * noOfSeats.number,
+    //     bookingNumber,
+    //     type: "departure",
+    //     cabin,
+    //     noOfSeats
+    //    } 
+    //    console.log(object)
+    // },[])
 
     const title=(<Title  level={2} >Booking Summary</Title> )
 
@@ -155,9 +169,21 @@ function Checkout (){
           <Step title="Checkout" />
       </Steps>
         
-     <Summary deptFlight={departureFlight} retFlight={returnFlight} nOfAdults={noOfSeats.Adults}  nOfChild={noOfSeats.Children} cabin={cabin}/>
+     <Summary depPrice={calculatePrice(departureFlight)} retPrice={calculatePrice(returnFlight)} deptFlight={departureFlight} retFlight={returnFlight} nOfAdults={noOfSeats.Adults}  nOfChild={noOfSeats.Children} cabin={cabin}/>
         <div style={{textAlign:'center'}}>
-        <Button size='large' onClick={onClick} style={{marginTop:'50px'}} type="primary">Book Flight</Button>
+      
+     <Button size='large' style={{marginTop:'50px'}} type="primary">
+     <Popconfirm
+    title="Are you sure you want to book this flight?"
+    onConfirm={onClick}
+ 
+    okText="Yes"
+    cancelText="No"
+  >
+    Book Flight
+  </Popconfirm>
+      </Button>
+       
         </div>
         </Card>
     )
