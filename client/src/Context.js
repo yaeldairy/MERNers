@@ -6,18 +6,31 @@ export const UserContext = createContext();
 
 export const UserProvider = ({children}) => {
 
-  const token = localStorage.getItem("accessToken") || "{}"
+  const token = localStorage.getItem("accessToken") || null;
   const parsedToken = JSON.parse(token)
-  const [accessToken, setAccessToken] = useState(parsedToken.accessToken || null);
-  const [flights, setFlights] = useState(parsedToken.accessToken || null);
-  const [permissionLevel, setPermissionLevel] = useState(parsedToken.accessToken || null);
+  const [accessToken, setAccessToken] = useState(parsedToken || null);
+  const [flights, setFlights] = useState(null);
+  const [permissionLevel, setPermissionLevel] = useState(parsedToken || null);
+  const [departureFlight, setDepartureFlight] = useState(null);
+  const [returnFlight, setReturnFlight] = useState(null);
+  const [cabin, setCabin] = useState(null);
+  const [noOfSeats, setSeats] = useState(null);
 
+
+  console.log("parsed token is ")
+  console.log(parsedToken)
   return (
     <UserContext.Provider
       value={{
         accessToken, setAccessToken,
         flights , setFlights,
-        permissionLevel, setPermissionLevel}}
+        permissionLevel, setPermissionLevel,
+        departureFlight, setDepartureFlight,
+        returnFlight, setReturnFlight,
+        cabin, setCabin,
+        noOfSeats, setSeats
+
+      }}
     >
       {children}
     </UserContext.Provider>

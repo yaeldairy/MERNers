@@ -9,7 +9,9 @@ router.use(express.json())
 router.use(verifyToken.validJWTNeeded)
 router.use(permissionMiddleware.userPermission)
 
-router.get('/test', controller.testRoute);
+router.patch('/test', controller.testRoute);
+
+router.patch('/addFlight', controller.addFlight )
 
 
 

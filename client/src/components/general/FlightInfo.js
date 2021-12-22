@@ -3,7 +3,7 @@ import { Descriptions } from 'antd';
 function FlightInfo ({flight}){
 
     return (        
-        <Descriptions  title="Flight Information" column={1} bordered>
+        <Descriptions  title="Flight Information" style={{ marginBottom:'50px'}} column={1} bordered>
         <Descriptions.Item label="Departure Airport" >
           {flight.deptAirport}
         </Descriptions.Item>
@@ -32,7 +32,7 @@ function FlightInfo ({flight}){
           {flight.baggageAllowance}
         </Descriptions.Item>
         <Descriptions.Item label="Price" >
-          {flight.price}
+          {flight.totalPrice}
         </Descriptions.Item>
         </Descriptions>
     )
