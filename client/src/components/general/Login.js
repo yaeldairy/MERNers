@@ -1,7 +1,7 @@
 import 'antd/dist/antd.css';
 import {useState, useContext} from 'react';
 import { Navigate } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { Divider } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
@@ -22,6 +22,8 @@ const {TextArea} = Input;
 function Login (){
 
     let navigate = useNavigate();
+    const location = useLocation();
+    const { path } = location.state;
     const {setAccessToken, setPermissionLevel} = useContext(UserContext);
     const [loading, setLoading]= useState(false);
     const [error, setError]= useState(false);
@@ -29,7 +31,7 @@ function Login (){
     const [form] = Form.useForm();
 
     const onSubmit = async () => {
-
+       
         try {
 
           const values = await form.validateFields();  
@@ -66,8 +68,9 @@ function Login (){
       };
 
     if (success){
-      navigate("/")
+      path ? navigate(path) : navigate("/") 
     }
+
 
     return (
         <div >

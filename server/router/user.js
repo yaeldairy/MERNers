@@ -12,6 +12,8 @@ router.use(permissionMiddleware.userPermission)
 
 router.get('/test', controller.testRoute);
 router.patch('/selectSeats',controller.selectSeats)
+router.patch('/addFlight', controller.addFlight )
+
 
 
 

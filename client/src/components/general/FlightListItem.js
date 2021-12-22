@@ -2,6 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Button, Card, Typography } from 'antd';
 import { FaPlane , FaLongArrowAltRight} from "react-icons/fa"
+
 import { Link } from 'react-router-dom'
 const { Title, Text } = Typography;
 
@@ -13,13 +14,31 @@ const buttonStyle= {
 const displayFlex ={ display: "flex", direction: "row", marginTop:'10px'}
 
 
-function FlightListItem({flight}) {
+function FlightListItem({flight, hideButton, departureFlight }) {
 
   const title=(<div style={displayFlex}>
-      <FaPlane style={{fontSize: '300%'}} />
-      <Title style={{marginLeft:'15px'}} level={3} >Flight: {flight.flightNum}</Title> 
+      <FaPlane style={{fontSize: '250%'}} />
+      <Title style={{marginLeft:'15px'}} level={4} >Flight: {flight.flightNum}</Title> 
      </div>)
 
+  const extra =()=>{
+    if(hideButton){
+      return <div></div>
+    }
+    if(departureFlight){
+
+      return (<Button type="primary" style={buttonStyle}> 
+       <Link to={{pathname:`/returnFlight/${flight.flightNum}`}} state={{ flight, departureFlight }}>
+         Flight Details
+      </Link> </Button>)
+    }
+
+    return( < Button type="primary" style={buttonStyle}>
+      <Link to={{pathname:`/viewFlight/${flight.flightNum}`}} state={{ flight: flight }}>
+         Flight Details
+      </Link>
+      </Button>)
+  }
   return (
   <div>
 
@@ -27,11 +46,7 @@ function FlightListItem({flight}) {
       style={{ marginTop: 16 }}
       type="inner"
       title={title}
-      extra={<Button type="primary" style={buttonStyle}>
-      <Link to={{pathname:`/viewFlight/${flight.flightNum}`}} state={{ flight: flight }}>
-         Flight Details
-      </Link>
-      </Button>}
+      extra={extra()}
     >
    
     <div style={displayFlex}>

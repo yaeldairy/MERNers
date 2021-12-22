@@ -1,6 +1,7 @@
 import { Form, Select, InputNumber, Modal, Button} from 'antd';
 import {useState, useContext, useEffect} from 'react';
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
+import {UserContext} from "../../Context";
 const { Option } = Select;
 
 
@@ -8,12 +9,12 @@ function ChooseSeats ({flight}){
 
     const [form] = Form.useForm();
     let navigate = useNavigate();
+    const {setCabin, setSeats } = useContext(UserContext);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectValue, setSelectValue] = useState("nOfEconomy");
     const [adultsMax , setAdultsMax]= useState(0)
     const [childrenMax , setChildrenMax]= useState(0)
-    const [seatNumbers, setSeatNumbers] =useState(flight[selectValue])
-
+    
     const showModal = () => {
         setIsModalVisible(true);
       };
@@ -28,9 +29,13 @@ function ChooseSeats ({flight}){
       const handleSubmit = async() => {
         try{
         const values = await form.validateFields();
+
+        const {seatType, Adults, Children}=values
+        setCabin(seatType);
+        setSeats({number: Adults+Children , Adults, Children})
         console.log(values)
         setIsModalVisible(false);
-        navigate('/returnFlights')
+        navigate('/returnFlights', {state :{flight, seatType, Adults, Children}})
         }catch(e){
 
         }
@@ -101,7 +106,7 @@ function ChooseSeats ({flight}){
     showSearch
     placeholder="Select seat type"
     optionFilterProp="children"
-    defaultValue="Economy"
+    value="Economy"
     onChange={(value)=>{onSelectChange(value)}}
     >
    <Option value="First">First</Option>
