@@ -22,7 +22,7 @@ function App() {
                   <div className="App">
                         <Routes>
                               <Route path="/" element={<Flights />} />
-                              <Route path="/login" element={<Login />} />
+                              <Route path="/login" element={<Login path = '/' />}/>
                               <Route path="/returnFlights" element={<ReturnFlights />} />
                               <Route path="/newFlight" element={<FlightCreationForm />} />
                               <Route path="/viewFlight/:id" element={<Flight />} />

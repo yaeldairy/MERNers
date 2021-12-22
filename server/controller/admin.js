@@ -18,13 +18,13 @@ exports.testRoute = (req, res) => {
 
 exports.updateFlight =(req,res)=> {
 
-    const {_id,flightNum,deptAirport,arrAirport,deptTime,arrTime,date,nOfEconomy,nOfBusiness, nOfFirst} = req.body;
+    const {_id,flightNum,deptAirport,arrAirport,deptTime,arrTime,duration,date,arrDate,nOfEconomy,nOfBusiness, nOfFirst, price} = req.body;
     // console.log(req.body);
     var objectId = mongoose.Types.ObjectId(_id);
     // console.log(objectId);
 
 
-    Flight.findByIdAndUpdate(objectId,{flightNum,deptAirport,arrAirport,deptTime,arrTime,date,nOfEconomy,nOfBusiness, nOfFirst},(error, response)=>{
+    Flight.findByIdAndUpdate(objectId,{flightNum,deptAirport,arrAirport,deptTime,arrTime,duration,date,arrDate,nOfEconomy,nOfBusiness, nOfFirst,price},(error, response)=>{
         if (response){
             res.status(200).send(response)
         }
@@ -55,7 +55,6 @@ exports.deleteFlight =(req,res)=> {
 };
 
 exports.insertFlight = (req, res) => {
-
     createFlight(req.body)
         .then((result) => {
             res.status(201).send({id: result._id});

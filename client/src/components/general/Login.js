@@ -23,8 +23,11 @@ function Login (){
 
     let navigate = useNavigate();
     const location = useLocation();
-    const { path } = location.state;
-    const {setAccessToken, setPermissionLevel, setUsername} = useContext(UserContext);
+    const path = null;
+    if(location.state){
+      const { path } = location.state;
+    }
+    const {setAccessToken, setPermissionLevel} = useContext(UserContext);
     const [loading, setLoading]= useState(false);
     const [error, setError]= useState(false);
     const [success, setSuccess]= useState(false);
