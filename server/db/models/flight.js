@@ -38,6 +38,10 @@ nOfBusiness: {
 nOfFirst: {
     type:Number,
     required: true
+},
+price: {
+    type: String,
+    required: true
 }
 
 })
