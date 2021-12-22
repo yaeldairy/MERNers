@@ -17,29 +17,31 @@ import EditProfile from './components/RegCustomer/editProfile';
 import ViewItinerary from './components/RegCustomer/viewItinerary';
 
 function App() {
-  return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/" element={<Flights />} />
-          <Route path="/login" element={<Login path='/' />} />
-          <Route path="/returnFlights" element={<ReturnFlights />} />
-          <Route path="/newFlight" element={<FlightCreationForm />} />
-          <Route path="/viewFlight/:id" element={<Flight />} />
-          <Route path="/returnFlight/:id" element={<ReturnFlight />} />
-          <Route path="/updateFlight/:id" element={<UpdateFlight />} />
-          <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />}>
-            <Route path='/checkout' element={<Checkout />} />
-          </Route>
-          {/* <Route path='/checkout' element={<Checkout />} /> */}
-          <Route path="/profile/:username/" element={<UserProfile />} />
-          <Route path="/profile/:username/reservations" element={<ReservationHistory />} />
-          <Route path="/profile/:username/edit" element={<EditProfile />} />
-          <Route path="/profile/:username/reservations/:booking" element={<ViewItinerary />} />
-        </Routes>
-      </div>
-    </Router>
-  );
+      return (
+            <Router>
+                  <div className="App">
+                        <Routes>
+                              <Route path="/" element={<Flights />} />
+                              <Route path="/login" element={<Login path = '/' />}/>
+                              <Route path="/returnFlights" element={<ReturnFlights />} />
+                              <Route path="/newFlight" element={<FlightCreationForm />} />
+                              <Route path="/viewFlight/:id" element={<Flight />} />
+                              <Route path="/returnFlight/:id" element={<ReturnFlight />} />
+                              <Route path="/updateFlight/:id" element={<UpdateFlight />} />
+
+                              {/* <Route path='/checkout' element={<Checkout />} /> */}
+                              <Route path="/profile/:username/" element={<UserProfile />} />
+                              <Route path="/profile/:username/reservations" element={<ReservationHistory />} />
+                              <Route path="/profile/:username/edit" element={<EditProfile />} />
+                              <Route path="/profile/:username/reservations/:booking" element={<ViewItinerary />} />
+
+                              <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />}>
+                                    <Route path='/checkout' element={<Checkout />} />
+                              </Route>
+                        </Routes>
+                  </div>
+            </Router>
+      );
 }
 
 export default App;

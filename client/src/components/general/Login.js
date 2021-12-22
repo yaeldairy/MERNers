@@ -55,6 +55,7 @@ function Login (){
           setPermissionLevel(response.data.permissionLevel)
           setUsername(response.data.username)
           localStorage.setItem("accessToken", JSON.stringify(response.data.accessToken));
+          localStorage.setItem("username", JSON.stringify(response.data.username));/////
           localStorage.setItem("refreshToken", JSON.stringify(response.data.refreshToken));
           setSuccess(true)
           setError("Login successfull")

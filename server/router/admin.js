@@ -8,8 +8,9 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router()
 router.use(express.json())
-// router.use(verifyToken.validJWTNeeded)
-// router.use(permissionMiddleware.AdminPermission)
+
+//router.use(verifyToken.validJWTNeeded)
+//router.use(permissionMiddleware.AdminPermission)
 
 router.get('/test', controller.testRoute);
 
