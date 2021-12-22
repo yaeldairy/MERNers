@@ -6,20 +6,60 @@ const mongoose = require('mongoose');
 
 //assuming the request carries and object with both the unique user ID
 //and the seat array
-let patchUser = (id, newUserData) => {
+let patchUser = (username, newUserData) => {
     return User.findOneAndUpdate({
-        _id: id
+        username: username
     }, newUserData);
 };
 
 let patchFlight = (id, updatedTakenSeats) => {
-    return Flight.findOneAndUpdate({
-        _id: id
-    }, updatedTakenSeats);
+    return Flight.findOneAndUpdate(id, updatedTakenSeats);
 };
+// exports.selectSeats = (req, res) => {
+//     let data = req.body
+//     User.findOne({username: data.username})
+//         .then((result) => {
+//             console.log(result)
+//             let flightsArray = result.flights
+//             let flightIndex = flightsArray.findIndex(
+//                 (flight) => (flight.flightId).toString() === data.flightId)
+//             let currentFlight = flightsArray[flightIndex];
+//             currentFlight.seat = data.seats
+//             flightsArray[flightIndex] = currentFlight
+//             let finalFlightsObject = { flights: flightsArray }
+//             console.log(finalFlightsObject)
+//             patchUser(data.username, finalFlightsObject)
+//                 .then((result) => {
+//                     Flights.findById({_id: data.flightId})
+//                         .then((result) => {
+//                             let currentlyTakenSeats = result.takenSeats
+//                             currentlyTakenSeats.concat(data.seats)
+//                             let updatedTakenSeats = { takenSeats: currentlyTakenSeats }
+//                             patchFlight(data.flightId, updatedTakenSeats)
+//                                 .then((result) => {
+//                                     res.status(204).send({});
+//                                 })
+//                                 .catch((err)=>{
+//                                     console.log('Unexpected Internal Error')
+//                                 })
+//                         })
+//                 })
+//                 .catch((err) => {
+//                     res.status(400).send({});
+//                     console.log('1')
+//                 })
+//         }
+//         )
+//         .catch((err)=>{
+//             res.status(400).send({});
+//             console.log('2')
+//         })
+// }
+
 exports.selectSeats = (req, res) => {
-    let data = req.body
-    User.findById(data.userId)
+    console.log('HERE');
+    let data = req.body;
+    User.findOne({ username: data.username })
         .then((result) => {
             let flightsArray = result.flights
             let flightIndex = flightsArray.findIndex(
@@ -28,30 +68,40 @@ exports.selectSeats = (req, res) => {
             currentFlight.seat = data.seats
             flightsArray[flightIndex] = currentFlight
             let finalFlightsObject = { flights: flightsArray }
-            patchUser(data.userId, finalFlightsObject)
-                .then((result) => {
-                    Flights.findById(data.flightId)
-                        .then((result) => {
-                            let currentlyTakenSeats = result.takenSeats
-                            currentlyTakenSeats.concat(data.seats)
+            let errorOccured = false;
+            patchUser(data.username, finalFlightsObject)
+                .then(() => {
+                    Flight.findById(data.flightId)
+                        .then((rslt) => {
+                            let currentlyTakenSeats = rslt.takenSeats
+                            currentlyTakenSeats = currentlyTakenSeats.concat(data.seats)
                             let updatedTakenSeats = { takenSeats: currentlyTakenSeats }
-                            patchFlight(data.flightId, updatedTakenSeats)
-                                .then((result) => {
-                                    res.status(204).send({});
-                                })
-                                .catch((err)=>{
-                                    console.log('Unexpected Internal Error')
-                                })
+                            patchFlight({_id : data.flightId}, updatedTakenSeats)
+                            .then(()=>{
+                                res.status(204).send({});
+                            }
+                            )
+                            .catch(()=>{
+                                errorOccured = true;
+                            })
+                        })
+                        .catch(() => {
+                            errorOccured = true;
                         })
                 })
-                .catch((err) => {
-                    res.status(400).send({});
+                .catch(() => {
+                    errorOccured = true;
                 })
+        })
+        .catch(() => {
+            res.status(400).send({});
+            return;
+        })
+        if (errorOccured){
+            res.status(400).send({});
         }
-        )
+
 }
-
-
 exports.testRoute = (req, res) => {
 
     console.log("req.body on next print")
@@ -81,34 +131,34 @@ exports.addFlight = async (req, res) => { //TODO check what info they need here 
         }
     })
 }
-exports.addBooking=(req,res)=>{
+exports.addBooking = (req, res) => {
 
-    const {username}=req.body.user;
-    const {bookingNumber} = req.body;
+    const { username } = req.body.user;
+    const { bookingNumber } = req.body;
     console.log(username)
     console.log(bookingNumber)
-    User.findOneAndUpdate({username},{$push:{bookingReferences:bookingNumber}},(error,response)=>{
+    User.findOneAndUpdate({ username }, { $push: { bookingReferences: bookingNumber } }, (error, response) => {
         console.log(response)
-        if(response){
+        if (response) {
             res.status(200).send(response);
         }
-        else{
+        else {
             res.status(400).send(error);
         }
     })
 
 }
-exports.updateSeats=(req,res)=>{
+exports.updateSeats = (req, res) => {
 
-    const{flightId,nOfEconomy,nOfBuisness,nOfFirst}=req.body;
+    const { flightId, nOfEconomy, nOfBuisness, nOfFirst } = req.body;
     var userId = mongoose.Types.ObjectId(flightId);
-    Flight.findOneAndUpdate({_id:userId},{nOfEconomy:nOfEconomy , nOfBuisness:nOfBuisness , nOfFirst:nOfFirst},(error,response)=>{
-        if(response){
-          //  console.log(response)
+    Flight.findOneAndUpdate({ _id: userId }, { nOfEconomy: nOfEconomy, nOfBuisness: nOfBuisness, nOfFirst: nOfFirst }, (error, response) => {
+        if (response) {
+            //  console.log(response)
             res.status(200).send(response);
         }
-        else{
-           
+        else {
+
             res.status(400).send(error);
         }
     })
@@ -117,7 +167,7 @@ exports.updateSeats=(req,res)=>{
 exports.getProfile = (req, res) => {
     // var objectId = mongoose.Types.ObjectId(req.body.username);
 
-    User.findOne({username: req.body.user.username}, (error, response) => {
+    User.findOne({ username: req.body.user.username }, (error, response) => {
 
         if (response) {
             res.status(200).send(response)
@@ -131,10 +181,10 @@ exports.getProfile = (req, res) => {
 
 exports.updateProfile = (req, res) => {
 
-    const { _id, username,password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber } = req.body;
+    const { _id, username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber } = req.body;
     var objectId = mongoose.Types.ObjectId(_id);
 
-    User.findByIdAndUpdate(objectId, { username,password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
+    User.findByIdAndUpdate(objectId, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
         if (response) {
             res.status(200).send(response)
         }
@@ -147,11 +197,11 @@ exports.updateProfile = (req, res) => {
 
 exports.cancelFlight = (req, res) => {
 
-    const { uId,booking } = req.body;
+    const { uId, booking } = req.body;
     var userId = mongoose.Types.ObjectId(uId);
     User.findOneAndUpdate(
         { _id: userId },
-        { $pull: { flights: {bookingNum: { $in: [booking] }}, bookingReferences: booking } }
+        { $pull: { flights: { bookingNum: { $in: [booking] } }, bookingReferences: booking } }
     )
         .catch(err => {
             console.log("error")
@@ -190,7 +240,7 @@ exports.sendEmail = (req, res) => {
 
     let mailOptions = {
         // from: '"ACL Airlines" <aclairlines@outlook.com>',
-        from: '"ACL Airlines" <aclairlines@gmail.com>', 
+        from: '"ACL Airlines" <aclairlines@gmail.com>',
         to: email,
         subject: "ACL Airlines notification",
         html: emailBody,
