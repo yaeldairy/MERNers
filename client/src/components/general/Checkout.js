@@ -54,6 +54,7 @@ function Checkout (){
             noOfSeats}   
         } 
       });
+      
       console.log(flightOne);
      } catch(e){
        console.log(e)
