@@ -29,7 +29,7 @@ router.get('/test', controller.testRoute);
 //     res.send(token);
 // })
 
-router.get('/flights', authorize("flight:get"), controller.allFlights);
+//router.get('/flights', authorize("flight:get"), controller.allFlights);
 router.patch('/updateFlight', controller.updateFlight)
 router.post('/deleteFlight', controller.deleteFlight)
 router.post('/flights', [controller.insertFlight]);

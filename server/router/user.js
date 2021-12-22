@@ -5,7 +5,7 @@ const permissionMiddleware = require ('../Auth/auth.permission.middleware')
 
 const router = express.Router()
 router.use(express.json())
-const controller= require ('../controller/users');
+
 
 
 router.use(verifyToken.validJWTNeeded)

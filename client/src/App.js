@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Routes, } from 'react-router-dom'
 import PrivateRoute from './components/router/PrivateRoute';
 import Checkout from './components/user/Checkout';
 import FlightCreationForm from './components/FlightCreationForm';
-import Flight from './components/Flight';
+import Flight from './components/general/Flight';
 import UpdateFlight from './components/UpdateFlight';
 //import SeatSelection from './components/user/SeatSelection';
 import Login from './components/general/Login';
