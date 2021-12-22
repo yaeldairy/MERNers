@@ -4,8 +4,8 @@ import "antd/dist/antd.css";
 // import moment from 'moment';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
-// import { UserContext } from "../../Context";
-// const { accessToken } = useContext(UserContext);
+import { UserContext } from "../../Context";
+const { accessToken } = useContext(UserContext);
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -44,9 +44,9 @@ export default function EditProfile() {
     function onFinish() {
         const hide = message.loading('Updating Your Profile...', 0)
         axios.patch('http://localhost:3001/user/updateProfile',{
-            // headers: {
-            //   'Authorization': `Bearer ${accessToken}`
-            // },
+            headers: {
+              'Authorization': `Bearer ${accessToken}`
+            },
             data:userData
           })
             .then((res) => {

@@ -7,7 +7,6 @@ export default function ReservationHistory() {
     const location = useLocation();
     const { booking, deptFlight, retFlight, amount } = location.state;
 
-
     return (
         <div>
             <h1>Itinerary for booking {booking}</h1>
@@ -45,7 +44,7 @@ export default function ReservationHistory() {
                     </Row>
                     <Row>
                         <Col span = {8}>Seats:</Col>
-                        <Col span = {28}>{deptFlight.seats}</Col>
+                        <Col span = {28}>{deptFlight.seat.join()}</Col>
                     </Row>
                 </Col>
                 <Col span={12}>
@@ -80,7 +79,7 @@ export default function ReservationHistory() {
                     </Row>
                     <Row>
                         <Col span = {8}>Seats:</Col>
-                        <Col span = {28}>{retFlight.seats}</Col>
+                        <Col span = {28}>{retFlight.seat.join()}</Col>
                     </Row>
                 </Col>
             </Row>

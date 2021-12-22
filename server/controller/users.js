@@ -20,10 +20,10 @@ exports.getProfile = (req, res) => {
 
 exports.updateProfile = (req, res) => {
 
-    const { _id, username,password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber, bookingReferences, flights } = req.body;
+    const { _id, username,password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber } = req.body;
     var objectId = mongoose.Types.ObjectId(_id);
 
-    Users.findByIdAndUpdate(objectId, { username,password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber, bookingReferences, flights }, (error, response) => {
+    Users.findByIdAndUpdate(objectId, { username,password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
         if (response) {
             res.status(200).send(response)
         }
@@ -38,24 +38,25 @@ exports.cancelFlight = (req, res) => {
 
     const { uId,booking } = req.body;
     var userId = mongoose.Types.ObjectId(uId);
-    Users.update(
+    Users.findOneAndUpdate(
         { _id: userId },
-        { $pull: { flights: {bookingNum: { $in: [ booking ] }}, bookingReferences: booking } }
+        { $pull: { flights: {bookingNum: { $in: [booking] }}, bookingReferences: booking } }
     )
-        .then(err => {
-            console.log("error");
+        .catch(err => {
+            console.log("error")
+            console.log(err);
         });
 }
 
 exports.sendEmail = (req, res) => {
-    const { userData, booking, deptFlight, retFlight, amount } = req.body;
+    const { email, emailBody } = req.body;
 
-    const emailBody = `<p>Hello ${userData.firstname} ${userData.lastname},</p>
-        <br/>
-        <p>This is to confirm the cancellation of your reservation for booking ${booking}, flights ${deptFlight.flightNumber} and ${retFlight.flightNumber}. You will be refunded with an amount of ${amount} within the next 5-7 working days.</p>
-        <br/>
-        <p>Best wishes,</p>
-        <p>ACL Airlines</p>`;
+    // const emailBody = `<p>Hello ${userData.firstname} ${userData.lastname},</p>
+    //     <br/>
+    //     <p>This is to confirm the cancellation of your reservation for booking ${booking}, flights ${deptFlight.flightNumber} and ${retFlight.flightNumber}. You will be refunded with an amount of ${amount} within the next 5-7 working days.</p>
+    //     <br/>
+    //     <p>Best wishes,</p>
+    //     <p>ACL Airlines</p>`;
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({
@@ -79,7 +80,7 @@ exports.sendEmail = (req, res) => {
     let mailOptions = {
         // from: '"ACL Airlines" <aclairlines@outlook.com>',
         from: '"ACL Airlines" <aclairlines@gmail.com>', 
-        to: "y.aeldairy@gmail.com",
+        to: email,
         subject: "ACL Airlines notification",
         html: emailBody,
     };
@@ -92,28 +93,4 @@ exports.sendEmail = (req, res) => {
         }
     });
 }
-
-// exports.addFlight =async(req,res)=> {
-
-//     const {_id,booking,
-//         flightId1,flightNum1,deptAirport1,arrAirport1,deptTime1,arrTime1,date1,seat1,cabin1,
-//         flightId2,flightNum2,deptAirport2,arrAirport2,deptTime2,arrTime2,date2,seat2,cabin2,
-//         totalPrice} = req.body;
-//     var userId = mongoose.Types.ObjectId(_id);
-//     var fId1 = mongoose.Types.ObjectId(flightId1);
-//     var fId2 = mongoose.Types.ObjectId(flightId2);
-//     User.findOneAndUpdate({_id: userId},
-//         {$push:{flights:{booking: booking,deptFlight:
-//             {flightId:fId1,flightNumber:flightNum1,deptAirport:deptAirport1,arrAirport:arrAirport1,deptTime:deptTime1,arrTime:arrTime1,date:date1,seat:seat1,cabinClass:cabin1},
-//             retFlight:
-//             {flightId:fId2,flightNumber:flightNum2,deptAirport:deptAirport2,arrAirport:arrAirport2,deptTime:deptTime2,arrTime:arrTime2,date:date2,seat:seat2,cabinClass:cabin2},
-//                 totalPrice:totalPrice}}},(error,response)=>{
-//         if(response){
-//             res.status(200).send(response)
-//         }
-//         else{
-//             res.status(400).send(error)
-//         }
-//     })
-// }
 

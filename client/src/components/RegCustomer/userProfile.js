@@ -4,8 +4,8 @@ import { useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Button, message } from 'antd';
 import { Row, Col, Divider, Form } from 'antd';
-// import { UserContext } from "../../Context";
-// const { accessToken } = useContext(UserContext);
+import { UserContext } from "../../Context";
+const { accessToken } = useContext(UserContext);
 
 
 export default function UserProfile() {
@@ -15,6 +15,7 @@ export default function UserProfile() {
   const location = useLocation();
   const { userID } = location.state;
   const [userData, setUserData] = useState(null);
+
   // const userData =
   // {
   //   _id: "61c253a68aed84cae46284a5",
@@ -56,9 +57,9 @@ export default function UserProfile() {
 
   useEffect(() => {
     axios.get('http://localhost:3001/user/getProfile', {
-      // headers: {
-      //   'Authorization': `Bearer ${accessToken}`
-      // }
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
     })
       .then((res) => {
         setUserData(res.data)
