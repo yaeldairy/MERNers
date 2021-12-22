@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import 'antd/dist/antd.css';
 import { Button, Card, Typography } from 'antd';
 import { FaPlane, FaLongArrowAltRight, FaSortAmountDown } from "react-icons/fa";
@@ -6,7 +6,6 @@ import axios from 'axios';
 import { message, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
 import { UserContext } from "../../Context";
-const { accessToken } = useContext(UserContext);
 const { Title, Text } = Typography;
 
 
@@ -19,6 +18,8 @@ const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }
 
 
 function FlightListItem({ booking, deptFlight, retFlight, amount, userData, editable }) {
+
+    const { accessToken } = useContext(UserContext);
 
     const title = (<div style={displayFlex}>
         <FaPlane style={{ fontSize: '300%' }} />
@@ -37,9 +38,9 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
                 // },
                 //     headers: {
                 //       'Authorization': `Bearer ${accessToken}`
-            },headers: {
+            }, headers: {
                 'Authorization': `Bearer ${accessToken}`
-              }
+            }
 
         }).then((res) => {
             hide()
@@ -53,11 +54,13 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
         <p>ACL Airlines</p>`;
             axios.post("http://localhost:3001/user/sendEmail", {
                 headers: {
-                  'Authorization': `Bearer ${accessToken}`
+                    'Authorization': `Bearer ${accessToken}`
                 },
-                data:{email: userData.email,
-                        emailBody: emailBody}
-              })
+                data: {
+                    email: userData.email,
+                    emailBody: emailBody
+                }
+            })
                 .then(() => {
                     // console.log("email sent", res);
 

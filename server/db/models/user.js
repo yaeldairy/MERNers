@@ -39,17 +39,12 @@ const Schema = mongoose.Schema;
             type:String, 
             required: true
         },
-<<<<<<< HEAD
-        flights: {
-            type:new Array(Object),
-=======
         bookingReferences:{
             type:[],
             required:true
         },
         flights: {
             type:[],
->>>>>>> feature/userProfile
             required: true
         }
     

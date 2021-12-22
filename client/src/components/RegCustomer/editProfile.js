@@ -4,14 +4,15 @@ import "antd/dist/antd.css";
 // import moment from 'moment';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+import { useContext } from 'react';
 import { UserContext } from "../../Context";
-const { accessToken } = useContext(UserContext);
+
 const { Title } = Typography;
-const { Option } = Select;
 
 
 //ba3d el edit eh?
 export default function EditProfile() {
+    const { accessToken } = useContext(UserContext);
     const location = useLocation();
     const { user } = location.state;
     const [userData, setUserData] = useState(user);
@@ -43,12 +44,12 @@ export default function EditProfile() {
     //TODO fix the .then and .catch bodies
     function onFinish() {
         const hide = message.loading('Updating Your Profile...', 0)
-        axios.patch('http://localhost:3001/user/updateProfile',{
+        axios.patch('http://localhost:3001/user/updateProfile', {
             headers: {
-              'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${accessToken}`
             },
-            data:userData
-          })
+            data: userData
+        })
             .then((res) => {
                 hide()
                 message.success('Data updated successfully. Redirecting...', 2)
@@ -57,7 +58,7 @@ export default function EditProfile() {
                 hide()
                 message.error('Unable to connect to the server. Please try again later.');
             })
-            //go back and update profile
+        //go back and update profile
     };
 
 
