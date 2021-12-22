@@ -27,10 +27,16 @@ duration:{
     type:String,
     required: true
 },
-date: {
+date: { //this is the departure date
     type:String, //manipulating date datatype is complex, change if needed
     required: true
 },
+
+arrDate: {
+    type:String, //manipulating date datatype is complex, change if needed
+    required: true
+},
+
 nOfEconomy: {
     type:Number,
     required: true
@@ -47,6 +53,10 @@ price :{
     type:Number,
     required: true
 
+},
+takenSeats:{
+    type:new Array(Object),
+    required:true
 }
 
 })

@@ -15,6 +15,4 @@ router.patch('/selectSeats',controller.selectSeats)
 router.patch('/addFlight', controller.addFlight )
 
 
-
-
 module.exports = router

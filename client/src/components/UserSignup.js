@@ -12,15 +12,14 @@ export default function UserSignup() {
     const [userData, setuserData] = useState({
         username:"",
         password:"",
-        fName: "",
-        lName: "",
+        firstName: "",
+        lastName: "",
         homeAddress: "",
-        cCode: "",
-        phoneNum: "",
-        phoneNum2: "",
+        countryCode: "",
+        phoneNumber: "",
         email: "",
-        passportNum: "",
-
+        passportNumber: "",
+        flights:[]
 
     })
 

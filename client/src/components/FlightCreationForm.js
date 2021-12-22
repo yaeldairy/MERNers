@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'; //use effect is for renders
 import {Typography, Card, Form, Input, Button, DatePicker, Checkbox, TimePicker, message, InputNumber} from 'antd';
 import "antd/dist/antd.css";
-import moment from 'moment';
+import moment, { duration } from 'moment';
 import axios from 'axios';
 const { Title, Text } = Typography;
 export default function FlightCreationForm (){
@@ -16,10 +16,14 @@ export default function FlightCreationForm (){
         arrAirport: "",
         deptTime: "",
         arrTime: "",
+        duration: "",
         date: "",
+        arrDate: "",
         nOfEconomy: 0,
         nOfBusiness: 0,
-        noOfFirst: 0,
+        nOfFirst: 0,
+        price:0,
+        takenSeats: [],
     })
     
     const [form] = Form.useForm();
@@ -46,12 +50,23 @@ export default function FlightCreationForm (){
             [name] : moment(event).format('HH:mm')
         });
     }
+
+    useEffect(() => {
+        let departureTime  = flightData.date + ' ' + flightData.deptTime;
+        let arrivalTime = flightData.arrDate + ' ' + flightData.arrTime;
+        let flightDuration = moment.utc(moment(arrivalTime,"DD/MM/YYYY HH:mm").diff(moment(departureTime,"DD/MM/YYYY HH:mm"))).format("HH:mm")
+        setFlightData({
+            ...flightData, //keeps rest as is
+            'duration' : flightDuration
+        });
+    }, [flightData.date, flightData.deptTime, flightData.arrDate, flightData.arrTime])
     
  
     
     //TODO fix the .then and .catch bodies
     function onFinish (){
         const hide = message.loading('Creating Flight...',0)
+        console.log(flightData)
         axios.post('http://localhost:3001/admin/flights', flightData)
             .then((res)=>{
                 hide()
@@ -110,6 +125,11 @@ export default function FlightCreationForm (){
             <Form.Item name='date' label = 'Departure Date' rules={[{ required: true, message: 'Please select the departure date!' }]}>
                 <DatePicker  style ={{width:'100%'}} format = 'DD-MM-YYYY' picker = 'date' onChange ={event => onChangeDateHandler(event, 'date')}/>
             </Form.Item>
+
+            <Form.Item name='arrDate' label = 'Arrival Date' rules={[{ required: true, message: 'Please select the arrival date!' }]}>
+                <DatePicker  style ={{width:'100%'}} format = 'DD-MM-YYYY' picker = 'date' onChange ={event => onChangeDateHandler(event, 'arrDate')}/>
+            </Form.Item>
+
             <Form.Item name='nOfEconomyInput' label = 'Number of Economy Class Seats'
               rules={[{ required: true, message: 'Please input the number of economy class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Seat count must be a number!'}]}>
                 <Input name='nOfEconomy' onChange ={event => handler(event)}/>
@@ -123,6 +143,11 @@ export default function FlightCreationForm (){
             <Form.Item name='nOfFirstInput' label = 'Number of First Class Seats'
               rules={[{ required: true, message: 'Please input the number of first class seats!'}, {whitespace:true}, {pattern: /^(?:\d*)$/, message: 'Seat count must be a number!'}]}>
                 <Input name='nOfFirst' onChange ={event => handler(event)}/>
+            </Form.Item>
+            
+            <Form.Item name='priceInput' label = 'Base Price'
+              rules={[{ required: true, message: 'Please input the base price of a seat!'}, {whitespace:true}, {pattern: /^\d+(\.\d{1,2})?$/, message: 'Price must be a number with at-most two decimal places!'}]}>
+                <Input name='price' onChange ={event => handler(event)}/>
             </Form.Item>
 
             <Button type="primary" htmlType="submit">

@@ -28,11 +28,11 @@ function Flight (){
       <Title level={3} style={{ marginLeft:'20px'}}>Flight:  {flight.flightNum}</Title>
       </div>)
 
-    if (permissionLevel==1){
-      return( <Button type="primary" >
-                 Update
-              </Button> )
-    }
+    // if (permissionLevel==1){
+    //   return( <Button type="primary" >
+    //              Update
+    //           </Button> )
+    // }
     return( 
         <div>
         <Card
@@ -42,7 +42,7 @@ function Flight (){
         <FlightInfo flight={flight}/>
 
        { permissionLevel==1 ?
-       <Button type="primary" > Update</Button> :
+       <Button type="primary"> <Link to={{pathname:`/updateFlight/${flight._id}`}} state={{ flight }}>Update</Link></Button> :
        <ChooseSeats flight={flight} />
        }
         </Card>
