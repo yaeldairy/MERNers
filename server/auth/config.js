@@ -1,3 +1,4 @@
 module.exports = {
-    adminSecret = "SECRET"
+    // adminSecret = "ADMINSECRET",
+    // userSecret = "USERSECRET"
 }

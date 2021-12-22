@@ -16,6 +16,12 @@ const adminRouter = require('./router/admin')
 const userRouter = require('./router/user')
 const generalRouter = require('./router/general')
 
+// app.post('/auth', [
+//     VerifyUserMiddleware.hasAuthValidFields,
+//     VerifyUserMiddleware.isPasswordAndUserMatch,
+//     AuthorizationController.login
+// ]);
+
 app.use('/', generalRouter)
 app.use('/admin', adminRouter)
 app.use('/user', userRouter)

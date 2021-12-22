@@ -4,6 +4,8 @@ import "antd/dist/antd.css";
 // import moment from 'moment';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
+// import { UserContext } from "../../Context";
+// const { accessToken } = useContext(UserContext);
 const { Title } = Typography;
 const { Option } = Select;
 
@@ -41,7 +43,12 @@ export default function EditProfile() {
     //TODO fix the .then and .catch bodies
     function onFinish() {
         const hide = message.loading('Updating Your Profile...', 0)
-        axios.patch('http://localhost:3001/user/updateProfile', userData)
+        axios.patch('http://localhost:3001/user/updateProfile',{
+            // headers: {
+            //   'Authorization': `Bearer ${accessToken}`
+            // },
+            data:userData
+          })
             .then((res) => {
                 hide()
                 message.success('Data updated successfully. Redirecting...', 2)
@@ -50,6 +57,7 @@ export default function EditProfile() {
                 hide()
                 message.error('Unable to connect to the server. Please try again later.');
             })
+            //go back and update profile
     };
 
 
@@ -68,8 +76,6 @@ export default function EditProfile() {
                         emailInput: userData.email,
                         addressInput: userData.homeaddress,
                         countrycodeInput: userData.countrycode,
-                        // passwordInput: userData.password,
-                        // confirmpasswordInput: userData.password,
                         // prefix: userData.countrycode,
                         telephonenumberInput: userData.telephonenumber,
                         passportnumberInput: userData.passportnumber
@@ -80,64 +86,26 @@ export default function EditProfile() {
                 >
 
                     <Form.Item name='firstnameInput' label='First Name'
-                        rules={[{ required: true, message: 'Please your first name!' }, { whitespace: true }]}>
-                        <Input name='firstname'
+                        rules={[{ required: true, message: 'Please enter your first name!' }, { whitespace: true }]}>
+                        <Input name='firstName'
                             onChange={event => handler(event)} />
                     </Form.Item>
 
                     <Form.Item name='lastnameInput' label='Last Name'
-                        rules={[{ required: true, message: 'Please your last name!' }, { whitespace: true }]}>
-                        <Input name='lastname'
+                        rules={[{ required: true, message: 'Please enter your last name!' }, { whitespace: true }]}>
+                        <Input name='lastName'
                             onChange={event => handler(event)} />
                     </Form.Item>
 
                     <Form.Item name='emailInput' label='E-mail'
-                        rules={[{ required: true, message: 'Please a valid email address!' }, { whitespace: true }, [{ type: 'email' }]]}>
+                        rules={[{ required: true, message: 'Please enter a valid email address!' }, { whitespace: true }, [{ type: 'email' }]]}>
                         <Input name='email'
                             onChange={event => handler(event)} />
                     </Form.Item>
 
-                    {/* <Form.Item
-                        name="passwordInput"
-                        label="Password"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your password!',
-                            },
-                        ]}
-                        hasFeedback
-                    >
-                        <Input.Password />
-                    </Form.Item>
-
-                    <Form.Item
-                        name="confirmpasswordInput"
-                        label="Confirm Password"
-                        dependencies={['password']}
-                        hasFeedback
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please confirm your password!',
-                            },
-                            ({ getFieldValue }) => ({
-                                validator(_, value) {
-                                    if (!value || getFieldValue('password') === value) {
-                                        return Promise.resolve();
-                                    }
-
-                                    return Promise.reject(new Error('The two passwords that you entered do not match!'));
-                                },
-                            }),
-                        ]}
-                    >
-                        <Input.Password />
-                    </Form.Item> */}
-
                     <Form.Item name='addressInput' label='Home Address'
-                        rules={[{ required: true, message: 'Please your home address!' }, { whitespace: true }]}>
-                        <Input name='homeaddress'
+                        rules={[{ required: true, message: 'Please enter your home address!' }, { whitespace: true }]}>
+                        <Input name='homeAddress'
                             onChange={event => handler(event)} />
                     </Form.Item>
 
@@ -165,13 +133,13 @@ export default function EditProfile() {
 
                     <Form.Item name='countrycodeInput' label='Country Code'
                         rules={[{ required: true, message: 'Please enter a valid country code!' }, { whitespace: true }]}>
-                        <Input name='countrycode'
+                        <Input name='countryCode'
                             onChange={event => handler(event)} />
                     </Form.Item>
 
                     <Form.Item name='telephonenumberInput' label='Telephone Number'
                         rules={[{ required: true, message: 'Please enter a valid phone number!' }, { whitespace: true }, { type: 'number', min: 1111111111, max: 9999999999 }]}>
-                        <Input name='telephonenumber'
+                        <Input name='phoneNumber'
                             onChange={event => handler(event)} />
                     </Form.Item>
 
@@ -185,8 +153,8 @@ export default function EditProfile() {
                     </Form.Item> */}
 
                     <Form.Item name='passportnumberInput' label='Passport Number'
-                        rules={[{ required: true, message: 'Please your passport number!' }, { whitespace: true }]}>
-                        <Input name='passportnumber'
+                        rules={[{ required: true, message: 'Please enter your passport number!' }, { whitespace: true }]}>
+                        <Input name='passportNumber'
                             onChange={event => handler(event)} />
                     </Form.Item>
 
