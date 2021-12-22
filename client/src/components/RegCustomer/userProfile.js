@@ -1,21 +1,17 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 
-import axios from 'axios';
-import { Button, message } from 'antd';
-import { Row, Col, Divider, Form } from 'antd';
-import { UserContext } from "../../Context";
+import { Button } from 'antd';
+import { Row, Col, Divider } from 'antd';
+import NavBar from '../NavBar';
 
 
 
 export default function UserProfile() {
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const location = useLocation();
-  const { userID } = location.state;
-  const [userData, setUserData] = useState(null);
-  const { accessToken } = useContext(UserContext);
+  const { user } = location.state;
+  const [userData, setUserData] = useState(user);
 
   // const userData =
   // {
@@ -56,75 +52,53 @@ export default function UserProfile() {
   //   }] 
   // }
 
-  useEffect(() => {
-    axios.get('http://localhost:3001/user/getProfile', {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    })
-      .then((res) => {
-        setUserData(res.data)
-
-      })
-      .catch((e) => {
-        setError(true)
-      })
-
-    setLoading(false);
-  }, []);
-
   return (
     <>
-      {error ? (<div> ERROR </div>) : (
-        loading ? (<div>Loading... </div>) :
-          (
-            <div>
-              <br />
-              <h1>Hello {userData.firstName} {userData.lastName}!</h1>{/*  put somewhere else */}
-              <Divider />
-              <br />
-              <Row>
-                <Col span={8} >Username: </Col>
-                <Col span={28} >{userData.username}</Col>
-              </Row>
-              <Row>
-                <Col span={8}>E-mail: </Col>
-                <Col span={28}>{userData.email}</Col>
-              </Row>
-              <Row>
-                <Col span={8}>Address: </Col>
-                <Col span={28} justifyContent="flex-end">{userData.homeAddress}</Col>
-              </Row>
-              <Row>
-                <Col span={8}>Telephone Number: </Col>
-                <Col span={28} justifyContent="flex-end">{userData.countryCode}{userData.phoneNumber}</Col>
-              </Row>
-              <Row>
-                <Col span={8}>Passport Number: </Col>
-                <Col span={28} justifyContent="flex-end">{userData.passportNumber}</Col>
-              </Row>
+      <div>
+        <NavBar/>
+        <br />
+        <Row>
+          <Col span={8} >Username: </Col>
+          <Col span={28} >{userData.username}</Col>
+        </Row>
+        <Row>
+          <Col span={8}>E-mail: </Col>
+          <Col span={28}>{userData.email}</Col>
+        </Row>
+        <Row>
+          <Col span={8}>Address: </Col>
+          <Col span={28} justifyContent="flex-end">{userData.homeAddress}</Col>
+        </Row>
+        <Row>
+          <Col span={8}>Telephone Number: </Col>
+          <Col span={28} justifyContent="flex-end">{userData.countryCode}{userData.phoneNumber}</Col>
+        </Row>
+        <Row>
+          <Col span={8}>Passport Number: </Col>
+          <Col span={28} justifyContent="flex-end">{userData.passportNumber}</Col>
+        </Row>
 
-              <Divider />
-              <div justify="space-around">
-                <Button type="primary" size="large">
-                  <Link to={{ pathname: `/profile/${userData._id}/edit` }} state={{ user: userData }}>
-                    Edit Profile
-                  </Link>
-                </Button>
-                <Button type="primary" size="large">
-                  <Link to={{ pathname: `/profile/${userData._id}/password` }} state={{ userData: userData }}>
-                    Change Password
-                  </Link>
-                </Button>
-                <Button type="primary" size="large">
-                  <Link to={{ pathname: `/profile/${userData._id}/reservations` }} state={{ user: userData }}>
+        <Divider />
+        <div justify="space-around">
+          <Button type="primary" size="large">
+            <Link to={{ pathname: `/profile/${userData.username}/edit` }} state={{ user: userData }}>
+              Edit Profile
+            </Link>
+          </Button>
+          <Button type="primary" size="large">
+            <Link to={{ pathname: `/profile/${userData.username}/password` }} state={{ userData: userData }}>
+              Change Password
+            </Link>
+          </Button>
+          {/* <Button type="primary" size="large">
+                  <Link to={{ pathname: `/profile/${userData.username}/reservations` }} state={{ user: userData }}>
                     View Reservations
                   </Link>
-                </Button>
-              </div>
+                </Button> */}
+        </div>
 
-            </div>
-          ))}
+      </div>
+
     </>
   )
 

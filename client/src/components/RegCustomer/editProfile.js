@@ -1,11 +1,12 @@
 import React, { useState } from 'react'; //use effect is for renders
-import { Form, Input, Button, message, Card, Divider, Typography, Select } from 'antd';
+import { Form, Input, Button, message, Card, Divider, Typography } from 'antd';
 import "antd/dist/antd.css";
 // import moment from 'moment';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from "../../Context";
+import NavBar from '../NavBar';
 
 const { Title } = Typography;
 
@@ -68,6 +69,7 @@ export default function EditProfile() {
 
     return (
         <div>
+            <NavBar/>
             <Divider className="title-divider" />
             <Card title={<Title level={3}>Edit Profile</Title>} style={{ marginLeft: '10%', marginRight: '10%' }}>
                 <Form

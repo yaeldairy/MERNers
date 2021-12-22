@@ -3,6 +3,7 @@ import { Divider, Typography, Select, List } from 'antd';
 import "antd/dist/antd.css";
 import { useLocation } from 'react-router-dom';
 import FlightListItem from './FlightListItem';
+import NavBar from '../NavBar';
 const { Title } = Typography;
 
 
@@ -152,6 +153,7 @@ export default function ReservationHistory() {
 
     return (
         <>
+        <NavBar/>
             <Title>Your Purchses</Title>
             <Divider />
             <h2>Upcoming trips: </h2>

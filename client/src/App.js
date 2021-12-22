@@ -30,10 +30,10 @@ function App() {
                               <Route path="/updateFlight/:id" element={<UpdateFlight />} />
                               <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />} />
                               {/* <Route path='/checkout' element={<Checkout />} /> */}
-                              <Route path="/profile/:id/" element={<UserProfile />} />
-                              <Route path="/profile/:id/reservations" element={<ReservationHistory />} />
-                              <Route path="/profile/:id/edit" element={<EditProfile />} />
-                              <Route path="/profile/:id/reservations/:booking" element={<ViewItinerary />} />
+                              <Route path="/profile/:username/" element={<UserProfile />} />
+                              <Route path="/profile/:username/reservations" element={<ReservationHistory />} />
+                              <Route path="/profile/:username/edit" element={<EditProfile />} />
+                              <Route path="/profile/:username/reservations/:booking" element={<ViewItinerary />} />
                         </Routes>
                   </div>
             </Router>
