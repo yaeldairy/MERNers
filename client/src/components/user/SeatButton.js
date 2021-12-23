@@ -3,7 +3,7 @@ import { message} from 'antd';
 import '../../App.css';
 
 function SeatButton(props) {
-    let takenSeats = ['1A', '2C', '23D'] //TODO replace with array you get from the table
+    let takenSeats = props.takenSeats 
     const [buttonState, setButtonState] = useState(props.initialClass)
     useEffect(() => {
         if (props.totalSeats == 0){
