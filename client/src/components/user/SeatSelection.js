@@ -1,4 +1,4 @@
-import { Card, Button, message, Space } from 'antd';
+import { Card, Button, message, Space,Popconfirm } from 'antd';
 import '../../App.css';
 import FirstClassRowSS from './FirstClassRowSS'
 import EconomyClassRowSS from './EconomyClassRowSS'
@@ -6,14 +6,15 @@ import BusinessClassRowSS from './BusinessClassRowSS'
 import React, { useEffect, useState, useContext } from 'react'
 import SSLegend from './SSLegend';
 import SeatReservationDetails from './SeatReservationDetails';
-import {UserContext} from "../../Context";
+import { UserContext } from "../../Context";
+import { Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-export default function SeatSelection({flight}) {
-    
+export default function SeatSelection({ flight, setRedirect }) {
+    let navigate = useNavigate();
     const [selectedSeats, setSelectedSeats] = useState([]);
     const [isDone, setDone] = useState(false);
-    const {accessToken, username, cabin, noOfSeats} = useContext(UserContext);
+    const { accessToken, username, cabin, noOfSeats } = useContext(UserContext);
 
     function handleSeatSelected(currentSelectedSeats) {
         setSelectedSeats(currentSelectedSeats);
@@ -44,16 +45,14 @@ export default function SeatSelection({flight}) {
 
             axios({
                 method: 'patch', //should be patch
-                url: 'http://localhost:3001/user/selectSeats',   
-                headers: { Authorization: `Bearer ${accessToken}`},
-                data : { username: username, seats: selectedSeats, flightId: flight._id}})
-                      .then((res) => {
+                url: 'http://localhost:3001/user/selectSeats',
+                headers: { Authorization: `Bearer ${accessToken}` },
+                data: { username: username, seats: selectedSeats, flightId: flight._id }
+            })
+                .then((res) => {
                     // console.log(res)
-                    message.success('Seats Selected Successfully. Redirecting...', 2)
-                        .then(function () {
-
-                        }
-                        )
+                    message.success('Seats Selected Successfully. Redirecting...')
+                    navigate('/')
                 })
                 .catch((err) => {
                     message.error('Unable to connect to the server. Please try again later.');
@@ -65,12 +64,21 @@ export default function SeatSelection({flight}) {
     return (
         <div className='seatSelectionMain'>
             <div className='leftHalfSS'>
-                <SeatReservationDetails selectedSeats={selectedSeats} flight={flight}/>
+                <SeatReservationDetails selectedSeats={selectedSeats} flight={flight} />
                 <SSLegend />
                 <div className='buttonsContainer'>
                     <Space size={100}>
-                    <Button>Cancel</Button>
-                    <Button type="primary" onClick={buttonHandler}>Confirm Seat Selection</Button>
+                        <Button onClick={() => { setRedirect(false) }}>Cancel</Button>
+                        <Button type="primary">
+                            <Popconfirm
+                                title="Are you sure you want to select these seats?"
+                                onConfirm={buttonHandler}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                Confirm Seat Selection
+                            </Popconfirm>
+                            </Button>
                     </Space>
                 </div>
             </div>
@@ -82,23 +90,23 @@ export default function SeatSelection({flight}) {
                                 <p>First Class</p>
                             </div>
                             <FirstClassRowSS flight={flight}
-                                             updateFinalSelectionList={handleSeatSelected} 
-                                             setCompleted={handleCompleted}
-                                             totalSeats={cabin =="First" ? noOfSeats.number :0 } />
+                                updateFinalSelectionList={handleSeatSelected}
+                                setCompleted={handleCompleted}
+                                totalSeats={cabin == "First" ? noOfSeats.number : 0} />
                             <div className='rowNumber'>
                                 <p>Business Class</p>
                             </div>
                             <BusinessClassRowSS flight={flight}
-                                                updateFinalSelectionList={handleSeatSelected} 
-                                                setCompleted={handleCompleted} 
-                                                totalSeats={cabin =="Business" ? noOfSeats.number :0 }/>
+                                updateFinalSelectionList={handleSeatSelected}
+                                setCompleted={handleCompleted}
+                                totalSeats={cabin == "Business" ? noOfSeats.number : 0} />
                             <div className='rowNumber'>
                                 <p>Economy Class</p>
                             </div>
                             <EconomyClassRowSS flight={flight}
-                                               updateFinalSelectionList={handleSeatSelected} 
-                                               setCompleted={handleCompleted}
-                                               totalSeats={cabin =="Economy" ? noOfSeats.number :0 } />
+                                updateFinalSelectionList={handleSeatSelected}
+                                setCompleted={handleCompleted}
+                                totalSeats={cabin == "Economy" ? noOfSeats.number : 0} />
                         </div>
                     </div>
                 </div>

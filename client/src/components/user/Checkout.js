@@ -156,7 +156,7 @@ function Checkout (){
     const title=(<Title  level={2} >Booking Summary</Title> )
 
     if(success){
-      return <BookingSuccess flight={departureFlight} />
+      return <BookingSuccess departureFlight={departureFlight} returnFlight={returnFlight} />
     }
 
     return(
