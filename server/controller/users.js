@@ -2,7 +2,7 @@ const User = require('../db/models/user');
 const Flight = require('../db/models/flight');
 const mongoose = require('mongoose');
 
-
+const nodemailer = require("nodemailer");
 
 //assuming the request carries and object with both the unique user ID
 //and the seat array
@@ -102,15 +102,16 @@ exports.selectSeats = (req, res) => {
         }
 
 }
-exports.testRoute = (req, res) => {
+// exports.testRoute = (req, res) => {
 
-    console.log("req.body on next print")
+//     console.log("req.body on next print")
 
-    console.log(req.body)
+//     console.log(req.body)
 
-    return res.status(200).send("test route succesfull");
+//     return res.status(200).send("test route succesfull");
+// }
 
-
+exports.addFlight = (req, res) => {
     const {username}=req.body.user;
     const {_id,flightNum,deptAirport,type,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber} = req.body.flight;
     const FId = mongoose.Types.ObjectId(_id);
@@ -130,13 +131,14 @@ exports.testRoute = (req, res) => {
 }
 exports.addBooking = (req, res) => {
 
-    const { username } = req.body.user;
-    const { bookingNumber } = req.body;
+    const { username, email } = req.body.user;
+    const { bookingNumber, emailBody } = req.body;
     console.log(username)
     console.log(bookingNumber)
     User.findOneAndUpdate({ username }, { $push: { bookingReferences: bookingNumber } }, (error, response) => {
         console.log(response)
         if (response) {
+            sendMail(email, emailBody);
             res.status(200).send(response);
         }
         else {
@@ -230,21 +232,24 @@ function sendMail(email, emailBody) {
 
 }
 
-exports.sendEmail = (req, res) => {
-    const {email, body} = req.body;
-    this.sendMail();
-}
+// exports.sendEmail = (req, res) => {
+//     const {email, body} = req.body;
+//     this.sendMail();
+// }
 
 
 exports.cancelReservation = (req, res) => {
 
     const { uId, booking, deptFlight, retFlight, email, emailBody } = req.body;
-
+    console.log(deptFlight);
+    console.log(retFlight);
+    // console.log(deptFlight.seat.length());
+    console.log(deptFlight.seat.length);
     //update user info
     var userId = mongoose.Types.ObjectId(uId);
     User.findOneAndUpdate(
         { _id: userId },
-        { $pull: { flights: { bookingNum: { $in: [booking] } }, bookingReferences: booking } }
+        { $pull: { flights: { bookingNumber: { $in: [booking] } }, bookingReferences: booking } }
     )
         .catch(err => {
             console.log("error")
@@ -254,21 +259,21 @@ exports.cancelReservation = (req, res) => {
 
 
     //update flight info
-    if (deptFlight.cabin == "economy")
+    if (deptFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { noOfEconomy: deptFlight.seats.length } },
-            { $push: { takenSeats: deptFlight.seats } }
+            { $inc: { noOfEconomy: deptFlight.seat.length } },
+            { $push: { takenSeats: {$in: [deptFlight.seat]} } }
         )
             .catch(err => {
                 console.log("error")
                 console.log(err);
             });
-    else if (deptFlight.cabin == "business")
+    else if (deptFlight.cabin == "Business")
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { noOfBusiness: deptFlight.seats.length } },
-            { $push: { takenSeats: deptFlight.seats } }
+            { $inc: { noOfBusiness: [deptFlight.seat.length] } },//retest
+            { $push: { takenSeats: {$in: [deptFlight.seat]} } }
         )
             .catch(err => {
                 console.log("error")
@@ -277,8 +282,8 @@ exports.cancelReservation = (req, res) => {
     else
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { noOfFirst: deptFlight.seats.length } },
-            { $push: { takenSeats: deptFlight.seats } }
+            { $inc: { noOfFirst: deptFlight.seat.length } },
+            { $push: { takenSeats: {$in: [deptFlight.seat]} } }
         )
             .catch(err => {
                 console.log("error")
@@ -286,21 +291,21 @@ exports.cancelReservation = (req, res) => {
             });
 
 
-    if (retFlight.cabin == "economy")
+    if (retFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { noOfEconomy: retFlight.seats.length } },
-            { $push: { takenSeats: retFlight.seats } }
+            { $inc: { noOfEconomy: retFlight.seat.length } },
+            { $push: { takenSeats: {$in: [retFlight.seat]} } }
         )
             .catch(err => {
                 console.log("error")
                 console.log(err);
             });
-    else if (retFlight.cabin == "business")
+    else if (retFlight.cabin == "Business")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { noOfBusiness: retFlight.seats.length } },
-            { $push: { takenSeats: retFlight.seats } }
+            { $inc: { noOfBusiness: retFlight.seat.length } },
+            { $push: { takenSeats: {$in: [retFlight.seat]} } }
         )
             .catch(err => {
                 console.log("error")
@@ -309,13 +314,15 @@ exports.cancelReservation = (req, res) => {
     else
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { noOfFirst: retFlight.seats.length } },
-            { $push: { takenSeats: retFlight.seats } }
+            { $inc: { noOfFirst: retFlight.seat.length } },
+            { $push: { takenSeats: {$in: [retFlight.seat]} } }
         )
             .catch(err => {
                 console.log("error")
                 console.log(err);
             });
 
-    this.sendMail(email, emailBody);
+    sendMail(email, emailBody);
+
+    res.status.send(200);
 }

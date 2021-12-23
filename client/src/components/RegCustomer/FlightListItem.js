@@ -27,9 +27,9 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
     </div>)
 
     function handler() {
-        const emailBody = `<p>Hello ${userData.firstname} ${userData.lastname},</p>
+        const emailBody = `<p>Hello ${userData.firstName} ${userData.lastName},</p>
         <br/>
-        <p>This is to confirm the cancellation of your reservation for booking ${booking}, flights ${deptFlight.flightNumber} and ${retFlight.flightNumber}. You will be refunded with an amount of ${amount} within the next 5-7 working days.</p>
+        <p>This is to confirm the cancellation of your reservation for booking ${booking}, flights ${deptFlight.flightNum} and ${retFlight.flightNum}. You will be refunded with an amount of $${amount} within the next 5-7 working days.</p>
         <br/>
         <p>Best wishes,</p>
         <p>ACL Airlines</p>`;
@@ -40,6 +40,8 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
             data: {
                 userId: userData._id,
                 booking: booking,
+                deptFlight: deptFlight,
+                retFlight: retFlight,
                 email: userData.email,
                 emailBody: emailBody
                 // },
