@@ -47,7 +47,7 @@ export default function NavBar() {
             mode="inline"
         >
             {/* <HomeOutlined><Link to={{ pathname: `/` }} /></HomeOutlined> */}
-            <MenuItem style={{ width: 1000}}>Hello {userData.firstName} {userData.lastName}</MenuItem>
+            <MenuItem style={{ width: 1000}}><Link to={{pathname:`/`}}>Hello {userData.firstName} {userData.lastName}!</Link></MenuItem>
             <Menu icon={<UserOutlined />} title="Profile" style={{ width: 700,display:"flex", flexDirection:"row" }}>
                 <Menu.Item style={{ width: 250}} >
                     <Link to={{ pathname: `/profile` }} state={{ user: userData }}>

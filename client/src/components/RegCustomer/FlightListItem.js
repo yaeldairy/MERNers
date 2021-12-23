@@ -38,7 +38,7 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
             method: 'POST',
             url: 'http://localhost:3001/user/cancelReservation',
             data: {
-                userId: userData._id,
+                username: userData.username,
                 booking: booking,
                 deptFlight: deptFlight,
                 retFlight: retFlight,
@@ -51,7 +51,8 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
                 'Authorization': `Bearer ${accessToken}`
             }
 
-        }).then((res) => {
+        }
+        ).then((res) => {
             hide()
             message.success('Reservation cancelled. A confirmation email will be sent.', 2);
 
