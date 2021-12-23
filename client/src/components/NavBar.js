@@ -11,8 +11,8 @@ export default function NavBar() {
     const { accessToken } = useContext(UserContext);
 
     const copyToClip = () => {
-        // navigator.clipboard.writeText('aclairlines@gmail.com')
-        // message.success('email copied to clipboard', 3);
+        navigator.clipboard.writeText('aclairlines@gmail.com')
+        message.success('email copied to clipboard', 5);
       };
 
     useEffect(() => {

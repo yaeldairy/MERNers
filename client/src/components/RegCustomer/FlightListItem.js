@@ -20,6 +20,7 @@ const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }
 function FlightListItem({ booking, deptFlight, retFlight, amount, userData, editable }) {
 
     const { accessToken } = useContext(UserContext);
+    // var vis = true;
 
     const title = (<div style={displayFlex}>
         <FaPlane style={{ fontSize: '300%' }} />
@@ -55,6 +56,8 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
         ).then((res) => {
             hide()
             message.success('Reservation cancelled. A confirmation email will be sent.', 2);
+            // vis = false;
+            // window.location.reload(true);   
 
         }).catch((err) => {
             hide()
@@ -66,9 +69,10 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
 
     return (
         <div>
-
-            <Card
-                style={{ marginTop: 16 }}
+            <Card 
+                style={{ marginTop: 16, 
+                    // visibility: vis ? 'visible' : 'hidden' 
+                }}
                 type="inner"
                 title={title}
                 extra={<><Button><Link to={{ pathname: `/profile/${userData._id}/reservations/${booking}` }} state={{ booking: booking, deptFlight: deptFlight, retFlight: retFlight, amount: amount }}>
@@ -108,7 +112,6 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
                     <Text>Total amount: {amount}</Text>
                 </div>
             </Card>
-
         </div>
 
 
