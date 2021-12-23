@@ -223,6 +223,7 @@ function sendMail(email, emailBody) {
         if (err) {
             console.log("error", err);
         } else {
+            // res.
             console.log("success");
         }
     });
@@ -255,15 +256,16 @@ exports.addFlight = (req, res) =>{
 
 exports.cancelReservation = (req, res) => {
 
-    const { uId, booking, deptFlight, retFlight, email, emailBody } = req.body;
-    console.log(deptFlight);
-    console.log(retFlight);
-    // console.log(deptFlight.seat.length());
-    console.log(deptFlight.seat.length);
+    const { username, booking, deptFlight, retFlight, email, emailBody } = req.body;
+    console.log(username, booking, deptFlight, retFlight, email);
+    const deptSeats = deptFlight.noOfSeats.number;
+    const retSeats = retFlight.noOfSeats.number;
+    console.log(deptSeats);
+    console.log(retSeats);
     //update user info
-    var userId = mongoose.Types.ObjectId(uId);
+    // var userId = mongoose.Types.ObjectId(uId);
     User.findOneAndUpdate(
-        { _id: userId },
+        { username: username },
         { $pull: { flights: { bookingNumber: { $in: [booking] } }, bookingReferences: booking } }
     )
         .catch(err => {
@@ -277,8 +279,8 @@ exports.cancelReservation = (req, res) => {
     if (deptFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { noOfEconomy: deptFlight.seat.length } },
-            { $push: { takenSeats: {$in: [deptFlight.seat]} } }
+            { $inc: { nOfEconomy: deptSeats } },
+            { $push: { takenSeats: {$each: deptFlight.seat} } }
         )
             .catch(err => {
                 console.log("error")
@@ -287,8 +289,8 @@ exports.cancelReservation = (req, res) => {
     else if (deptFlight.cabin == "Business")
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { noOfBusiness: [deptFlight.seat.length] } },//retest
-            { $push: { takenSeats: {$in: [deptFlight.seat]} } }
+            { $inc: { nOfBusiness: deptSeats } },//retest
+            { $push: { takenSeats: {$each: deptFlight.seat} } }
         )
             .catch(err => {
                 console.log("error")
@@ -297,8 +299,8 @@ exports.cancelReservation = (req, res) => {
     else
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { noOfFirst: deptFlight.seat.length } },
-            { $push: { takenSeats: {$in: [deptFlight.seat]} } }
+            { $inc: { nOfFirst: deptSeats } },
+            { $push: { takenSeats: {$each: deptFlight.seat} } }
         )
             .catch(err => {
                 console.log("error")
@@ -309,8 +311,8 @@ exports.cancelReservation = (req, res) => {
     if (retFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { noOfEconomy: retFlight.seat.length } },
-            { $push: { takenSeats: {$in: [retFlight.seat]} } }
+            { $inc: { nOfEconomy: retSeats } },
+            { $push: { takenSeats: {$each: retFlight.seat} } }
         )
             .catch(err => {
                 console.log("error")
@@ -319,8 +321,8 @@ exports.cancelReservation = (req, res) => {
     else if (retFlight.cabin == "Business")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { noOfBusiness: retFlight.seat.length } },
-            { $push: { takenSeats: {$in: [retFlight.seat]} } }
+            { $inc: { nOfBusiness: retSeats } },
+            { $push: { takenSeats: {$each: retFlight.seat} } }
         )
             .catch(err => {
                 console.log("error")
@@ -329,8 +331,8 @@ exports.cancelReservation = (req, res) => {
     else
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { noOfFirst: retFlight.seat.length } },
-            { $push: { takenSeats: {$in: [retFlight.seat]} } }
+            { $inc: { nOfFirst: retSeats } },
+            { $push: { takenSeats: {$each: retFlight.seat} } }
         )
             .catch(err => {
                 console.log("error")
@@ -339,6 +341,6 @@ exports.cancelReservation = (req, res) => {
 
     sendMail(email, emailBody);
 
-    res.status.send(200);
+    res.status(200).send("successful");
     
 }
