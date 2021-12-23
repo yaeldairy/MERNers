@@ -2,9 +2,11 @@ import { Result, Button } from 'antd';
 import { useState } from 'react';
 import SeatSelection from './SeatSelection';
 
-function BookingSuccess ({flight}){
+function BookingSuccess ({departureFlight,returnFlight}){
 
    const [redirect, setRedirect]=useState(false);
+   const [redirect2, setRedirect2]=useState(false);
+
 
    const onButtonClick= (e)=>{
 
@@ -13,9 +15,20 @@ function BookingSuccess ({flight}){
 
    }
 
+   const onButtonClick2= (e)=>{
+
+    e.preventDefault();
+    setRedirect2(true);
+
+}
+
    if(redirect){
-     return <SeatSelection flight={flight}/>
+     return <SeatSelection flight={departureFlight} setRedirect={setRedirect}/>
    }
+   if(redirect2){
+    return <SeatSelection flight={returnFlight} setRedirect={setRedirect2}/>
+  }
+   
 
     return( <Result
         status="success"
@@ -23,8 +36,12 @@ function BookingSuccess ({flight}){
         subTitle="You should recieve a confirmation email with details about your booking"
         extra={[
           <Button onClick={onButtonClick} type="primary" key="console">
-            Select Seats
+            Select Departure Seats
           </Button>
+          ,
+           <Button onClick={onButtonClick2} type="primary" key="console2">
+           Select Return Seats
+         </Button>
         ]}
       />)
 }

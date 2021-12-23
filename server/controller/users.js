@@ -97,9 +97,6 @@ exports.selectSeats = (req, res) => {
             res.status(400).send({});
             return;
         })
-        if (errorOccured){
-            res.status(400).send({});
-        }
 
 }
 // exports.testRoute = (req, res) => {
@@ -237,6 +234,24 @@ function sendMail(email, emailBody) {
 //     this.sendMail();
 // }
 
+exports.addFlight = (req, res) =>{ 
+    const {username}=req.body.user;
+    const {_id,flightNum,deptAirport,type,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber} = req.body.flight;
+    const FId = mongoose.Types.ObjectId(_id);
+    const flight ={flightId:FId,flightNum,type,deptAirport,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber,seat:[]};
+
+
+
+    User.findOneAndUpdate({ username }, { $push: { flights: flight } }, (error, response) => {
+        if (response) {
+            res.status(200).send(response)
+        }
+        else {
+
+            res.status(400).send(error)
+        }
+    })
+}
 
 exports.cancelReservation = (req, res) => {
 
@@ -322,7 +337,12 @@ exports.cancelReservation = (req, res) => {
                 console.log(err);
             });
 
+<<<<<<< HEAD
     sendMail(email, emailBody);
 
     res.status.send(200);
 }
+=======
+    this.sendMail(email, emailBody);
+}
+>>>>>>> f5a7036c1d51271dfefa2a1c1aeef84774eaec07

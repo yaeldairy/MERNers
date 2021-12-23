@@ -146,8 +146,31 @@ function Checkout() {
 
       setSuccess(true)
 
+<<<<<<< HEAD
     } catch (e) {
       console.log(e)
+=======
+    }
+    }
+    // useEffect(()=>{
+    //   const bookingNumber=generateBookingNumber(7);
+    //  const object = { 
+    //     ...departureFlight,
+    //     price: departureFlight.price * noOfSeats.number,
+    //     bookingNumber,
+    //     type: "departure",
+    //     cabin,
+    //     noOfSeats
+    //    } 
+    //    console.log(object)
+    // },[])
+
+    const title=(<Title  level={2} >Booking Summary</Title> )
+
+    if(success){
+      return <BookingSuccess departureFlight={departureFlight} returnFlight={returnFlight} />
+    }
+>>>>>>> f5a7036c1d51271dfefa2a1c1aeef84774eaec07
 
     }
   }
