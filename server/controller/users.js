@@ -337,12 +337,8 @@ exports.cancelReservation = (req, res) => {
                 console.log(err);
             });
 
-<<<<<<< HEAD
     sendMail(email, emailBody);
 
     res.status.send(200);
+    
 }
-=======
-    this.sendMail(email, emailBody);
-}
->>>>>>> f5a7036c1d51271dfefa2a1c1aeef84774eaec07
