@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Divider } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
 import {UserContext} from "../../Context";
+import NavBar from '../NavBar';
 import {
     Spin,
     Typography,

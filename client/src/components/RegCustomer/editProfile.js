@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from "../../Context";
-import NavBar from '../NavBar';
 
 const { Title } = Typography;
 
@@ -16,10 +15,17 @@ export default function EditProfile() {
     const { accessToken } = useContext(UserContext);
     const location = useLocation();
     const { user } = location.state;
-    const [userData, setUserData] = useState(user);
-
+    const [userData, setUserData] = useState([user]);
+    console.log(userData[0].firstName);
     const [form] = Form.useForm();
-
+    // form.setFieldsValue({
+    //     firstnameInput: userData.firstName,
+    //     lastnameInput: userData.lastName,
+    //     emailInput: userData.email,
+    //     addressInput: userData.homeAddress,
+    //     countrycodeInput: userData.countryCode,
+    //     telephonenumberInput: userData.phoneNumber,
+    //     passportnumberInput: userData.passportNumber});
     function handler(event) {
 
         setUserData({
@@ -69,19 +75,18 @@ export default function EditProfile() {
 
     return (
         <div>
-            <NavBar/>
+            
             <Divider className="title-divider" />
             <Card title={<Title level={3}>Edit Profile</Title>} style={{ marginLeft: '10%', marginRight: '10%' }}>
                 <Form
                     initialValues={{
-                        firstnameInput: userData.firstname,
-                        lastnameInput: userData.lastname,
-                        emailInput: userData.email,
-                        addressInput: userData.homeaddress,
-                        countrycodeInput: userData.countrycode,
-                        // prefix: userData.countrycode,
-                        telephonenumberInput: userData.telephonenumber,
-                        passportnumberInput: userData.passportnumber
+                        firstnameInput: userData[0].firstName,
+                        lastnameInput: userData[0].lastName,
+                        emailInput: userData[0].email,
+                        addressInput: userData[0].homeAddress,
+                        countrycodeInput: userData[0].countryCode,
+                        telephonenumberInput: userData[0].phoneNumber,
+                        passportnumberInput: userData[0].passportNumber
                     }}
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
@@ -141,7 +146,7 @@ export default function EditProfile() {
                     </Form.Item>
 
                     <Form.Item name='telephonenumberInput' label='Telephone Number'
-                        rules={[{ required: true, message: 'Please enter a valid phone number!' }, { whitespace: true }, { type: 'number', min: 1111111111, max: 9999999999 }]}>
+                        rules={[{ required: true, message: 'Please enter a valid phone number!' }, { whitespace: true }, {  }]}>
                         <Input name='phoneNumber'
                             onChange={event => handler(event)} />
                     </Form.Item>

@@ -20,8 +20,7 @@ router.patch('/updateSeats', controller.updateSeats )
 
 router.get('/getProfile', controller.getProfile);
 router.patch('/updateProfile', controller.updateProfile);
-router.post('/cancelFlight', controller.cancelFlight);
-router.post('/sendEmail',controller.sendEmail);
+router.post('/cancelReservation', controller.cancelReservation);
 // router.patch('/addFlight',controller.addFlight);
 
 

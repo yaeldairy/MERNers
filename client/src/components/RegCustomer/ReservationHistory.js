@@ -3,7 +3,6 @@ import { Divider, Typography, Select, List } from 'antd';
 import "antd/dist/antd.css";
 import { useLocation } from 'react-router-dom';
 import FlightListItem from './FlightListItem';
-import NavBar from '../NavBar';
 const { Title } = Typography;
 
 
@@ -13,8 +12,10 @@ export default function ReservationHistory() {
     const { user } = location.state;
     const [userData, setUserData] = useState(user);
     const reservations = userData.flights;
+    // console.log(reservations);
     const bookings = userData.bookingReferences;
-    console.log("USERRRRRRRRRRRRRRRRRRRRR");
+
+    // console.log("USERRRRRRRRRRRRRRRRRRRRR");
     // console.log(userData);
     // console.log(userData.flights);
     // console.log(userData.bookingReferences);
@@ -31,10 +32,10 @@ export default function ReservationHistory() {
     var previousFlights = [];
     useEffect(() => {
         getUpcomingTrips();
-        // getPreviousTrips();
-        console.log("upcoming");
-        console.log(upcomingFlights[0].deptFlight.amount);
-        console.log(upcomingFlights[0].deptFlight.amount);
+        getPreviousTrips();
+        // console.log("upcoming");
+        // console.log(upcomingFlights[0].deptFlight.amount);
+        // console.log(upcomingFlights[0].deptFlight.amount);
         // console.log("previous");
         // console.log(previousFlights);
     })
@@ -45,7 +46,7 @@ export default function ReservationHistory() {
             for (const trip of reservations) {
                 console.log("booking" + booking);
                 console.log(trip);
-                if (trip.bookingNum === booking) {
+                if (trip.bookingNumber === booking) {
                     if (trip.type === "departure") {
                         console.log(trip.date.substring(0, 2));
                         console.log(trip.date.substring(3, 5));
@@ -97,11 +98,12 @@ export default function ReservationHistory() {
 
 
     function getPreviousTrips() {
+        // htmlCode = '';
         for (const booking of bookings) {
             for (const trip of reservations) {
-                console.log("booking" + booking);
+                console.log("booking " + booking);
                 console.log(trip);
-                if (trip.bookingNum === booking) {
+                if (trip.bookingNumber === booking) {
                     if (trip.type === "departure") {
                         console.log(trip.date.substring(0, 2));
                         console.log(trip.date.substring(3, 5));
@@ -117,7 +119,7 @@ export default function ReservationHistory() {
                                 console.log("temp1: " + tempTrip);
                                 console.log("trip1: " + trip);
                                 // htmlCode = htmlCode + '<ul><FlightListItem booking={booking} deptFlight={trip} retFlight={tempTrip} amount={trip.amount + tempTrip.amount} userData={userData} editable={true} /> </ul>';
-                                previousFlights.push({ booking: booking, deptFlight: trip, retFlight: tempTrip });
+                                upcomingFlights.push({ booking: booking, deptFlight: trip, retFlight: tempTrip });
                                 //pop tempTrip w trip men reservations
                                 tempTrip = null;
                                 break;
@@ -136,7 +138,7 @@ export default function ReservationHistory() {
                                 console.log("temp2: " + tempTrip);
                                 console.log("trip2: " + trip);
                                 // htmlCode = htmlCode + '<ul><FlightListItem booking={booking} deptFlight={tempTrip} retFlight={trip} amount={trip.amount + tempTrip.amount} userData={userData} editable={true} /></ul>';
-                                previousFlights.push({ booking: booking, deptFlight: tempTrip, retFlight: trip });
+                                upcomingFlights.push({ booking: booking, deptFlight: tempTrip, retFlight: trip });
                                 //pop tempTrip w trip men reservations
                                 tempTrip = null;
                                 break;
@@ -153,7 +155,6 @@ export default function ReservationHistory() {
 
     return (
         <>
-        <NavBar/>
             <Title>Your Purchses</Title>
             <Divider />
             <h2>Upcoming trips: </h2>

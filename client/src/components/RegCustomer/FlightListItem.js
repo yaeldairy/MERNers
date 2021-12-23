@@ -27,14 +27,21 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
     </div>)
 
     function handler() {
-
+        const emailBody = `<p>Hello ${userData.firstname} ${userData.lastname},</p>
+        <br/>
+        <p>This is to confirm the cancellation of your reservation for booking ${booking}, flights ${deptFlight.flightNumber} and ${retFlight.flightNumber}. You will be refunded with an amount of ${amount} within the next 5-7 working days.</p>
+        <br/>
+        <p>Best wishes,</p>
+        <p>ACL Airlines</p>`;
         const hide = message.loading('Cancelling your reservation...', 0);
         axios({
             method: 'POST',
-            url: 'http://localhost:3001/user/cancelFlight',
+            url: 'http://localhost:3001/user/cancelReservation',
             data: {
                 userId: userData._id,
-                booking: booking
+                booking: booking,
+                email: userData.email,
+                emailBody: emailBody
                 // },
                 //     headers: {
                 //       'Authorization': `Bearer ${accessToken}`
@@ -45,30 +52,6 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
         }).then((res) => {
             hide()
             message.success('Reservation cancelled. A confirmation email will be sent.', 2);
-            //send email
-            const emailBody = `<p>Hello ${userData.firstname} ${userData.lastname},</p>
-        <br/>
-        <p>This is to confirm the cancellation of your reservation for booking ${booking}, flights ${deptFlight.flightNumber} and ${retFlight.flightNumber}. You will be refunded with an amount of ${amount} within the next 5-7 working days.</p>
-        <br/>
-        <p>Best wishes,</p>
-        <p>ACL Airlines</p>`;
-            axios.post("http://localhost:3001/user/sendEmail", {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                },
-                data: {
-                    email: userData.email,
-                    emailBody: emailBody
-                }
-            })
-                .then(() => {
-                    // console.log("email sent", res);
-
-                }
-                ).catch((err) => {
-                    console.log("error", err);
-                });
-            //
 
         }).catch((err) => {
             hide()
