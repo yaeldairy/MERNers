@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { Button, Card, Typography } from 'antd';
-import { FaPlane, FaLongArrowAltRight, FaSortAmountDown } from "react-icons/fa";
+import { FaPlane, FaLongArrowAltRight } from "react-icons/fa";
 import axios from 'axios';
 import { message, Popconfirm } from 'antd';
 import { Link } from 'react-router-dom';
@@ -20,6 +21,8 @@ const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }
 function FlightListItem({ booking, deptFlight, retFlight, amount, userData, editable }) {
 
     const { accessToken } = useContext(UserContext);
+    const location = useLocation();
+    console.log(location.pathname); 
     // var vis = true;
 
     const title = (<div style={displayFlex}>
@@ -56,8 +59,8 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
         ).then((res) => {
             hide()
             message.success('Reservation cancelled. A confirmation email will be sent.', 2);
-            // vis = false;
-            // window.location.reload(true);   
+            window.location.href='/' ;
+            // window.location.href=location.pathname ;
 
         }).catch((err) => {
             hide()

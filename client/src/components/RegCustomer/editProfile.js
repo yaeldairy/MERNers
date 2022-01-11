@@ -59,7 +59,8 @@ export default function EditProfile() {
         })
             .then((res) => {
                 hide()
-                message.success('Data updated successfully. Redirecting...', 2)
+                message.success('Data updated successfully. Redirecting...', 4)
+                window.location.href='/' ;
             })
             .catch((err) => {
                 hide()

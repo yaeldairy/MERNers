@@ -130,7 +130,7 @@ function Checkout() {
 
         }
       });
-      const emailBody = `<p>Hello,</p>
+      const emailBody = `<p>Hello, </p>
       <br/>
       <p>This is to confirm your booking number ${bookingNumber} for flights ${departureFlight.flightNum} and ${returnFlight.flightNum}.</p>
       <p>You have been charged an amount of $${calculatePrice(departureFlight) + calculatePrice(returnFlight)}.</p>
@@ -167,7 +167,7 @@ function Checkout() {
   const title = (<Title level={2} >Booking Summary</Title>)
 
   if (success) {
-    return <BookingSuccess flight={departureFlight} />
+    return <BookingSuccess departureFlight={departureFlight} returnFlight={returnFlight} />
   }
 
   return (

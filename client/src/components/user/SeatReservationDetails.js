@@ -7,6 +7,9 @@ function SeatReservationDetails({flight, selectedSeats}) {
     const {username, cabin} = useContext(UserContext);
     //let flightNumber = 'AC 3012';//TODO get flight number from DB
     let bookingClass = 'Economy';//TODO get booking class from DB
+    console.log("flight in seat seatSelection")
+      console.log(flight)
+      console.log(selectedSeats);
    
     useEffect(()=>{
       console.log("flight in seat seatSelection")

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Menu, message } from 'antd';
-import { HomeOutlined, UserOutlined, LogoutOutlined, MailOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined, LogoutOutlined, MailOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { MenuItem } from '@mui/material';
 import { UserContext } from "../Context";
 import { Link } from 'react-router-dom';
@@ -12,7 +12,7 @@ export default function NavBar() {
 
     const copyToClip = () => {
         navigator.clipboard.writeText('aclairlines@gmail.com')
-        message.success('email copied to clipboard', 5);
+        message.success('Email copied to clipboard', 5);
       };
 
     useEffect(() => {
@@ -41,32 +41,31 @@ export default function NavBar() {
         {userData ?(
         <Menu
             // onClick={this.handleClick}
-            style={{ width: 1500,display:"flex", flexDirection:"row" }}
+            style={{ width: 1500,display:"flex", flexDirection:"row", display:"flex"}}
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
         >
-            {/* <HomeOutlined><Link to={{ pathname: `/` }} /></HomeOutlined> */}
-            <MenuItem style={{ width: 1000}}><Link to={{pathname:`/`}}>Hello {userData.firstName} {userData.lastName}!</Link></MenuItem>
-            <Menu icon={<UserOutlined />} title="Profile" style={{ width: 700,display:"flex", flexDirection:"row" }}>
-                <Menu.Item style={{ width: 250}} >
+           
+            <MenuItem style={{ width: 250}}><Link to={{pathname:`/`}}><HomeOutlined/>   Hello {userData.firstName} {userData.lastName}!</Link></MenuItem>
+            {/* <Menu icon={<UserOutlined />} title="Profile" style={{ }}> */}
+                <Menu.Item icon = {<UserOutlined/>}style={{ width: 250}} >
                     <Link to={{ pathname: `/profile` }} state={{ user: userData }}>
                     Your Account
                     </Link>
                 </Menu.Item>
-                <Menu.Item style={{ width: 250}} >
+                <Menu.Item icon={<UnorderedListOutlined />} style={{ width: 250}} >
                     <Link to={{ pathname: `/profile/${userData.username}/reservations` }} state={{ user: userData }}>
                         Bookings
                     </Link>
                 </Menu.Item>
-            </Menu>
+            {/* </Menu> */}
 
-            <Menu.Item icon={<MailOutlined />}  onClick={copyToClip}>
+            <Menu.Item icon={<MailOutlined />} style={{ width: 250}} onClick={copyToClip}>
                     Contact Us
             </Menu.Item>
-            {/* {this.state.copySuccess} */}
-            <Menu.Item icon={<LogoutOutlined />}>
-                <Link to={{ pathname: `` }}>
+            <Menu.Item icon={<LogoutOutlined />} style={{ width: 250}}>
+                <Link to={{ pathname: `/` }}>
                     Logout
                 </Link>
             </Menu.Item>
