@@ -84,27 +84,22 @@ export default function UserProfile() {
   return (
       <div>
         <Card title={<Title level={2} style={{textAlign:'left'}}>Profile</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} >
-       <Descriptions layout="horizontal" bordered>
+       <Descriptions layout="horizontal" column={1} bordered>
         <Descriptions.Item label="Username" >
         {userData.username}
         </Descriptions.Item>
-        <DescriptionsItem Divider/><DescriptionsItem Divider/>
         <Descriptions.Item label="Email" >
         {userData.email}
         </Descriptions.Item>
-        <DescriptionsItem Divider/><DescriptionsItem Divider/>
         <Descriptions.Item label="Address" span>
         {userData.homeAddress}
         </Descriptions.Item>
-        <DescriptionsItem Divider/><DescriptionsItem Divider/>
         <Descriptions.Item label="Telephone Number" span>
         {userData.countryCode}{userData.phoneNumber}
         </Descriptions.Item>
-        <DescriptionsItem Divider/><DescriptionsItem Divider/>
         <Descriptions.Item label="Passport Number" >
         {userData.passportNumber}
         </Descriptions.Item>
-        <DescriptionsItem Divider/><DescriptionsItem Divider/>
         </Descriptions>
         </Card>
 
