@@ -17,10 +17,11 @@ router.patch('/selectSeats',controller.selectSeats)
 router.patch('/addFlight', controller.addFlight )
 router.patch('/updateSeats', controller.updateSeats )
 
-
 router.get('/getProfile', controller.getProfile);
 router.patch('/updateProfile', controller.updateProfile);
 router.post('/cancelReservation', controller.cancelReservation);
+router.post('/sendEmail', controller.sendEmail )
+
 // router.patch('/addFlight',controller.addFlight);
 
 

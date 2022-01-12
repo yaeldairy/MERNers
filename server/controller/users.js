@@ -129,13 +129,14 @@ exports.addFlight = (req, res) => {
 exports.addBooking = (req, res) => {
 
     const { username, email } = req.body.user;
-    const { bookingNumber, emailBody } = req.body;
+    const { bookingNumber, emailBody1, emailBody2 } = req.body;
     console.log(username)
     console.log(bookingNumber)
     User.findOneAndUpdate({ username }, { $push: { bookingReferences: bookingNumber } }, (error, response) => {
         console.log(response)
         if (response) {
-            sendMail(email, emailBody);
+            sendMail(email, emailBody1);
+            sendMail(email, emailBody2);
             res.status(200).send(response);
         }
         else {
@@ -193,6 +194,7 @@ exports.updateProfile = (req, res) => {
 
 function sendMail(email, emailBody) {
     //send email
+    // console.log("send email backend");
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -230,10 +232,11 @@ function sendMail(email, emailBody) {
 
 }
 
-// exports.sendEmail = (req, res) => {
-//     const {email, body} = req.body;
-//     this.sendMail();
-// }
+exports.sendEmail = (req, res) => {
+    const {email, emailBody} = req.body;
+    sendMail(email, emailBody);
+    res.status(200).send("successful");
+}
 
 exports.addFlight = (req, res) =>{ 
     const {username}=req.body.user;

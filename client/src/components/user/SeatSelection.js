@@ -1,13 +1,13 @@
-import { Card, Button, message, Space,Popconfirm } from 'antd';
+import { Button, message, Space,Popconfirm } from 'antd';
 import '../../App.css';
 import FirstClassRowSS from './FirstClassRowSS'
 import EconomyClassRowSS from './EconomyClassRowSS'
 import BusinessClassRowSS from './BusinessClassRowSS'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import SSLegend from './SSLegend';
 import SeatReservationDetails from './SeatReservationDetails';
 import { UserContext } from "../../Context";
-import { Link, useNavigate} from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 export default function SeatSelection({ flight, setRedirect }) {
@@ -92,21 +92,21 @@ export default function SeatSelection({ flight, setRedirect }) {
                             <FirstClassRowSS flight={flight}
                                 updateFinalSelectionList={handleSeatSelected}
                                 setCompleted={handleCompleted}
-                                totalSeats={cabin == "First" ? noOfSeats.number : 0} />
+                                totalSeats={cabin === "First" ? noOfSeats.number : 0} />
                             <div className='rowNumber'>
                                 <p>Business Class</p>
                             </div>
                             <BusinessClassRowSS flight={flight}
                                 updateFinalSelectionList={handleSeatSelected}
                                 setCompleted={handleCompleted}
-                                totalSeats={cabin == "Business" ? noOfSeats.number : 0} />
+                                totalSeats={cabin === "Business" ? noOfSeats.number : 0} />
                             <div className='rowNumber'>
                                 <p>Economy Class</p>
                             </div>
                             <EconomyClassRowSS flight={flight}
                                 updateFinalSelectionList={handleSeatSelected}
                                 setCompleted={handleCompleted}
-                                totalSeats={cabin == "Economy" ? noOfSeats.number : 0} />
+                                totalSeats={cabin === "Economy" ? noOfSeats.number : 0} />
                         </div>
                     </div>
                 </div>
