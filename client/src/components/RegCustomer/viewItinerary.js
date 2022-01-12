@@ -63,14 +63,14 @@ export default function ReservationHistory() {
         });
 
     }
-    const email = (<div><Button onClick={sendEmail}>
+    const email = (<div><Button type='primary' onClick={sendEmail}>
         Email Copy
     </Button>
     </div>)
     return (
         <div>
 
-            <Card title={<Title level={2}>{booking} Itinerary</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} extra={email} >
+            <Card title={<Title style={{textAlign:'left'}} level={2}>{booking} Itinerary</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} extra={email} >
                 <Card title={<div style={{ display: "flex", direction: "row", marginTop: '10px' }} type="inner">
                     <FaPlane style={{ fontSize: '250%' }} />
                     <Title style={{ marginLeft: '15px' }} level={4} >Flight: {deptFlight.flightNum}</Title>

@@ -78,11 +78,11 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
                 }}
                 type="inner"
                 title={title}
-                extra={<><Button><Link to={{ pathname: `/profile/${userData._id}/reservations/${booking}` }} state={{ booking: booking, deptFlight: deptFlight, retFlight: retFlight, amount: amount, userData: userData }}>
+                extra={<><Button style={{display: 'block'}}><Link to={{ pathname: `/profile/${userData._id}/reservations/${booking}` }} state={{ booking: booking, deptFlight: deptFlight, retFlight: retFlight, amount: amount, userData: userData }}>
                     View Itinerary
                 </Link>
-                </Button>
-                    {editable ? <Button type="primary" style={buttonStyle}>
+                </Button>&nbsp;
+                    {editable ? <Button type="primary" style={{buttonStyle, display: 'block'}}>
                         <Popconfirm title="Are you sure you want to cancel this trip?" onConfirm={handler} okText="Yes" cancelText="No">
                             <a href="#">Cancel Trip</a>
                         </Popconfirm>
