@@ -9,23 +9,23 @@ import {FaPlaneArrival, FaPlaneDeparture} from "react-icons/fa"
 const { Step } = Steps;
 const { Title } = Typography;
 
-function ReturnFlights(){
+function AlternativeFlights(){
 
     const location = useLocation();
-    const { flight, seatType, Adults, Children } = location.state;
+    const {type, flight, seatType, Adults, Children } = location.state;
     const [flights, setFlights] = useState(UserContext);
     const [displayed, setDisplayed] =useState([])
     const [loading, setLoading]= useState(false);
 
      useEffect(()=>{
-      
+      setLoading(true)
       axios.get('http://localhost:3001/flights')
         .then((res) => {
           
           setFlights(res.data)
           const filteredFlights = res.data.filter((f)=>{
 
-            if(f.deptAirport!==flight.arrAirport || f.arrAirport!== flight.deptAirport){
+            if(f.arrAirport!==flight.arrAirport || f.deptAirport!== flight.deptAirport){
                 return false;
             }
             switch (seatType) {
@@ -48,15 +48,62 @@ function ReturnFlights(){
               }
               return true;
          })
-
-         setDisplayed(filteredFlights)
-          
-         
+         setLoading(false)
+         setDisplayed(filteredFlights)      
         })
         .catch((e) => {
          // setError(true) 
         })   
      },[])
+
+     const showModal = () => {
+        setIsModalVisible(true);
+      };
+    
+      const handleOk = (flight) => {
+  
+        setIsModalVisible(false);
+        console.log("flight input to search")
+        console.log(flight)
+  
+        setDisplayed(flights.filter((f)=>{
+           
+           console.log(flight)
+  
+          for (const property in flight) {
+           console.log(property)
+           // console.log(flight[property])
+  
+           if(property=="noOfAdults" || property=="noOfChildren"){
+               if(f.nOfBusiness+f.nOfEconomy+f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)){
+                 return false;
+               }
+           }
+          else if(property=="cabin"){
+
+            // console.log(flight[property])
+             switch(flight.cabin){
+              case "First":
+               // console.log((f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)));
+                if(f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)){
+                return false;}
+              case "Business":
+                if(f.nOfBusiness < (flight.noOfAdults + flight.noOfChildren))
+                return false;
+              case "Economy":
+                if(f.nOfEconomy < (flight.noOfAdults + flight.noOfChildren))
+                return false;         
+             }
+           }
+          }
+          return true;
+  
+        }))
+      };
+    
+      const handleCancel = () => {
+        setIsModalVisible(false);
+      };
 
      const displayFlex ={ display: "flex", direction: "row", marginTop:'10px'}
      
@@ -70,6 +117,7 @@ function ReturnFlights(){
 
 
     return(
+        <div>
   <Card title={<Title style={{marginLeft:'15px'}} level={2} >Select Return Flight</Title> } bordered={false} 
    style={{ marginLeft:'10%' , marginRight:'10%', marginTop:'5%' }}  >
         <Steps size="default" current={1}>
@@ -78,12 +126,12 @@ function ReturnFlights(){
           <Step title="Checkout" />
         </Steps>
 
-        <Card title={title("Chosen Departure Flight","departure")}  style={{marginTop:'30px'}}>
+        <Card title={title(`chosen ${type} flight`,type)}  style={{marginTop:'30px'}}>
         <FlightListItem flight={flight} hideButton={true} />
         </Card>
       
         <Spin spinning={loading} delay={400} >
-         <Card title={title("Available Return Flights","return")} bordered={false} >
+         <Card title={title("Alternative Flights",type)} bordered={false} >
         <List
             itemLayout="vertical"
             size="large"
@@ -93,11 +141,18 @@ function ReturnFlights(){
             <FlightListItem flight={f} departureFlight={flight} /> )} /> 
          </Card>
          </Spin>
-          
-         
-        </Card>
-        
-        
+            
+        </Card>   
+
+        <Modal 
+          title="Search Flights"
+          visible={isModalVisible} 
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={[ /*add modal buttons here */ ]}>
+        <SearchForm handleOk={handleOk} />
+      </Modal>
+        </div>     
     )
 }
-export default ReturnFlights;
+export default AlternativeFlights;

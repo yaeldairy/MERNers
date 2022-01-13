@@ -6,6 +6,8 @@ const nodemailer = require("nodemailer");
 
 //assuming the request carries and object with both the unique user ID
 //and the seat array
+
+
 let patchUser = (username, newUserData) => {
     return User.findOneAndUpdate({
         username: username
@@ -177,11 +179,18 @@ exports.getProfile = (req, res) => {
 
 exports.updateProfile = (req, res) => {
 
+    console.log("I was here")
+    console.log(req.body)
+
     const { _id, username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber } = req.body;
     var objectId = mongoose.Types.ObjectId(_id);
 
-    User.findByIdAndUpdate(objectId, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
+    User.findByIdAndUpdate({username}, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
+        console.log(response)
+        console.log(error)
+
         if (response) {
+            
             res.status(200).send(response)
         }
         else {

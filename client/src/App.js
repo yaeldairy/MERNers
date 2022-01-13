@@ -18,6 +18,8 @@ import ViewItinerary from './components/RegCustomer/viewItinerary';
 import NavBar from './components/NavBar';
 import { UserContext } from "./Context";
 import {Button} from 'antd';
+import ChangePassword from './components/user/ChangePassword';
+//import AvailableFlights from './components/general/ReturnFlights';
 // import { Navigate, useNavigate } from 'react-router-dom';
 
 function App() {
@@ -52,6 +54,9 @@ function App() {
                               <Route path="/updateFlight/:id" element={<UpdateFlight />} />
                               <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />}>
                                     <Route path='/checkout' element={<Checkout />} />
+                              </Route>
+                              <Route exact path='/changePassword' element={<PrivateRoute path='/changePassword' />}>
+                                    <Route path='/changePassword' element={<ChangePassword />} />
                               </Route>
                               {/* <Route path="/profile/:username" element={<UserProfile />} /> */}
                               <Route exact path='/profile' element={<PrivateRoute path='/profile' />}>

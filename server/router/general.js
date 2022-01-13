@@ -9,6 +9,9 @@ router.post('/login', [verifyUser.isPasswordAndUserMatch,controller.login]);
 
 router.post('/signup', controller.insertUser);
 
+router.post('/changePassword', [controller.isCorrectPassword, controller.changePassword]);
+
 router.get('/flights', controller.allFlights)
+
 module.exports = router
 

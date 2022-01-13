@@ -16,7 +16,7 @@ const title=(<Title  level={2} >Flights</Title> )
 
 export default function Flights (){
 
-    const {flights, setFlights} = useContext(UserContext);
+    const [flights, setFlights] = useState(null);
     const [displayed, setDisplayed] = useState(null);
     const [error, setError]= useState(false)
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -31,6 +31,7 @@ export default function Flights (){
          
         })
         .catch((e) => {
+          console.log(e)
           setError(true) 
         })
   

@@ -10,7 +10,6 @@ export const UserProvider = ({children}) => {
   const name= localStorage.getItem("username") || null;
   const parsedToken = JSON.parse(token)
   const [accessToken, setAccessToken] = useState(parsedToken || null);
-  const [flights, setFlights] = useState(null);
   const [username, setUsername] = useState(name || null);/////////////
   const [permissionLevel, setPermissionLevel] = useState(parsedToken || null);
   const [departureFlight, setDepartureFlight] = useState(null);
@@ -25,7 +24,6 @@ export const UserProvider = ({children}) => {
     <UserContext.Provider
       value={{
         accessToken, setAccessToken,
-        flights , setFlights,
         permissionLevel, setPermissionLevel,
         departureFlight, setDepartureFlight,
         returnFlight, setReturnFlight,
