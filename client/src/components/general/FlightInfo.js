@@ -3,7 +3,7 @@ import { Descriptions } from 'antd';
 function FlightInfo ({flight}){
 //TODO check what info they need here (duration, arrDate)
     return (        
-        <Descriptions  title="Flight Information" style={{ marginBottom:'50px'}} column={1} bordered>
+        <Descriptions title="Flight Information" style={{ marginBottom:'50px'}} column={1} bordered>
         <Descriptions.Item label="Departure Airport" >
           {flight.deptAirport}
         </Descriptions.Item>

@@ -37,8 +37,8 @@ function App() {
             {/* <NavBar /> */}
             <Router>
             {(accessToken)?(<NavBar style={{zIndex:2}}/>):(<></>)}
-            {(!accessToken)?(<><Button type="primary" onClick={handler} style={{zIndex:2,float: "right"}}>
-                  <Link to={{pathname:`/login`}} state={{ path }}>
+            {(!accessToken)?(<><Button type="primary" onClick={handler} style={{zIndex:2,float: "right", marginRight: '3%', marginTop: '2%'}}>
+                  <Link to={{pathname:`/login`}} state={{ path }} >
                         Login
                         </Link>
                   </Button><br/></>):(<></>)}

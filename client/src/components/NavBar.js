@@ -12,7 +12,7 @@ export default function NavBar() {
 
     const copyToClip = () => {
         navigator.clipboard.writeText('aclairlines@gmail.com')
-        message.success('Email copied to clipboard', 5);
+        message.success('Email copied to clipboard', 1);
       };
 
     useEffect(() => {
@@ -45,9 +45,10 @@ export default function NavBar() {
             defaultSelectedKeys={['1']}
             defaultOpenKeys={['sub1']}
             mode="inline"
+            theme="dark"
         >
            
-            <MenuItem style={{ width: 250}}><Link to={{pathname:`/`}}><HomeOutlined/>   Hello {userData.firstName} {userData.lastName}!</Link></MenuItem>
+            <MenuItem style={{ width: 250, marginLeft: '3%'}}><Link to={{pathname:`/`}}><HomeOutlined/>   Hello {userData.firstName} {userData.lastName}!</Link></MenuItem>
             {/* <Menu icon={<UserOutlined />} title="Profile" style={{ }}> */}
                 <Menu.Item icon = {<UserOutlined/>}style={{ width: 250}} >
                     <Link to={{ pathname: `/profile` }} state={{ user: userData }}>

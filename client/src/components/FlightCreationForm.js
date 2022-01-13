@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'; //use effect is for renders
-import {Typography, Card, Form, Input, Button, DatePicker, Checkbox, TimePicker, message, InputNumber} from 'antd';
+import {Typography, Card, Form, Input, Button, DatePicker, TimePicker, message } from 'antd';
 import "antd/dist/antd.css";
-import moment, { duration } from 'moment';
+import moment from 'moment';
 import axios from 'axios';
-const { Title, Text } = Typography;
+const { Title } = Typography;
 export default function FlightCreationForm (){
 
     //const [value, functiontoupdatevalue] = useState(initialvalue) 
     //We deconstruct array                   //this returns an array
-    
-    let dateFormat = ''
+  
     const [flightData, setFlightData] = useState({
         flightNum: "",
         deptAirport: "", 
