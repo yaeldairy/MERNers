@@ -17,13 +17,14 @@ function AlternativeFlights() {
   const location = useLocation();
   const { type, flight, seatType } = location.state;
   const seats = flight.noOfSeats.number;
-  const booking = flight.bookingNumber;
-  console.log(flight);
+  
+  //console.log(flight);
 
   const [displayed, setDisplayed] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [oldFlight, setOldFlight] = useState(null);
 
   useEffect(() => {
     setLoading(true)
@@ -33,7 +34,12 @@ function AlternativeFlights() {
         //(res.data)
         const filteredFlights = res.data.filter((f) => {
           // console.log(f);
-          
+          if (f.flightNum === flight.flightNum){
+            setOldFlight(f);
+            
+          }
+
+
           if (f.arrAirport !== flight.arrAirport || f.deptAirport !== flight.deptAirport) {
             return false;
           }
@@ -65,7 +71,7 @@ function AlternativeFlights() {
         // setError(true) 
       })
   }, [])
-
+  console.log(oldFlight);
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -116,7 +122,7 @@ function AlternativeFlights() {
     // console.log(flight.totalPrice);
     // console.log(price);
     // console.log(flight.totalPrice-price);
-    return flight.totalPrice - (price*seats);
+    return flight.totalPrice - (price * seats);
   }
 
   const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }
@@ -148,7 +154,7 @@ function AlternativeFlights() {
               pagination={{ pageSize: 5 }}
               dataSource={filtered}
               renderItem={f => (
-                <AlternativeFlightListItem flight={f} pricediff={CalPrice(f.price)} booking = {booking} type = {type} cabin ={flight.cabin} noOfSeats={flight.noOfSeats}/>)} />
+                <AlternativeFlightListItem oldUserFlight={flight} oldFlight = {oldFlight} newFlight={f} pricediff={CalPrice(f.price)} type={type} />)} />
           </Card>
         </Spin>
 

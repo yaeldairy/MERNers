@@ -10,8 +10,10 @@ const { Title } = Typography;
 function AlternativeFlight (){
    
     const location = useLocation();
-    const { flight, type, booking, pricediff, cabin, noOfSeats } = location.state;
+    const { oldUserFlight, oldFlight, newFlight, pricediff, type } = location.state; // choose cabin
+    // console.log(oldFlight);
     const [bookingFlag, setBookingFlag] = useState(false);
+    var cabin;
    
     const onClick = ()=>{
       setBookingFlag(true);
@@ -22,11 +24,12 @@ function AlternativeFlight (){
 
     const title= (<div style={{ display: "flex", flexDirection :'row'}}>
       <FaPlaneDeparture style={{ fontSize: '200%' }} />
-      <Title level={3} style={{ marginLeft:'20px'}}>Flight: {flight.flightNum}</Title>
+      <Title level={3} style={{ marginLeft:'20px'}}>Flight: {newFlight.flightNum}</Title>
       </div>)
 
-      if (bookingFlag) {
-        return <ChangeCheckout flight= {flight} cabin = {cabin} type= {type} booking= {booking} pricediff= {pricediff} noOfSeats = {noOfSeats}/>//return
+      if (bookingFlag) { 
+        return <ChangeCheckout oldFlight = {oldFlight} oldUserFlight = {oldUserFlight} newFlight= {newFlight} cabin = {cabin} type= {type} pricediff= {pricediff}/>//return
+        //oldFlight, oldCabin, flight, cabin, type, booking, pricediff, noOfSeats, seat
         /* <Link to={{pathname:`/changeCheckout`}} state={{ flight: flight, type: type, booking: booking, pricediff: pricediff }}>
          Confirm alternative flight
         </Link> */
@@ -39,7 +42,7 @@ function AlternativeFlight (){
         style={{marginTop:'50px'}}    
         title={title}
         bordered={false}>
-        <FlightInfo flight={flight} pricediff={pricediff}/>
+        <FlightInfo flight={newFlight} pricediff={pricediff}/>
         <Button type="primary" >
         <Popconfirm
             title="Are you sure you want to book this flight?"

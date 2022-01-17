@@ -1,8 +1,8 @@
 import { Descriptions } from 'antd';
 
 function FlightInfo ({flight, pricediff}){
-  console.log("hereeeee")
-  console.log(pricediff);
+  // console.log("hereeeee")
+  // console.log(pricediff);
 //TODO check what info they need here (duration, arrDate)
     return (        
         <Descriptions title="Flight Information" style={{ marginBottom:'50px'}} column={1} bordered>

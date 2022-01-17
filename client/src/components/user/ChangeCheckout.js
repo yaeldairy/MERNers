@@ -4,42 +4,74 @@ import { UserContext } from "../../Context";
 import axios from 'axios';
 
 
-function ChangeCheckout(oldFlight, oldCabin, flight, cabin, type, booking, pricediff, noOfSeats) {
-
-    //const { accessToken, departureFlight, returnFlight, cabin, noOfSeats } = useContext(UserContext);
+function ChangeCheckout(data) {
+    const {oldFlight, oldUserFlight, newFlight, type, cabin, pricediff} = data;
+    // console.log("CHANGE CHECKOUT")
+    // console.log(oldFlight);//undefined
+    // console.log(oldUserFlight);
+    // console.log(newFlight);
+    // console.log(type);
+    // console.log(cabin);//undefined
+    // console.log(pricediff);
+    // console.log("END")
+    //console.log(oldUserFlight.seat.length());
+    // console.log(oldUserFlight.seat.length);
+    //new old flights
+    //const { username, email } = useContext(UserContext);
     var emailBody;
-    var newFlight;
-
+    var newUserFlight;
+    // var f = flight;
     function setFlight() {
-        newFlight = {
-            arrAirport: flight.arrAirport,
-            arrTime: flight.arrTime,
-            bookingNumber: booking,
+        switch (cabin) {
+            case "First":
+                newFlight.remainingSeats.First -= oldUserFlight.noOfSeats.number; break;
+            case "Business":
+                newFlight.remainingSeats.Business -= oldUserFlight.noOfSeats.number; break;
+            case "Economy":
+                newFlight.remainingSeats.Economy -= oldUserFlight.noOfSeats.number; break;
+            default: break;
+        }
+
+        switch (oldUserFlight.cabin) {
+            case "First":
+                oldFlight.remainingSeats.First += oldUserFlight.noOfSeats.number; break;
+            case "Business":
+                oldFlight.remainingSeats.Business += oldUserFlight.noOfSeats.number; break;
+            case "Economy":
+                oldFlight.remainingSeats.Economy += oldUserFlight.noOfSeats.number; break;
+            default: break;
+
+        }
+        // oldFlight.takenSeats.concat();
+        var index;
+        for (let i = 0; i < oldUserFlight.seat.length; i++) {
+            index = oldFlight.takenSeats.indexOf(oldUserFlight.seat[i]);
+            oldFlight.takenSeats.splice(index, 1);
+        }
+        newUserFlight = {
+            arrAirport: newFlight.arrAirport,
+            arrTime: newFlight.arrTime,
+            bookingNumber: oldUserFlight.booking,
             cabin: cabin,
-            date: flight.date,
-            deptAirport: flight.deptAirport,
-            deptTime: flight.deptTime,
-            flightId: flight.flightId,
-            flightNum: flight.flightNum,
-            noOfSeats: noOfSeats,
+            date: newFlight.date,
+            deptAirport: newFlight.deptAirport,
+            deptTime: newFlight.deptTime,
+            flightId: newFlight.flightId,
+            flightNum: newFlight.flightNum,
+            noOfSeats: oldUserFlight.noOfSeats,
             seat: [],
-            totalPrice: noOfSeats.number * flight.price,
+            totalPrice: oldUserFlight.noOfSeats.number * newFlight.price,
             type: type
         }
     }
     function updateBack() {
-        // const updateBooking = await axios({
-        //   method: 'patch', //should be patch
-        //   url: 'http://localhost:3001/user/updateBooking',
-        //   headers: { Authorization: `Bearer ${accessToken}` },
-        //   data: { flight: newFlight }
-        // });
+       
     }
 
     function sendEmailCharge() {
         emailBody = `<p>Hello,</p>
     <br/>
-    <p>This is to confirm your flight change in booking ${booking} for flights.</p>
+    <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
     <p>You have been charged an amount of ${pricediff}.</p>
     <br/>
     <p>Best wishes,</p>
@@ -50,7 +82,7 @@ function ChangeCheckout(oldFlight, oldCabin, flight, cabin, type, booking, price
     function sendEmailRefund() {
         emailBody = `<p>Hello,</p>
     <br/>
-    <p>This is to confirm your flight change in booking ${booking} for flights.</p>
+    <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
     <p>You will be refunded an amount of ${pricediff}.</p>
     <br/>
     <p>Best wishes,</p>
@@ -60,7 +92,7 @@ function ChangeCheckout(oldFlight, oldCabin, flight, cabin, type, booking, price
     function sendEmail() {
         emailBody = `<p>Hello,</p>
     <br/>
-    <p>This is to confirm your flight change in booking ${booking} for flights.</p>
+    <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
     <p></p>
     <br/>
     <p>Best wishes,</p>
@@ -69,6 +101,7 @@ function ChangeCheckout(oldFlight, oldCabin, flight, cabin, type, booking, price
     }
 
     useEffect(() => {
+        setFlight();
         if (pricediff === 0)
             sendEmail();
         else if (pricediff < 0)
