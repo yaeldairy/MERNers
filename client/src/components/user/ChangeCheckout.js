@@ -1,26 +1,15 @@
 import { Result, Card } from 'antd';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { UserContext } from "../../Context";
 import axios from 'axios';
 
 
 function ChangeCheckout(data) {
-    const {oldFlight, oldUserFlight, newFlight, type, cabin, pricediff} = data;
-    // console.log("CHANGE CHECKOUT")
-    // console.log(oldFlight);//undefined
-    // console.log(oldUserFlight);
-    // console.log(newFlight);
-    // console.log(type);
-    // console.log(cabin);//undefined
-    // console.log(pricediff);
-    // console.log("END")
-    //console.log(oldUserFlight.seat.length());
-    // console.log(oldUserFlight.seat.length);
-    //new old flights
-    //const { username, email } = useContext(UserContext);
-    var emailBody;
-    var newUserFlight;
-    // var f = flight;
+    const { oldFlight, oldUserFlight, newFlight, type, cabin, pricediff } = data;
+    const { accessToken } = useContext(UserContext);
+    const { email, setEmail } = useState(null);
+    const [newUserFlight, setNewUserFlight] = useState(null);
+    
     function setFlight() {
         switch (cabin) {
             case "First":
@@ -42,13 +31,13 @@ function ChangeCheckout(data) {
             default: break;
 
         }
-        // oldFlight.takenSeats.concat();
+        
         var index;
         for (let i = 0; i < oldUserFlight.seat.length; i++) {
             index = oldFlight.takenSeats.indexOf(oldUserFlight.seat[i]);
             oldFlight.takenSeats.splice(index, 1);
         }
-        newUserFlight = {
+        setNewUserFlight({
             arrAirport: newFlight.arrAirport,
             arrTime: newFlight.arrTime,
             bookingNumber: oldUserFlight.booking,
@@ -62,52 +51,63 @@ function ChangeCheckout(data) {
             seat: [],
             totalPrice: oldUserFlight.noOfSeats.number * newFlight.price,
             type: type
-        }
+        });
     }
-    function updateBack() {
-       
+    const updateBack = async (e) => {
+        e.preventDefault();
+        const updateBooking = await axios({
+            method: 'patch', //should be patch
+            url: 'http://localhost:3001/user/updateBooking',
+            headers: { Authorization: `Bearer ${accessToken}` },
+            data: {
+                //   newFlightUser,
+                //   oldFlightUser,
+                //   newFlight,
+                //   oldFlight,
+
+
+
+            }
+        });
     }
 
-    function sendEmailCharge() {
-        emailBody = `<p>Hello,</p>
+    const sendEmailCharge =
+        `<p>Hello,</p>
     <br/>
     <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
     <p>You have been charged an amount of ${pricediff}.</p>
     <br/>
     <p>Best wishes,</p>
     <p>ACL Airlines</p>`;
-        updateBack();
-    }
 
-    function sendEmailRefund() {
-        emailBody = `<p>Hello,</p>
+
+    const sendEmailRefund =
+        `<p>Hello,</p>
     <br/>
     <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
     <p>You will be refunded an amount of ${pricediff}.</p>
     <br/>
     <p>Best wishes,</p>
     <p>ACL Airlines</p>`;
-        updateBack();
-    }
-    function sendEmail() {
-        emailBody = `<p>Hello,</p>
+
+    const sendEmail =
+        `<p>Hello,</p>
     <br/>
     <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
     <p></p>
     <br/>
     <p>Best wishes,</p>
     <p>ACL Airlines</p>`;
-        updateBack();
-    }
+
 
     useEffect(() => {
         setFlight();
         if (pricediff === 0)
-            sendEmail();
+            setEmail(sendEmail);
         else if (pricediff < 0)
-            sendEmailRefund();
+            setEmail(sendEmailRefund);
         else
-            sendEmailCharge();
+            setEmail(sendEmailCharge);
     }, [])
 
     return (
