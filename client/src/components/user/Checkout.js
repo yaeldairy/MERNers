@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useLocation, Link } from 'react-router-dom';
 import BookingSuccess from './BookingSuccess'
 import Summary from './Summary';
+import StripePay from './StripePay'
+//import User from '../../../../server/db/models/user';
 const { Title, Text } = Typography;
 const { Step } = Steps;
 
@@ -23,7 +25,7 @@ function generateBookingNumber(length) {
 
 function Checkout() {
 
-  const { accessToken, departureFlight, returnFlight, cabin, noOfSeats } = useContext(UserContext);
+  const { accessToken, departureFlight, returnFlight, cabin, noOfSeats , username } = useContext(UserContext);
   const [success, setSuccess] = useState(false)
 
   const newSeats = (departureFlight) => {
@@ -79,70 +81,80 @@ function Checkout() {
     console.log(noOfSeats)
     try {
 
-      const flightOne = await axios({
+      const flightOne = await axios({ 
         method: 'patch', //should be patch
-        url: 'http://localhost:3001/user/addFlight',
+        url: 'http://localhost:3001/user/bookTrip',
         headers: { Authorization: `Bearer ${accessToken}` },
         data: {
-          flight: {
-            ...departureFlight,
-            totalPrice: calculatePrice(departureFlight),
-            bookingNumber,
-            type: "departure",
-            cabin,
-            noOfSeats
-          }
-        }
-      });
-      const flightTwo = await axios({
-        method: 'patch', //should be patch
-        url: 'http://localhost:3001/user/addFlight',
-        headers: { Authorization: `Bearer ${accessToken}` },
-        data: {
-          flight: {
-            ...returnFlight,
-            totalPrice: calculatePrice(returnFlight),
-            bookingNumber,
-            type: "return",
-            cabin,
-            noOfSeats
-          }
-        }
-      });
-      const updateFlight1 = await axios({
-        method: 'patch', //should be patch
-        url: 'http://localhost:3001/user/updateSeats',
-        headers: { Authorization: `Bearer ${accessToken}` },
-        data: {
-          flightId: departureFlight._id,
-          ...seats
-
+         departureFlight,
+         returnFlight
         }
       });
 
-      const updateFlight2 = await axios({
-        method: 'patch', //should be patch
-        url: 'http://localhost:3001/user/updateSeats',
-        headers: { Authorization: `Bearer ${accessToken}` },
-        data: {
-          flightId: returnFlight._id,
-          ...seats
+      // const flightOne = await axios({ 
+      //   method: 'patch', //should be patch
+      //   url: 'http://localhost:3001/user/addFlight',
+      //   headers: { Authorization: `Bearer ${accessToken}` },
+      //   data: {
+      //     flight: {
+      //       ...departureFlight,
+      //       totalPrice: calculatePrice(departureFlight),
+      //       bookingNumber,
+      //       type: "departure",
+      //       cabin,
+      //       noOfSeats
+      //     }
+      //   }
+      // });
+      // const flightTwo = await axios({
+      //   method: 'patch', //should be patch
+      //   url: 'http://localhost:3001/user/addFlight',
+      //   headers: { Authorization: `Bearer ${accessToken}` },
+      //   data: {
+      //     flight: {
+      //       ...returnFlight,
+      //       totalPrice: calculatePrice(returnFlight),
+      //       bookingNumber,
+      //       type: "return",
+      //       cabin,
+      //       noOfSeats
+      //     }
+      //   }
+      // });
+      // const updateFlight1 = await axios({
+      //   method: 'patch', //should be patch
+      //   url: 'http://localhost:3001/user/updateSeats',
+      //   headers: { Authorization: `Bearer ${accessToken}` },
+      //   data: {
+      //     flightId: departureFlight._id,
+      //     ...seats
 
-        }
-      });
-      const emailBody = `<p>Hello, </p>
-      <br/>
-      <p>This is to confirm your booking number ${bookingNumber} for flights ${departureFlight.flightNum} and ${returnFlight.flightNum}.</p>
-      <p>You have been charged an amount of $${calculatePrice(departureFlight) + calculatePrice(returnFlight)}.</p>
-      <br/>
-      <p>Best wishes,</p>
-      <p>ACL Airlines</p>`;
-      const saveBooking = await axios({
-        method: 'patch', //should be patch
-        url: 'http://localhost:3001/user/addBooking',
-        headers: { Authorization: `Bearer ${accessToken}` },
-        data: { bookingNumber, emailBody }
-      });
+      //   }
+      // });
+
+      // const updateFlight2 = await axios({
+      //   method: 'patch', //should be patch
+      //   url: 'http://localhost:3001/user/updateSeats',
+      //   headers: { Authorization: `Bearer ${accessToken}` },
+      //   data: {
+      //     flightId: returnFlight._id,
+      //     ...seats
+
+      //   }
+      // });
+      // const emailBody = `<p>Hello, ${username}</p>
+      // <br/>
+      // <p>This is to confirm your booking number ${bookingNumber} for flights ${departureFlight.flightNum} and ${returnFlight.flightNum}.</p>
+      // <p>You have been charged an amount of $${calculatePrice(departureFlight) + calculatePrice(returnFlight)}.</p>
+      // <br/>
+      // <p>Best wishes,</p>
+      // <p>ACL Airlines</p>`;
+      // const saveBooking = await axios({
+      //   method: 'patch', //should be patch
+      //   url: 'http://localhost:3001/user/addBooking',
+      //   headers: { Authorization: `Bearer ${accessToken}` },
+      //   data: { bookingNumber, emailBody }
+      // });
 
       setSuccess(true)
 
@@ -167,7 +179,8 @@ function Checkout() {
   const title = (<Title level={2} >Booking Summary</Title>)
 
   if (success) {
-    return <BookingSuccess departureFlight={departureFlight} returnFlight={returnFlight} />
+    //return <BookingSuccess departureFlight={departureFlight} returnFlight={returnFlight} />
+    return <StripePay amount={calculatePrice(departureFlight) + calculatePrice(returnFlight)}/>
   }
 
   return (

@@ -57,6 +57,10 @@ price :{
 takenSeats:{
     type:new Array(Object),
     required:true
+},
+remainingSeats:{
+    type: new Array(Object),
+    required:true
 }
 
 })
