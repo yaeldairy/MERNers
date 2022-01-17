@@ -60,10 +60,10 @@ function ChangeCheckout(data) {
             url: 'http://localhost:3001/user/updateBooking',
             headers: { Authorization: `Bearer ${accessToken}` },
             data: {
-                //   newFlightUser,
-                //   oldFlightUser,
-                //   newFlight,
-                //   oldFlight,
+                  newUserFlight,
+                  oldUserFlight,
+                  newFlight,
+                  oldFlight,
 
 
 

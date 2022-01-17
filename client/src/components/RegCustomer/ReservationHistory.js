@@ -11,8 +11,8 @@ export default function ReservationHistory() {
     const location = useLocation();
     const { user } = location.state;
     const [userData, setUserData] = useState(user);
-    const reservations = userData.flights;
-    const bookings = userData.bookingReferences;
+    const reservations = userData.flights;//<------ new API call to get
+    const bookings = userData.bookingReferences;//<------ new API call to get
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');

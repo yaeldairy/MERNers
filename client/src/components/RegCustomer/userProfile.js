@@ -115,11 +115,6 @@ export default function UserProfile() {
               Change Password
             </Link>
           </Button>
-          {/* <Button type="primary" size="large">
-                  <Link to={{ pathname: `/profile/${userData.username}/reservations` }} state={{ user: userData }}>
-                    View Reservations
-                  </Link>
-                </Button> */}
         </div>
 
       </div>
