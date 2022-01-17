@@ -1,17 +1,18 @@
 import { Result, Card } from 'antd';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect , useState} from 'react';
 import { UserContext } from "../../Context";
 import axios from 'axios';
 
 
 function ChangeCheckout(oldFlight, oldCabin, flight, cabin, type, booking, pricediff, noOfSeats) {
 
-    //const { accessToken, departureFlight, returnFlight, cabin, noOfSeats } = useContext(UserContext);
+    const { accessToken} = useContext(UserContext);
     var emailBody;
-    var newFlight;
+    var newFlightUser;
+    const {email , setEmail} = useState();
 
     function setFlight() {
-        newFlight = {
+        newFlightUser = {
             arrAirport: flight.arrAirport,
             arrTime: flight.arrTime,
             bookingNumber: booking,
@@ -27,54 +28,60 @@ function ChangeCheckout(oldFlight, oldCabin, flight, cabin, type, booking, price
             type: type
         }
     }
-    function updateBack() {
-        // const updateBooking = await axios({
-        //   method: 'patch', //should be patch
-        //   url: 'http://localhost:3001/user/updateBooking',
-        //   headers: { Authorization: `Bearer ${accessToken}` },
-        //   data: { flight: newFlight }
-        // });
+    const updateBack = async (e) => {
+        e.preventDefault();
+        const updateBooking =  await axios({
+          method: 'patch', //should be patch
+          url: 'http://localhost:3001/user/updateBooking',
+          headers: { Authorization: `Bearer ${accessToken}` },
+          data: { 
+            //   newFlightUser,
+            //   oldFlightUser,
+            //   newFlight,
+            //   oldFlight,
+
+
+
+            }
+        });
     }
 
-    function sendEmailCharge() {
-        emailBody = `<p>Hello,</p>
+    const sendEmailCharge = 
+     `<p>Hello,</p>
     <br/>
     <p>This is to confirm your flight change in booking ${booking} for flights.</p>
     <p>You have been charged an amount of ${pricediff}.</p>
     <br/>
     <p>Best wishes,</p>
     <p>ACL Airlines</p>`;
-        updateBack();
-    }
+    
 
-    function sendEmailRefund() {
-        emailBody = `<p>Hello,</p>
+    const sendEmailRefund = 
+     `<p>Hello,</p>
     <br/>
     <p>This is to confirm your flight change in booking ${booking} for flights.</p>
     <p>You will be refunded an amount of ${pricediff}.</p>
     <br/>
     <p>Best wishes,</p>
     <p>ACL Airlines</p>`;
-        updateBack();
-    }
-    function sendEmail() {
-        emailBody = `<p>Hello,</p>
+    
+    const sendEmail = 
+     `<p>Hello,</p>
     <br/>
     <p>This is to confirm your flight change in booking ${booking} for flights.</p>
     <p></p>
     <br/>
     <p>Best wishes,</p>
     <p>ACL Airlines</p>`;
-        updateBack();
-    }
+    
 
     useEffect(() => {
         if (pricediff === 0)
-            sendEmail();
+            setEmail(sendEmail);
         else if (pricediff < 0)
-            sendEmailRefund();
+            setEmail(sendEmailRefund);
         else
-            sendEmailCharge();
+            setEmail(sendEmailCharge);
     }, [])
 
     return (
