@@ -1,6 +1,8 @@
 import { Result, Card } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from "../../Context";
+import StripePay from './StripePay';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 
@@ -9,7 +11,8 @@ function ChangeCheckout(data) {
     const { accessToken } = useContext(UserContext);
     const { email, setEmail } = useState(null);
     const [newUserFlight, setNewUserFlight] = useState(null);
-    
+    let navigate = useNavigate();
+
     function setFlight() {
         switch (cabin) {
             case "First":
@@ -31,7 +34,7 @@ function ChangeCheckout(data) {
             default: break;
 
         }
-        
+
         var index;
         for (let i = 0; i < oldUserFlight.seat.length; i++) {
             index = oldFlight.takenSeats.indexOf(oldUserFlight.seat[i]);
@@ -60,13 +63,11 @@ function ChangeCheckout(data) {
             url: 'http://localhost:3001/user/updateBooking',
             headers: { Authorization: `Bearer ${accessToken}` },
             data: {
-                  newUserFlight,
-                  oldUserFlight,
-                  newFlight,
-                  oldFlight,
-
-
-
+                email,
+                newUserFlight,
+                oldUserFlight,
+                newFlight,
+                oldFlight,
             }
         });
     }
@@ -85,7 +86,7 @@ function ChangeCheckout(data) {
         `<p>Hello,</p>
     <br/>
     <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
-    <p>You will be refunded an amount of ${pricediff}.</p>
+    <p>You will be refunded an amount of ${Math.abs(pricediff)}.</p>
     <br/>
     <p>Best wishes,</p>
     <p>ACL Airlines</p>`;
@@ -108,18 +109,15 @@ function ChangeCheckout(data) {
             setEmail(sendEmailRefund);
         else
             setEmail(sendEmailCharge);
+        updateBack();
+        if (pricediff <= 0)
+            navigate(`/bookings/${oldUserFlight.booking}`, { state: { booking: oldUserFlight.booking } })
     }, [])
 
     return (
+        (pricediff > 0 ?
+            <StripePay amount={pricediff} booking={oldUserFlight.booking} /> : <></>)
 
-        <Card >
-
-            <Result
-                status="success"
-                title="Booking Successful!"
-                subTitle="You should receive a confirmation email with details about your booking"
-            />
-        </Card>
     )
 }
 export default ChangeCheckout;

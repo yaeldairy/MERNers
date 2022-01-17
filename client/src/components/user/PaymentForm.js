@@ -1,9 +1,8 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
-import React, { useState , useContext} from "react";
-import {useNavigate} from "react-router-dom";
-import {Button , Card, Typography , Popconfirm} from 'antd';
+import React, { useState , useContext } from "react";
+import {Button , Card, Typography} from 'antd';
 import { UserContext } from "../../Context";
 const {Title} = Typography;
 const stripePromise = loadStripe("pk_test_51KH6wELePquds3rDYJlyvrCVLkIFTijWyb18tDaHClW7hwQWJTXHLWIZYiozGJya6kMOytEBwRDkgrEkbEAkn5M300NXV6Gv06");
@@ -34,11 +33,6 @@ function PaymentForm( amount ){
     const [success , setSuccess] = useState(false)
     const stripe = useStripe()
     const elements = useElements()
-    const navigate = useNavigate()
-
-    const onClick = () => {
-      navigate('/');
-    }
  
     const handleSubmit = async (e) => {
       e.preventDefault()
@@ -87,16 +81,7 @@ function PaymentForm( amount ){
           </fieldset>
           <button className="pbutton" type="primary"  >Pay</button>
           <div style={{marginTop:'2%' , marginLeft: '62%'}}>
-          <button className="cbutton" type="primary" >
-          <Popconfirm
-            title="Are you sure you want to cancel this payment?"
-            onConfirm={onClick}
-            okText="Yes"
-            cancelText="No"
-          >
-            Cancel
-          </Popconfirm>
-          </button>
+          <button className="cbutton" type="primary" onClick={handleSubmit}>Cancel</button>
           </div>
         </form>
         </Card>

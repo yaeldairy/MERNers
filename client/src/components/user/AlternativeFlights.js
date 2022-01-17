@@ -119,10 +119,7 @@ function AlternativeFlights() {
   };
 
   const CalPrice = (price) => {
-    // console.log(flight.totalPrice);
-    // console.log(price);
-    // console.log(flight.totalPrice-price);
-    return flight.totalPrice - (price * seats);
+    return flight.totalPrice - (price * seats);//revisit- adjust to cabin type
   }
 
   const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }

@@ -5,6 +5,7 @@ import {FaPlaneDeparture} from "react-icons/fa"
 import FlightInfo from './FlightInfo';
 import ChangeCheckout from './ChangeCheckout';
 import axios from 'axios';
+import ChooseCabin from './ChooseCabin';
 const { Title } = Typography;
 
 function AlternativeFlight (){
@@ -27,13 +28,7 @@ function AlternativeFlight (){
       <Title level={3} style={{ marginLeft:'20px'}}>Flight: {newFlight.flightNum}</Title>
       </div>)
 
-      if (bookingFlag) { 
-        return <ChangeCheckout oldFlight = {oldFlight} oldUserFlight = {oldUserFlight} newFlight= {newFlight} cabin = {cabin} type= {type} pricediff= {pricediff}/>//return
-        //oldFlight, oldCabin, flight, cabin, type, booking, pricediff, noOfSeats, seat
-        /* <Link to={{pathname:`/changeCheckout`}} state={{ flight: flight, type: type, booking: booking, pricediff: pricediff }}>
-         Confirm alternative flight
-        </Link> */
-      }
+      
 
     return( 
         <div>
@@ -44,15 +39,7 @@ function AlternativeFlight (){
         bordered={false}>
         <FlightInfo flight={newFlight} pricediff={pricediff}/>
         <Button type="primary" >
-        <Popconfirm
-            title="Are you sure you want to book this flight?"
-            onConfirm={onClick}
-
-            okText="Yes"
-            cancelText="No"
-          >
-            Book Flight
-          </Popconfirm>
+        <ChooseCabin oldFlight = {oldFlight} oldUserFlight = {oldUserFlight} newFlight= {newFlight} cabin = {cabin} type= {type} pricediff= {pricediff}/>
         
         </Button>
         </Card>

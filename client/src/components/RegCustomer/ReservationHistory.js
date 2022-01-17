@@ -3,6 +3,7 @@ import { Divider, Typography, Select, List, Card } from 'antd';
 import "antd/dist/antd.css";
 import { useLocation } from 'react-router-dom';
 import FlightListItem from './FlightListItem';
+import { speedDialActionClasses } from '@mui/material';
 const { Title } = Typography;
 
 
@@ -13,7 +14,7 @@ export default function ReservationHistory() {
     const [userData, setUserData] = useState(user);
     const reservations = userData.flights;//<------ new API call
     const bookings = userData.bookingReferences;//<------ new API call
-
+    const [done, setDone] = useState(false);
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
@@ -23,20 +24,33 @@ export default function ReservationHistory() {
     var previousFlights = [];
     useEffect(() => {
         //console.log(reservations)
-        //console.log(bookings)
-        getUpcomingTrips();
-        getPreviousTrips();
+        console.log(bookings)
+        // getUpcomingTrips();
+        // getPreviousTrips();
 
-    })
+        // for (let i = 0; i < bookings.length; i++)
+        //     for (let j = 0; j < reservations.length; j++)
+        //         if (reservations[j].bookingNumber == bookings[i]) {
+        //             console.log("trip "+i+j)
+        //         }
+
+
+    }, []);
+
+
 
     function getUpcomingTrips() {
+        console.log("upcoming")
         for (const booking of bookings) {
+            console.log(booking);
             for (const trip of reservations) {
-                if (trip.bookingNumber === booking) {
+                if (trip.bookingNumber == booking) {
                     if (trip.type === "departure") {
+                        // console.log(trip.date);
                         if ((trip.date.substring(6, 10) > yyyy) ||
                             (trip.date.substring(6, 10) == yyyy && trip.date.substring(3, 5) > mm) ||
                             (trip.date.substring(6, 10) == yyyy && trip.date.substring(3, 5) == mm && trip.date.substring(0, 2) > dd)) {
+                            // console.log("in")
                             if (tempTrip == null) {
                                 //console.log("temp set")
                                 tempTrip = trip;
@@ -66,20 +80,23 @@ export default function ReservationHistory() {
             }
             tempTrip = null;
         }
-        //console.log("UPCOMING TRIPS------------------------")
-        //console.log(upcomingFlights)
+        // console.log("UPCOMING TRIPS------------------------")
+        // console.log(upcomingFlights)
 
     }
 
     function getPreviousTrips() {
+
+        // console.log("previous")
         for (const booking of bookings) {
             for (const trip of reservations) {
                 if (trip.bookingNumber === booking) {
                     if (trip.type === "departure") {
+                        console.log(trip.date);
                         if ((trip.date.substring(6, 10) < yyyy) ||
                             (trip.date.substring(6, 10) == yyyy && trip.date.substring(3, 5) < mm) ||
                             (trip.date.substring(6, 10) == yyyy && trip.date.substring(3, 5) == mm && trip.date.substring(0, 2) <= dd)) {
-
+                            // console.log("in")
                             if (tempTrip == null) {
                                 //console.log("temp set")
                                 tempTrip = trip;
@@ -109,31 +126,31 @@ export default function ReservationHistory() {
             }
             tempTrip = null;
         }
-        //console.log("PREVIOUS TRIPS------------------------")
-        //console.log(previousFlights)
-
+        console.log("PREVIOUS TRIPS------------------------")
+        console.log(previousFlights)
+        setDone(true);
     }
 
 
-    return (
-        <>
-        <Card title={<Title level={2} style={{textAlign:'left'}}>Upcoming trips:</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} >
+    return(
+    <>
+        <Card title={<Title level={2} style={{ textAlign: 'left' }}>Upcoming trips:</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} >
             <List dataSource={upcomingFlights}
                 renderItem={flight => (
                     <ul><FlightListItem booking={flight.booking} deptFlight={flight.deptFlight} retFlight={flight.retFlight} amount={parseInt(flight.retFlight.totalPrice) + parseInt(flight.deptFlight.totalPrice)} userData={userData} editable={true} /></ul>
 
                 )
                 } /></Card>
-            <Divider />
+        <Divider />
 
-            <Card title={<Title level={2} style={{textAlign:'left'}}>Previous trips:</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
+        <Card title={<Title level={2} style={{ textAlign: 'left' }}>Previous trips:</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
             <List dataSource={previousFlights}
                 renderItem={flight => (
                     <ul><FlightListItem booking={flight.booking} deptFlight={flight.deptFlight} retFlight={flight.retFlight} amount={parseInt(flight.retFlight.totalPrice) + parseInt(flight.deptFlight.totalPrice)} userData={userData} editable={false} /></ul>
 
                 )
                 } /></Card>
-        </>
+    </>
     )
 
 }
