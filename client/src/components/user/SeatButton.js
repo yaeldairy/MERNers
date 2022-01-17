@@ -9,8 +9,10 @@ function SeatButton(props) {
         if (props.totalSeats == 0){
             setButtonState('seat nCSeat')
         }
-        else if (buttonState == 'seat availableSeat' && takenSeats.includes(props.id))
+        else if (buttonState == 'seat availableSeat' && takenSeats.includes(props.id) && !(props.initialSeats).includes(props.id))
             setButtonState('seat unavailableSeat')
+        else if ((props.initialSeats).includes(props.id))
+            setButtonState('seat selectedSeat')
     }, [])
     
     function handler(event) {
