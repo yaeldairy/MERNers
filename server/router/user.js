@@ -6,25 +6,18 @@ const permissionMiddleware = require ('../Auth/auth.permission.middleware')
 const router = express.Router()
 router.use(express.json())
 
-
-
 router.use(verifyToken.validJWTNeeded)
 router.use(permissionMiddleware.userPermission)
-
-// router.get('/test', controller.testRoute);
 router.patch('/addBooking',controller.addBooking)
 router.patch('/selectSeats',controller.selectSeats)
 router.patch('/addFlight', controller.addFlight )
 router.patch('/updateSeats', controller.updateSeats )
 router.patch('/bookTrip' , controller.bookTrip)
 router.post('/payment',controller.makePayment)
-
 router.get('/getProfile', controller.getProfile);
 router.patch('/updateProfile', controller.updateProfile);
 router.post('/cancelReservation', controller.cancelReservation);
-router.post('/sendEmail', controller.sendEmail )
-
-// router.patch('/addFlight',controller.addFlight);
-
+router.post('/sendEmail', controller.sendEmail );
+router.patch('/editBooking' , controller.editBooking);
 
 module.exports = router

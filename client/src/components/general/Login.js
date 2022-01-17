@@ -3,8 +3,9 @@ import {useState, useContext} from 'react';
 import { Navigate } from 'react-router-dom';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
-import { Divider } from 'antd';
-import { SyncOutlined } from '@ant-design/icons';
+import { Divider , Space } from 'antd';
+import { SyncOutlined , EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+
 import {UserContext} from "../../Context";
 import NavBar from '../NavBar';
 import {
@@ -98,7 +99,6 @@ function Login (){
                 ]}>
                 <TextArea placeholder="Username:" allowClear/>
               </Form.Item>
-
               <Form.Item 
                 name="password"
                 label="password"
@@ -107,10 +107,12 @@ function Login (){
                     required: true,
                     message: 'Please enter password',
                   },
-                ]}>
+                ]}
+                iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                >
                 <TextArea placeholder="Password:" allowClear/>
               </Form.Item>
-
+                
               {error && <Alert message={error} type="error" />} 
   
               <Button type="primary" onClick={onSubmit}  >

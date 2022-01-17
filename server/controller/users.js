@@ -255,8 +255,6 @@ exports.addFlight = (req, res) =>{
     const FId = mongoose.Types.ObjectId(_id);
     const flight ={flightId:FId,flightNum,type,deptAirport,arrAirport,deptTime,arrTime,date,totalPrice,noOfSeats,cabin,bookingNumber,seat:[]};
 
-
-
     User.findOneAndUpdate({ username }, { $push: { flights: flight } }, (error, response) => {
         if (response) {
             res.status(200).send(response)
@@ -419,5 +417,33 @@ exports.bookTrip = async (req,res) =>{
     // catch(e){
     //     res.status(400).send(e)
     // }
+
+}
+
+exports.editBooking = async(req,res) => {
+    const oldFlight = req.body.oldFlightUser;
+    const newFlight = req.body.newFlightUser;
+    const username =req.body.username;
+    const Fid1 = req.body.oId;
+    const Fid2 = req.body.nId;
+    const FId1 = mongoose.Types.ObjectId(Fid1);
+    const FId2 = mongoose.Types.ObjectId(Fid2);
+    oldFlight.flightId = FId1;
+    newFlight.flightId = FId2;
+    const rem1 = req.body.remaining1;
+    const rem2 = req.body.remaining2;
+
+    try{
+        const user1 = await User.findOneAndUpdate({ username},{ $pull: { flights: { flightId: FId1 }}});
+        const user2 = await User.findOneAndUpdate({username} ,{$push: {flights : newFlight}});
+        const flight1 = await Flight.findOneAndUpdate({_id : FId1} , {remainingSeats : rem1});
+        const flight2 = await Flight.findOneAndUpdate({_id : FId2} , {remainingSeats : rem2});
+        
+        res.status(200).send("Booking Successful!");
+    }
+    catch(e){
+        res.status(400).send("An error occurred!");
+    }
+
 
 }
