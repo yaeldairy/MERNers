@@ -286,9 +286,6 @@ exports.cancelReservation = (req, res) => {
             console.log("error")
             console.log(err);
         });
-
-
-
     //update flight info
     if (deptFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
@@ -320,8 +317,6 @@ exports.cancelReservation = (req, res) => {
                 console.log("error")
                 console.log(err);
             });
-
-
     if (retFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
@@ -389,35 +384,49 @@ exports.makePayment = async(req,res) =>{
 exports.bookTrip = async (req,res) =>{
 
     console.log(req.body);
-    res.send(200).send("Booking successfully made!");
+     let {departureFlight , returnFlight} = req.body;
+     const {username , email }=req.body.user;
+     const { bookingNumber , emailBody1 , emailBody2 } = req.body ;
+     const {remainingSeats: remainingSeats1} = departureFlight;
+     const {remainingSeats: remainingSeats2} = returnFlight;
+     const _id1 = req.body.departureFlight._id;
+     const FId1 = mongoose.Types.ObjectId(_id1);
+     const _id2 = req.body.returnFlight._id;
+     const FId2 = mongoose.Types.ObjectId(_id2);
+    
+     console.log(departureFlight);
+     console.log(returnFlight);
+    
 
+     delete departureFlight.nOfEconomy;
+     delete departureFlight.nOfBusiness;
+     delete departureFlight.nOfFirst;
+     delete departureFlight.remainingSeats;
 
-    // const {username , email }=req.body.user;
-    // const { bookingNumber, emailBody } = req.body.email;
-    // const _id1 = req.body.departureFlight._id;
-    // const FId1 = mongoose.Types.ObjectId(_id1);
-    // const _id2 = req.body.returnFlight._id;
-    // const FId2 = mongoose.Types.ObjectId(_id2);
-    // const {departureFlight , returnFlight} = req.body;
-    // const remainingSeats1 = req.body.departureFlight.remainingSeats;
-    // const remainingSeats2 = req.body.returnFLight.remainingSeats;
+     delete returnFlight.nOfEconomy;
+     delete returnFlight.nOfBusiness;
+     delete returnFlight.nOfFirst;
+     delete returnFlight.remainingSeats;
+     
+     console.log("----------------------");
+     console.log(departureFlight);
+     console.log(returnFlight);
+     console.log("----------------------");
 
-    // try{
+    try{
 
-    //     const user = await User.findOneAndUpdate({ username }, { $push: { flights: departureFlight , returnFlight } });
+        const addUserf1 = await User.findOneAndUpdate({ username }, { $push: { flights: departureFlight} });
+        const addUserf2 = await User.findOneAndUpdate({ username }, { $push: { flights:  returnFlight } });
+        const flight1 = await Flight.findOneAndUpdate({ _id: FId1 }, { remainingSeats : remainingSeats1});
+        const flight2 = await Flight.findOneAndUpdate({ _id: FId2 }, { remainingSeats : remainingSeats2});
+        const booking = await User.findOneAndUpdate({username}, { $push: { bookingReferences: bookingNumber }});
+        sendMail(email, emailBody1);
+        sendMail(email, emailBody2);
 
-    //     const flight1 = await Flight.findOneAndUpdate({ _id: FId1 }, { remainingSeats : remainingSeats1});
-
-    //     const flight2 = await Flight.findOneAndUpdate({ _id: FId2 }, { remainingSeats : remainingSeats2});
-
-    //     const booking = await User.findOneAndUpdate({username}, { $push: { bookingReferences: bookingNumber }});
-        
-    //     sendMail(email, emailBody);
-
-    //     res.send(200).send("Booking successfully made!");
-    // }
-    // catch(e){
-    //     res.status(400).send(e)
-    // }
+        res.status(200).send("successful");
+    }
+    catch(e){
+        res.status(400).send(e);
+    }
 
 }
