@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Row, Col, Card, Divider, Typography, Button } from 'antd';
 import { message } from 'antd';
 import axios from 'axios';
@@ -74,7 +74,10 @@ export default function ReservationHistory() {
                 <Card title={<div style={{ display: "flex", direction: "row", marginTop: '10px' }} type="inner">
                     <FaPlane style={{ fontSize: '250%' }} />
                     <Title style={{ marginLeft: '15px' }} level={4} >Flight: {deptFlight.flightNum}</Title>
-                </div>} extra={<><a href="#" style={{display: 'block'}}>Change Flight</a><a href="#" style={{display: 'block'}}>Edit Seats</a></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
+                </div>} extra={<>
+                <a href="#" style={{display: 'block'}}><Link to={{pathname:`/changeFlight`}} state={{ type: deptFlight.type, flight: deptFlight, seatType: deptFlight.cabin }} >
+                Change Flight
+                        </Link></a><a href="#" style={{display: 'block'}}>Edit Seats</a></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
                     <Row>
                         <Col span={8} style={{textAlign: 'left'}}>Departure airport:</Col>
                         <Col span={28}>{deptFlight.deptAirport}</Col>
@@ -108,7 +111,9 @@ export default function ReservationHistory() {
                 <Card title={<div style={{ display: "flex", direction: "row", marginTop: '10px' }} type="inner">
                     <FaPlane style={{ fontSize: '250%' }} />
                     <Title style={{ marginLeft: '15px' }} level={4} >Flight: {retFlight.flightNum}</Title>
-                </div>} extra={<><a href="#" style={{display: 'block'}}>Change Flight</a><a href="#" style={{display: 'block'}}>Edit Seats</a></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
+                </div>} extra={<><a href="#" style={{display: 'block'}}><Link to={{pathname:`/changeFlight`}} state={{ type: retFlight.type, flight: retFlight, seatType: retFlight.cabin, Adults: retFlight.Adults, Children: retFlight.Children }} >
+                Change Flight
+                        </Link></a><a href="#" style={{display: 'block'}}>Edit Seats</a></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
                     <Row>
                         <Col span={8} style={{textAlign: 'left'}}>Flight number:</Col>
                         <Col span={28}>{retFlight.flightNum}</Col>

@@ -111,7 +111,7 @@ export default function UserProfile() {
             </Link>
           </Button>&nbsp;&nbsp;&nbsp;
           <Button type="primary" size="large">
-            <Link to={{ pathname: `/profile/${userData.username}/password` }} state={{ userData: userData }}>
+            <Link to={{ pathname: `/changePassword` }} >
               Change Password
             </Link>
           </Button>

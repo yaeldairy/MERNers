@@ -16,6 +16,7 @@ import ReservationHistory from './components/RegCustomer/ReservationHistory';
 import EditProfile from './components/RegCustomer/editProfile';
 import ViewItinerary from './components/RegCustomer/viewItinerary';
 import NavBar from './components/NavBar';
+import AlternativeFlights from './components/user/AlternativeFlights';
 import { UserContext } from "./Context";
 import {Button} from 'antd';
 import ChangePassword from './components/user/ChangePassword';
@@ -73,6 +74,9 @@ function App() {
                               {/* <Route path="/profile/:username/reservations/:booking" element={<ViewItinerary />} /> */}
                               <Route exact path='/profile/:username/reservations/:booking' element={<PrivateRoute path='/profile/:username/reservations/:booking' />}>
                                     <Route path='/profile/:username/reservations/:booking' element={<ViewItinerary />} />
+                              </Route>
+                              <Route exact path='/changeFlight' element={<PrivateRoute path='/changeFlight' />}>
+                                    <Route path='/changeFlight' element={<AlternativeFlights />} />
                               </Route>
                         </Routes>
                   </div>

@@ -10,45 +10,46 @@ import { Link } from 'react-router-dom';
 import { UserContext } from "../../Context";
 const { Title } = Typography;
 
-const title=(<Title  level={2} >Flights</Title> )
+const title = (<Title level={2} >Flights</Title>)
 
 
 
-export default function Flights (){
+export default function Flights() {
 
-    const [flights, setFlights] = useState(null);
-    const [displayed, setDisplayed] = useState(null);
-    const [error, setError]= useState(false)
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    
-    useEffect(() => {
-   
-      axios.get('http://localhost:3001/flights')
-        .then((res) => {
-          
-          setFlights(res.data)
-          setDisplayed(res.data)
-         
-        })
-        .catch((e) => {
-          console.log(e)
-          setError(true) 
-        })
-  
-    }, []);
+  const [ flights, setFlights ]= useState(null);
+  const [displayed, setDisplayed] = useState(null);
+  const [error, setError] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-    const showModal = () => {
-      setIsModalVisible(true);
-    };
-  
-    const handleOk = (flight) => {
+  useEffect(() => {
 
-      setIsModalVisible(false);
-      console.log("flight input to search")
+    axios.get('http://localhost:3001/flights')
+      .then((res) => {
+
+        setFlights(res.data)
+        setDisplayed(res.data)
+
+      })
+      .catch((e) => {
+        console.log(e)
+        setError(true)
+      })
+
+  }, []);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = (flight) => {
+
+    setIsModalVisible(false);
+    console.log("flight input to search")
+    console.log(flight)
+
+    setDisplayed(flights.filter((f) => {
+      
       console.log(flight)
-
-
-
       for (const property in flight) {
         console.log(property)
         // console.log(flight[property])
@@ -82,7 +83,7 @@ export default function Flights (){
       }
       return true;
 
-  
+    }))
   };
 
   const handleCancel = () => {

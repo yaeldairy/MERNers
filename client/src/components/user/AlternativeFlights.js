@@ -1,28 +1,35 @@
 import React, { useEffect, useState , useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
-import { List, Typography } from 'antd';
-import FlightListItem from './FlightListItem';
+import { List, Typography, Modal } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import FlightListItem from '../general/FlightListItem';
 import {Button, Spin , Card ,Tooltip,Steps} from 'antd';
 import {UserContext} from "../../Context";
 import axios from 'axios';
 import {FaPlaneArrival, FaPlaneDeparture} from "react-icons/fa"
+import SearchAlternativeFlights from './SearchAlternativeFlights';
 const { Step } = Steps;
 const { Title } = Typography;
 
 function AlternativeFlights(){
 
     const location = useLocation();
-    const {type, flight, seatType, Adults, Children } = location.state;
-    const [flights, setFlights] = useState(UserContext);
-    const [displayed, setDisplayed] =useState([])
+    const {type, flight, seatType } = location.state;
+    console.log("MY FLIGHT")
+    //console.log(flight.noOfSeats.number)
+    const seats = flight.noOfSeats.number;
+
+    const [displayed, setDisplayed] =useState([]);
+    const [filtered, setFiltered] =useState([]);
     const [loading, setLoading]= useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
      useEffect(()=>{
       setLoading(true)
       axios.get('http://localhost:3001/flights')
         .then((res) => {
           
-          setFlights(res.data)
+          //(res.data)
           const filteredFlights = res.data.filter((f)=>{
 
             if(f.arrAirport!==flight.arrAirport || f.deptAirport!== flight.deptAirport){
@@ -30,18 +37,18 @@ function AlternativeFlights(){
             }
             switch (seatType) {
                 case "First":
-                    if(f.nOfFirst<(Adults+Children)){
+                    if(f.nOfFirst<seats){
                       return false;
                     }
                 break;     
                 case "Economy":
-                    if(f.nOfEconomy<(Adults+Children)){
+                    if(f.nOfEconomy<seats){
                         return false;
                       }
                 break;
                  
                 case "Business":
-                    if(f.nOfBusiness<(Adults+Children)){
+                    if(f.nOfBusiness<seats){
                         return false;
                       }
                 break;   
@@ -49,7 +56,8 @@ function AlternativeFlights(){
               return true;
          })
          setLoading(false)
-         setDisplayed(filteredFlights)      
+         setDisplayed(filteredFlights)
+         setFiltered(filteredFlights)      
         })
         .catch((e) => {
          // setError(true) 
@@ -66,35 +74,33 @@ function AlternativeFlights(){
         console.log("flight input to search")
         console.log(flight)
   
-        setDisplayed(flights.filter((f)=>{
-           
-           console.log(flight)
+        setFiltered(displayed.filter((f)=>{
+           console.log("FLIGHTT")
+           console.log(f)
   
           for (const property in flight) {
            console.log(property)
            // console.log(flight[property])
   
-           if(property=="noOfAdults" || property=="noOfChildren"){
-               if(f.nOfBusiness+f.nOfEconomy+f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)){
-                 return false;
-               }
-           }
-          else if(property=="cabin"){
+           if(property=="cabin"){
 
             // console.log(flight[property])
              switch(flight.cabin){
               case "First":
                // console.log((f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)));
-                if(f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)){
+                if(f.nOfFirst < seats){
                 return false;}
               case "Business":
-                if(f.nOfBusiness < (flight.noOfAdults + flight.noOfChildren))
+                if(f.nOfBusiness < seats)
                 return false;
               case "Economy":
-                if(f.nOfEconomy < (flight.noOfAdults + flight.noOfChildren))
+                if(f.nOfEconomy < seats)
                 return false;         
              }
            }
+           else if (flight[property] !== '' && f[property] !== flight[property]) {
+            return false
+          }
           }
           return true;
   
@@ -131,12 +137,12 @@ function AlternativeFlights(){
         </Card>
       
         <Spin spinning={loading} delay={400} >
-         <Card title={title("Alternative Flights",type)} bordered={false} >
+         <Card title={title("Alternative Flights",type)} bordered={false} extra={<Button onClick={showModal} shape="circle" icon={<SearchOutlined />}/>}>
         <List
             itemLayout="vertical"
             size="large"
             pagination={{ pageSize: 5 }}
-            dataSource={displayed}
+            dataSource={filtered}
             renderItem={ f => (    
             <FlightListItem flight={f} departureFlight={flight} /> )} /> 
          </Card>
@@ -150,7 +156,7 @@ function AlternativeFlights(){
           onOk={handleOk}
           onCancel={handleCancel}
           footer={[ /*add modal buttons here */ ]}>
-        <SearchForm handleOk={handleOk} />
+        <SearchAlternativeFlights handleOk={handleOk} />
       </Modal>
         </div>     
     )
