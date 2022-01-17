@@ -11,8 +11,9 @@ const { Title } = Typography;
 export default function ReservationHistory() {
     const location = useLocation();
     const { accessToken } = useContext(UserContext);
-    const { booking, deptFlight, retFlight, amount, userData } = location.state;
-    // console.log(deptFlight.seat.length==0);
+    const { booking, userData } = location.state;;//<------ new API call for el booking bas using booking as booking number
+    //set deptFlight w retFlight bel response
+    
     
     function sendEmail(){
         const emailBody = `<p>Hello ${userData.firstName} ${userData.lastName},</p>
