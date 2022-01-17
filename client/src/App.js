@@ -8,6 +8,8 @@ import StripePay from './components/user/StripePay';
 import FlightCreationForm from './components/FlightCreationForm';
 import Flight from './components/general/Flight';
 import UpdateFlight from './components/UpdateFlight';
+import AlternativeFlight from './components/user/AlternativeFlight';
+import PaymentForm from './components/user/PaymentForm';
 //import SeatSelection from './components/user/SeatSelection';
 import Login from './components/general/Login';
 import ReturnFlights from './components/general/ReturnFlights';
@@ -16,6 +18,7 @@ import UserProfile from './components/RegCustomer/userProfile';
 import ReservationHistory from './components/RegCustomer/ReservationHistory';
 import EditProfile from './components/RegCustomer/editProfile';
 import ViewItinerary from './components/RegCustomer/viewItinerary';
+import ChangeCheckout from './components/user/ChangeCheckout';
 import NavBar from './components/NavBar';
 import AlternativeFlights from './components/user/AlternativeFlights';
 import { UserContext } from "./Context";
@@ -58,9 +61,14 @@ function App() {
                               <Route path="/payment" element={<StripePay />} />
                               <Route path="/viewFlight/:id" element={<Flight />} />
                               <Route path="/returnFlight/:id" element={<ReturnFlight />} />
+                              <Route path="/alternativeFlight/:id" element={<AlternativeFlight />} />
                               <Route path="/updateFlight/:id" element={<UpdateFlight />} />
+
                               <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />}>
                                     <Route path='/checkout' element={<Checkout />} />
+                              </Route>
+                              <Route exact path='/changeCheckout' element={<PrivateRoute path='/changeCheckout' />}>
+                                    <Route path='/changeCheckout' element={<ChangeCheckout />} />
                               </Route>
                               <Route exact path='/changePassword' element={<PrivateRoute path='/changePassword' />}>
                                     <Route path='/changePassword' element={<ChangePassword />} />
@@ -70,19 +78,22 @@ function App() {
                                     <Route path='/profile' element={<UserProfile />} />
                               </Route>
                               {/* <Route path="/profile/:username/reservations" element={<ReservationHistory />} /> */}
-                              <Route exact path='/profile/:username/reservations' element={<PrivateRoute path='/profile/:username/reservations' />}>
-                                    <Route path='/profile/:username/reservations' element={<ReservationHistory />} />
+                              <Route exact path='/bookings' element={<PrivateRoute path='/bookings' />}>
+                                    <Route path='/bookings' element={<ReservationHistory />} />
                               </Route>
                               {/* <Route path="/profile/:username/edit" element={<EditProfile />} /> */}
                               <Route exact path='/profile/:username/edit' element={<PrivateRoute path='/profile/:username/edit' />}>
                                     <Route path='/profile/:username/edit' element={<EditProfile />} />
                               </Route>
                               {/* <Route path="/profile/:username/reservations/:booking" element={<ViewItinerary />} /> */}
-                              <Route exact path='/profile/:username/reservations/:booking' element={<PrivateRoute path='/profile/:username/reservations/:booking' />}>
-                                    <Route path='/profile/:username/reservations/:booking' element={<ViewItinerary />} />
+                              <Route exact path='/bookings/:booking' element={<PrivateRoute path='/bookings/:booking' />}>
+                                    <Route path='/bookings/:booking' element={<ViewItinerary />} />
                               </Route>
                               <Route exact path='/changeFlight' element={<PrivateRoute path='/changeFlight' />}>
                                     <Route path='/changeFlight' element={<AlternativeFlights />} />
+                              </Route>
+                              <Route exact path='/payment' element={<PrivateRoute path='/payment' />}>
+                                    <Route path='/payment' element={<PaymentForm />} />
                               </Route>
                         </Routes>
                   </div>

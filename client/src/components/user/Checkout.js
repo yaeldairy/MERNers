@@ -74,7 +74,7 @@ function Checkout() {
 
   }
 
-
+var bookingNumber;
   const onClick = async (e) => {
 
     e.preventDefault();
@@ -160,7 +160,7 @@ function Checkout() {
 
   if (success) {
     //return <BookingSuccess departureFlight={departureFlight} returnFlight={returnFlight} />
-    return <StripePay amount={calculatePrice(departureFlight) + calculatePrice(returnFlight)}/>
+    return <StripePay amount={calculatePrice(departureFlight) + calculatePrice(returnFlight)} booking={bookingNumber}/>
   }
 
   return (

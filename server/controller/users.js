@@ -61,7 +61,6 @@ let patchFlight = (id, updatedTakenSeats) => {
 // }
 
 exports.selectSeats = (req, res) => {
-    console.log('HERE');
     let data = req.body;
     User.findOne({ username: data.username })
         .then((result) => {
@@ -69,6 +68,7 @@ exports.selectSeats = (req, res) => {
             let flightIndex = flightsArray.findIndex(
                 (flight) => (flight.flightId).toString() === data.flightId)
             let currentFlight = flightsArray[flightIndex];
+            let oldSeats = (currentFlight.seat)? currentFlight.seat : [] ;
             currentFlight.seat = data.seats
             flightsArray[flightIndex] = currentFlight
             let finalFlightsObject = { flights: flightsArray }
@@ -77,7 +77,10 @@ exports.selectSeats = (req, res) => {
                 .then(() => {
                     Flight.findById(data.flightId)
                         .then((rslt) => {
-                            let currentlyTakenSeats = rslt.takenSeats
+                            let currentlyTakenSeatsUnfiltered = rslt.takenSeats
+                            let currentlyTakenSeats = currentlyTakenSeatsUnfiltered.filter((seat)=>{
+                                return !(oldSeats.includes(seat))
+                            })
                             currentlyTakenSeats = currentlyTakenSeats.concat(data.seats)
                             let updatedTakenSeats = { takenSeats: currentlyTakenSeats }
                             patchFlight({_id : data.flightId}, updatedTakenSeats)
@@ -354,6 +357,30 @@ exports.cancelReservation = (req, res) => {
     
 }
 
+exports.getFlight = (req, res) =>{
+    let {flightId} = req.query; //to extract params
+    Flight.findById(flightId)
+    .then((rslt) => {
+        const nOfEconomy = rslt.nOfEconomy;
+        const nOfBusiness = rslt.nOfBusiness;
+        const nOfFirst = rslt.nOfFirst;
+        const takenSeats = rslt.takenSeats;
+        const flightNum = rslt.flightNum;
+        const seats = {
+            _id : flightId,
+            nOfEconomy : nOfEconomy,
+            nOfBusiness : nOfBusiness,
+            nOfFirst : nOfFirst,
+            takenSeats : takenSeats,
+            flightNum : flightNum
+        };
+        res.status(200).send(seats);
+    })
+    .catch((err) =>{
+        res.status(400).send({});
+        return;
+    })
+}
 exports.makePayment = async(req,res) =>{
         
         let { amount, id } = req.body;
