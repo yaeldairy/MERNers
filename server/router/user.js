@@ -19,5 +19,9 @@ router.patch('/updateProfile', controller.updateProfile);
 router.post('/cancelReservation', controller.cancelReservation);
 router.post('/sendEmail', controller.sendEmail );
 router.patch('/editBooking' , controller.editBooking);
+router.get('/getFlight', controller.getFlight);
+
+// router.patch('/addFlight',controller.addFlight);
+
 
 module.exports = router

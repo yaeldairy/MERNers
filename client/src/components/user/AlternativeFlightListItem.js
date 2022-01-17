@@ -13,13 +13,12 @@ const buttonStyle= {
 }
 const displayFlex ={ display: "flex", direction: "row", marginTop:'10px'}
 
-
-function AlternativeFlightListItem({flight, hideButton, pricediff, booking, type}) {
-    
+function AlternativeFlightListItem({oldUserFlight, oldFlight, newFlight, pricediff, type}) {
+    // console.log(oldFlight);
 
   const title=(<div style={displayFlex}>
       <FaPlane style={{fontSize: '250%'}} />
-      <Title style={{marginLeft:'15px'}} level={4} >Flight: {flight.flightNum}</Title> 
+      <Title style={{marginLeft:'15px'}} level={4} >Flight: {newFlight.flightNum}</Title> 
      </div>)
      
 
@@ -27,19 +26,8 @@ function AlternativeFlightListItem({flight, hideButton, pricediff, booking, type
      //check hena
 
   const extra =()=>{
-    if(hideButton){
-      return <div></div>
-    }
-    // if(oldFlight){
-
-    //   return (<Button type="primary" style={buttonStyle}> 
-    //    <Link to={{pathname:`/alternativeFlight/${flight.flightNum}`}} state={{ flight }}>
-    //      Flight Details
-    //   </Link> </Button>)
-    // }
-
     return( < Button type="primary" style={buttonStyle}>
-      <Link to={{pathname:`/alternativeFlight/${flight.flightNum}`}} state={{ flight, type, booking, pricediff }}>
+      <Link to={{pathname:`/alternativeFlight/${newFlight.flightNum}`}} state={{ oldUserFlight, oldFlight, newFlight, pricediff, type }}>
          Flight Details
       </Link>
       </Button>)
@@ -55,13 +43,13 @@ function AlternativeFlightListItem({flight, hideButton, pricediff, booking, type
     >
    
     <div style={displayFlex}>
-    <h2>{flight.deptAirport}</h2>
+    <h2>{newFlight.deptAirport}</h2>
     <FaLongArrowAltRight style={{fontSize: '150%', marginTop:'10px'}} />
-    <h2>{flight.arrAirport}</h2>
+    <h2>{newFlight.arrAirport}</h2>
     <div  style={{marginLeft:'30px'}}>
-    <Text style={{fontSize: '120%'}} italic>Flight date: {flight.date}</Text>
-    <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>Departure time: {flight.deptTime}</Text>
-    <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>Arrival time: {flight.arrTime}</Text>
+    <Text style={{fontSize: '120%'}} italic>Flight date: {newFlight.date}</Text>
+    <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>Departure time: {newFlight.deptTime}</Text>
+    <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>Arrival time: {newFlight.arrTime}</Text>
     </div>
     </div> 
     </Card>

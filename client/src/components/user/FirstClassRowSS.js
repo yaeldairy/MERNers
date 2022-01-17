@@ -1,11 +1,12 @@
 import '../../App.css';
 import React, { useEffect, useState } from 'react'
 import SeatButton from './SeatButton';
-export default function FirstClassRowSS({flight, updateFinalSelectionList,setCompleted,totalSeats}) {
+export default function FirstClassRowSS({flight, updateFinalSelectionList,setCompleted,totalSeats, initialSeats}) {
 
     //const totalSeats = 0; //TODO get from DB. This is the total number of seats in the booking
-    const [selectedSeats, setSelectedSeats] = useState([])
-    const [remainingSeats, setRemainingSeats] = useState(totalSeats)
+    const [selectedSeats, setSelectedSeats] = useState(initialSeats)
+    const remainingSeatsInitial = totalSeats - initialSeats.length 
+    const [remainingSeats, setRemainingSeats] = useState(remainingSeatsInitial)
 
     let rows = [];
     let seatNumber = flight.nOfFirst; //no of seats in first class
@@ -36,8 +37,12 @@ export default function FirstClassRowSS({flight, updateFinalSelectionList,setCom
     }
 
     useEffect(() => {
-        console.log(selectedSeats)
-        updateFinalSelectionList(selectedSeats);
+        if (remainingSeats == 0){
+            setCompleted(true)
+        }
+        else if (remainingSeats == 1){
+            setCompleted(false)
+        }
     }, [selectedSeats])
 
     let firstClassSeats = rows.map(row => {
@@ -45,15 +50,15 @@ export default function FirstClassRowSS({flight, updateFinalSelectionList,setCom
             return (
                 <div className='FirstClassrow' key={row}>
                     <div className='seatSet'>
-                        <SeatButton id={row + 'A'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats}> </SeatButton>
-                        <SeatButton id={row + 'C'} initialClass={thirdLastClass} addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats}></SeatButton>
+                        <SeatButton id={row + 'A'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats} initialSeats = {initialSeats}> </SeatButton>
+                        <SeatButton id={row + 'C'} initialClass={thirdLastClass} addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats} initialSeats = {initialSeats}></SeatButton>
                     </div>
                     <div className='rowNumber'>
                         <p>{row}</p>
                     </div>
                     <div className='seatSet'>
-                        <SeatButton id={row + 'D'} initialClass={secondLastClass} addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats}></SeatButton>
-                        <SeatButton id={row + 'F'} initialClass={lastClass} addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats}></SeatButton>
+                        <SeatButton id={row + 'D'} initialClass={secondLastClass} addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats} initialSeats = {initialSeats}></SeatButton>
+                        <SeatButton id={row + 'F'} initialClass={lastClass} addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats} initialSeats = {initialSeats}></SeatButton>
                     </div>
                 </div>
             )
@@ -62,15 +67,15 @@ export default function FirstClassRowSS({flight, updateFinalSelectionList,setCom
             return (
                 <div className='FirstClassrow' key={row}>
                     <div className='seatSet'>
-                        <SeatButton id={row + 'A'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats}></SeatButton>
-                        <SeatButton id={row + 'C'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats}></SeatButton>
+                        <SeatButton id={row + 'A'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats} initialSeats = {initialSeats}></SeatButton>
+                        <SeatButton id={row + 'C'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats} initialSeats = {initialSeats}></SeatButton>
                     </div>
                     <div className='rowNumber'>
                         <p>{row}</p>
                     </div>
                     <div className='seatSet'>
-                        <SeatButton id={row + 'D'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats}></SeatButton>
-                        <SeatButton id={row + 'F'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats}></SeatButton>
+                        <SeatButton id={row + 'D'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats} initialSeats = {initialSeats}></SeatButton>
+                        <SeatButton id={row + 'F'} initialClass='seat availableSeat' addSeat={handleSeatSelected} removeSeat={handleSeatDeselected} remainingSeats = {remainingSeats} totalSeats = {totalSeats} takenSeats={flight.takenSeats} initialSeats = {initialSeats}></SeatButton>
                     </div>
                 </div>
             )

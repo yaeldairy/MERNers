@@ -61,7 +61,6 @@ let patchFlight = (id, updatedTakenSeats) => {
 // }
 
 exports.selectSeats = (req, res) => {
-    console.log('HERE');
     let data = req.body;
     User.findOne({ username: data.username })
         .then((result) => {
@@ -69,6 +68,7 @@ exports.selectSeats = (req, res) => {
             let flightIndex = flightsArray.findIndex(
                 (flight) => (flight.flightId).toString() === data.flightId)
             let currentFlight = flightsArray[flightIndex];
+            let oldSeats = (currentFlight.seat)? currentFlight.seat : [] ;
             currentFlight.seat = data.seats
             flightsArray[flightIndex] = currentFlight
             let finalFlightsObject = { flights: flightsArray }
@@ -77,7 +77,10 @@ exports.selectSeats = (req, res) => {
                 .then(() => {
                     Flight.findById(data.flightId)
                         .then((rslt) => {
-                            let currentlyTakenSeats = rslt.takenSeats
+                            let currentlyTakenSeatsUnfiltered = rslt.takenSeats
+                            let currentlyTakenSeats = currentlyTakenSeatsUnfiltered.filter((seat)=>{
+                                return !(oldSeats.includes(seat))
+                            })
                             currentlyTakenSeats = currentlyTakenSeats.concat(data.seats)
                             let updatedTakenSeats = { takenSeats: currentlyTakenSeats }
                             patchFlight({_id : data.flightId}, updatedTakenSeats)
@@ -284,9 +287,6 @@ exports.cancelReservation = (req, res) => {
             console.log("error")
             console.log(err);
         });
-
-
-
     //update flight info
     if (deptFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
@@ -318,8 +318,6 @@ exports.cancelReservation = (req, res) => {
                 console.log("error")
                 console.log(err);
             });
-
-
     if (retFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
@@ -357,6 +355,30 @@ exports.cancelReservation = (req, res) => {
     
 }
 
+exports.getFlight = (req, res) =>{
+    let {flightId} = req.query; //to extract params
+    Flight.findById(flightId)
+    .then((rslt) => {
+        const nOfEconomy = rslt.nOfEconomy;
+        const nOfBusiness = rslt.nOfBusiness;
+        const nOfFirst = rslt.nOfFirst;
+        const takenSeats = rslt.takenSeats;
+        const flightNum = rslt.flightNum;
+        const seats = {
+            _id : flightId,
+            nOfEconomy : nOfEconomy,
+            nOfBusiness : nOfBusiness,
+            nOfFirst : nOfFirst,
+            takenSeats : takenSeats,
+            flightNum : flightNum
+        };
+        res.status(200).send(seats);
+    })
+    .catch((err) =>{
+        res.status(400).send({});
+        return;
+    })
+}
 exports.makePayment = async(req,res) =>{
         
         let { amount, id } = req.body;
@@ -387,36 +409,50 @@ exports.makePayment = async(req,res) =>{
 exports.bookTrip = async (req,res) =>{
 
     console.log(req.body);
-    res.send(200).send("Booking successfully made!");
+     let {departureFlight , returnFlight} = req.body;
+     const {username , email }=req.body.user;
+     const { bookingNumber , emailBody1 , emailBody2 } = req.body ;
+     const {remainingSeats: remainingSeats1} = departureFlight;
+     const {remainingSeats: remainingSeats2} = returnFlight;
+     const _id1 = req.body.departureFlight._id;
+     const FId1 = mongoose.Types.ObjectId(_id1);
+     const _id2 = req.body.returnFlight._id;
+     const FId2 = mongoose.Types.ObjectId(_id2);
+    
+     console.log(departureFlight);
+     console.log(returnFlight);
+    
 
+     delete departureFlight.nOfEconomy;
+     delete departureFlight.nOfBusiness;
+     delete departureFlight.nOfFirst;
+     delete departureFlight.remainingSeats;
 
-    // const {username , email }=req.body.user;
-    // const { bookingNumber, emailBody } = req.body.email;
-    // const _id1 = req.body.departureFlight._id;
-    // const FId1 = mongoose.Types.ObjectId(_id1);
-    // const _id2 = req.body.returnFlight._id;
-    // const FId2 = mongoose.Types.ObjectId(_id2);
-    // const {departureFlight , returnFlight} = req.body;
-    // const remainingSeats1 = req.body.departureFlight.remainingSeats;
-    // const remainingSeats2 = req.body.returnFLight.remainingSeats;
+     delete returnFlight.nOfEconomy;
+     delete returnFlight.nOfBusiness;
+     delete returnFlight.nOfFirst;
+     delete returnFlight.remainingSeats;
+     
+     console.log("----------------------");
+     console.log(departureFlight);
+     console.log(returnFlight);
+     console.log("----------------------");
 
-    // try{
+    try{
 
-    //     const user = await User.findOneAndUpdate({ username }, { $push: { flights: departureFlight , returnFlight } });
+        const addUserf1 = await User.findOneAndUpdate({ username }, { $push: { flights: departureFlight} });
+        const addUserf2 = await User.findOneAndUpdate({ username }, { $push: { flights:  returnFlight } });
+        const flight1 = await Flight.findOneAndUpdate({ _id: FId1 }, { remainingSeats : remainingSeats1});
+        const flight2 = await Flight.findOneAndUpdate({ _id: FId2 }, { remainingSeats : remainingSeats2});
+        const booking = await User.findOneAndUpdate({username}, { $push: { bookingReferences: bookingNumber }});
+        sendMail(email, emailBody1);
+        sendMail(email, emailBody2);
 
-    //     const flight1 = await Flight.findOneAndUpdate({ _id: FId1 }, { remainingSeats : remainingSeats1});
-
-    //     const flight2 = await Flight.findOneAndUpdate({ _id: FId2 }, { remainingSeats : remainingSeats2});
-
-    //     const booking = await User.findOneAndUpdate({username}, { $push: { bookingReferences: bookingNumber }});
-        
-    //     sendMail(email, emailBody);
-
-    //     res.send(200).send("Booking successfully made!");
-    // }
-    // catch(e){
-    //     res.status(400).send(e)
-    // }
+        res.status(200).send("successful");
+    }
+    catch(e){
+        res.status(400).send(e);
+    }
 
 }
 

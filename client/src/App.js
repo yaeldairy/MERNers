@@ -9,6 +9,7 @@ import FlightCreationForm from './components/FlightCreationForm';
 import Flight from './components/general/Flight';
 import UpdateFlight from './components/UpdateFlight';
 import AlternativeFlight from './components/user/AlternativeFlight';
+import PaymentForm from './components/user/PaymentForm';
 //import SeatSelection from './components/user/SeatSelection';
 import Login from './components/general/Login';
 import ReturnFlights from './components/general/ReturnFlights';
@@ -62,6 +63,7 @@ function App() {
                               <Route path="/returnFlight/:id" element={<ReturnFlight />} />
                               <Route path="/alternativeFlight/:id" element={<AlternativeFlight />} />
                               <Route path="/updateFlight/:id" element={<UpdateFlight />} />
+
                               <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />}>
                                     <Route path='/checkout' element={<Checkout />} />
                               </Route>
@@ -76,19 +78,22 @@ function App() {
                                     <Route path='/profile' element={<UserProfile />} />
                               </Route>
                               {/* <Route path="/profile/:username/reservations" element={<ReservationHistory />} /> */}
-                              <Route exact path='/profile/:username/reservations' element={<PrivateRoute path='/profile/:username/reservations' />}>
-                                    <Route path='/profile/:username/reservations' element={<ReservationHistory />} />
+                              <Route exact path='/bookings' element={<PrivateRoute path='/bookings' />}>
+                                    <Route path='/bookings' element={<ReservationHistory />} />
                               </Route>
                               {/* <Route path="/profile/:username/edit" element={<EditProfile />} /> */}
                               <Route exact path='/profile/:username/edit' element={<PrivateRoute path='/profile/:username/edit' />}>
                                     <Route path='/profile/:username/edit' element={<EditProfile />} />
                               </Route>
                               {/* <Route path="/profile/:username/reservations/:booking" element={<ViewItinerary />} /> */}
-                              <Route exact path='/profile/:username/reservations/:booking' element={<PrivateRoute path='/profile/:username/reservations/:booking' />}>
-                                    <Route path='/profile/:username/reservations/:booking' element={<ViewItinerary />} />
+                              <Route exact path='/bookings/:booking' element={<PrivateRoute path='/bookings/:booking' />}>
+                                    <Route path='/bookings/:booking' element={<ViewItinerary />} />
                               </Route>
                               <Route exact path='/changeFlight' element={<PrivateRoute path='/changeFlight' />}>
                                     <Route path='/changeFlight' element={<AlternativeFlights />} />
+                              </Route>
+                              <Route exact path='/payment' element={<PrivateRoute path='/payment' />}>
+                                    <Route path='/payment' element={<PaymentForm />} />
                               </Route>
                         </Routes>
                   </div>

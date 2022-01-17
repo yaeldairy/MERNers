@@ -57,7 +57,7 @@ export default function NavBar() {
                     </Link>
                 </Menu.Item>
                 <Menu.Item icon={<UnorderedListOutlined />} style={{ width: 250}} >
-                    <Link to={{ pathname: `/profile/${userData.username}/reservations` }} state={{ user: userData }}>
+                    <Link to={{ pathname: `/bookings` }} state={{ user: userData }}>
                         Bookings
                     </Link>
                 </Menu.Item>

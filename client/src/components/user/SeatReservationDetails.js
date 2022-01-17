@@ -2,11 +2,11 @@
 import React, { useEffect, useContext } from 'react'
 import {UserContext} from "../../Context";
 
-function SeatReservationDetails({flight, selectedSeats}) {
+function SeatReservationDetails({flight, selectedSeats, cabin}) {
 
-    const {username, cabin} = useContext(UserContext);
+    const {username} = useContext(UserContext);
     //let flightNumber = 'AC 3012';//TODO get flight number from DB
-    let bookingClass = 'Economy';//TODO get booking class from DB
+    let bookingClass = cabin;//TODO get booking class from DB
     console.log("flight in seat seatSelection")
       console.log(flight)
       console.log(selectedSeats);
