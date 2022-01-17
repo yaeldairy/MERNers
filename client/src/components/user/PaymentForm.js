@@ -87,6 +87,7 @@ function PaymentForm( amount ){
         </Card>
         :
         <div>
+          {/*redirect to itenerary */}
           <h2 className="title">Payment has been made successfully!</h2>
         </div>
        
