@@ -82,17 +82,17 @@ function Checkout() {
     const bookingNumber = generateBookingNumber(7);
     const seats = newSeats(departureFlight);
     // console.log(noOfSeats)
-    try {
+    // try {
 
-      const flightOne = await axios({ 
-        method: 'patch', //should be patch
-        url: 'http://localhost:3001/user/bookTrip',
-        headers: { Authorization: `Bearer ${accessToken}` },
-        data: {
-         departureFlight,
-         returnFlight
-        }
-      });
+    //   const flightOne = await axios({ 
+    //     method: 'patch', //should be patch
+    //     url: 'http://localhost:3001/user/bookTrip',
+    //     headers: { Authorization: `Bearer ${accessToken}` },
+    //     data: {
+    //      departureFlight,
+    //      returnFlight
+    //     }
+    //   });
 
       // const flightOne = await axios({ 
       //   method: 'patch', //should be patch
@@ -145,53 +145,53 @@ function Checkout() {
 
       //   }
       // });
-      const emailBody1 = `<p>Hello,</p>
-      <br/>
-      <p>This is to confirm your booking number ${bookingNumber} for flights ${departureFlight.flightNum} and ${returnFlight.flightNum}.</p>
-      <p>You have been charged an amount of $${calculatePrice(departureFlight) + calculatePrice(returnFlight)}.</p>
-      <br/>
-      <p>Best wishes,</p>
-      <p>ACL Airlines</p>`;
-      // var deptSeats = departureFlight.seat.length||"Not Specified"; 
-      // var retSeats = returnFlight.seat.length||"Not Specified"; 
-      const emailBody2 = `<p>Hello,</p>
-            <br/>
-            <p>This is your itinerary for your booking ${bookingNumber}.</p>
-            <br/>
-            <p>Departure Flight: ${departureFlight.flightNum}</p>
-            <p>Departure Airport: ${departureFlight.deptAirport}</p>
-            <p>Arrival Flight: ${departureFlight.arrAirport}</p>
-            <p>Date: ${departureFlight.date}</p>
-            <p>Departure time: ${departureFlight.deptTime}</p>
-            <p>Arrival time: ${departureFlight.arrTime}</p>
-            <p>Cabin: ${cabin}</p>
+    //   const emailBody1 = `<p>Hello,</p>
+    //   <br/>
+    //   <p>This is to confirm your booking number ${bookingNumber} for flights ${departureFlight.flightNum} and ${returnFlight.flightNum}.</p>
+    //   <p>You have been charged an amount of $${calculatePrice(departureFlight) + calculatePrice(returnFlight)}.</p>
+    //   <br/>
+    //   <p>Best wishes,</p>
+    //   <p>ACL Airlines</p>`;
+    //   // var deptSeats = departureFlight.seat.length||"Not Specified"; 
+    //   // var retSeats = returnFlight.seat.length||"Not Specified"; 
+    //   const emailBody2 = `<p>Hello,</p>
+    //         <br/>
+    //         <p>This is your itinerary for your booking ${bookingNumber}.</p>
+    //         <br/>
+    //         <p>Departure Flight: ${departureFlight.flightNum}</p>
+    //         <p>Departure Airport: ${departureFlight.deptAirport}</p>
+    //         <p>Arrival Flight: ${departureFlight.arrAirport}</p>
+    //         <p>Date: ${departureFlight.date}</p>
+    //         <p>Departure time: ${departureFlight.deptTime}</p>
+    //         <p>Arrival time: ${departureFlight.arrTime}</p>
+    //         <p>Cabin: ${cabin}</p>
             
-            <br/>
-            <p>Departure Flight: ${returnFlight.flightNum}</p>
-            <p>Departure Airport: ${returnFlight.deptAirport}</p>
-            <p>Arrival Flight: ${returnFlight.arrAirport}</p>
-            <p>Date: ${returnFlight.date}</p>
-            <p>Departure time: ${returnFlight.deptTime}</p>
-            <p>Arrival time: ${returnFlight.arrTime}</p>
-            <p>Cabin: ${cabin}</p>
-            <br/>
-            <p>Enjoy your trip!</p>
-            <br/>
-            <p>Best wishes,</p>
-            <p>ACL Airlines</p>`;
-      const saveBooking = await axios({
-        method: 'patch', //should be patch
-        url: 'http://localhost:3001/user/addBooking',
-        headers: { Authorization: `Bearer ${accessToken}` },
-        data: { bookingNumber, emailBody1, emailBody2 }
-      });
+    //         <br/>
+    //         <p>Departure Flight: ${returnFlight.flightNum}</p>
+    //         <p>Departure Airport: ${returnFlight.deptAirport}</p>
+    //         <p>Arrival Flight: ${returnFlight.arrAirport}</p>
+    //         <p>Date: ${returnFlight.date}</p>
+    //         <p>Departure time: ${returnFlight.deptTime}</p>
+    //         <p>Arrival time: ${returnFlight.arrTime}</p>
+    //         <p>Cabin: ${cabin}</p>
+    //         <br/>
+    //         <p>Enjoy your trip!</p>
+    //         <br/>
+    //         <p>Best wishes,</p>
+    //         <p>ACL Airlines</p>`;
+    //   const saveBooking = await axios({
+    //     method: 'patch', //should be patch
+    //     url: 'http://localhost:3001/user/addBooking',
+    //     headers: { Authorization: `Bearer ${accessToken}` },
+    //     data: { bookingNumber, emailBody1, emailBody2 }
+    //   });
 
-      setSuccess(true)
+    setSuccess(true)
 
-    } catch (e) {
-      console.log(e)
+    // } catch (e) {
+    //   console.log(e)
 
-    }
+    // }
   }
   // useEffect(()=>{
   //   const bookingNumber=generateBookingNumber(7);
