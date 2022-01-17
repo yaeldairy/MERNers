@@ -10,11 +10,12 @@ import { UserContext } from "../../Context";
 import { useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
-export default function SeatSelection({ flight, setRedirect }) {
+export default function SeatSelection({ flight, setRedirect, cabin, noOfSeats, preChangeSeats}) {
     let navigate = useNavigate();
-    const [selectedSeats, setSelectedSeats] = useState([]);
+    const initialSeats= (preChangeSeats)? preChangeSeats : [];
+    const [selectedSeats, setSelectedSeats] = useState(initialSeats);
     const [isDone, setDone] = useState(false);
-    const { accessToken, username, cabin, noOfSeats } = useContext(UserContext);
+    const { accessToken, username } = useContext(UserContext);
 
     function handleSeatSelected(currentSelectedSeats) {
         setSelectedSeats(currentSelectedSeats);
@@ -29,25 +30,11 @@ export default function SeatSelection({ flight, setRedirect }) {
             message.error('Kindly select seats for all members of you reservation');
         }
         else {
-            //TODO pass the parameters correctly
-            // axios.patch('http://localhost:3001/user/selectSeats', { username: username, seats: selectedSeats, flightId: flight._id })
-            //     .then((res) => {
-            //         // console.log(res)
-            //         message.success('Seats Selected Successfully. Redirecting...', 2)
-            //             .then(function () {
-
-            //             }
-            //             )
-            //     })
-            //     .catch((err) => {
-            //         message.error('Unable to connect to the server. Please try again later.');
-            //     })
-
             axios({
                 method: 'patch', //should be patch
                 url: 'http://localhost:3001/user/selectSeats',
                 headers: { Authorization: `Bearer ${accessToken}` },
-                data: { username: username, seats: selectedSeats, flightId: flight._id }
+                data: { username: username, seats: selectedSeats, flightId: flight._id}
             })
                 .then((res) => {
                     // console.log(res)
@@ -64,7 +51,7 @@ export default function SeatSelection({ flight, setRedirect }) {
     return (
         <div className='seatSelectionMain'>
             <div className='leftHalfSS'>
-                <SeatReservationDetails selectedSeats={selectedSeats} flight={flight} />
+                <SeatReservationDetails selectedSeats={selectedSeats} flight={flight} cabin = {cabin}/>
                 <SSLegend />
                 <div className='buttonsContainer'>
                     <Space size={100}>
@@ -92,21 +79,24 @@ export default function SeatSelection({ flight, setRedirect }) {
                             <FirstClassRowSS flight={flight}
                                 updateFinalSelectionList={handleSeatSelected}
                                 setCompleted={handleCompleted}
-                                totalSeats={cabin === "First" ? noOfSeats.number : 0} />
+                                totalSeats={cabin === "First" ? noOfSeats.number : 0} 
+                                initialSeats = {preChangeSeats}/>
                             <div className='rowNumber'>
                                 <p>Business Class</p>
                             </div>
                             <BusinessClassRowSS flight={flight}
                                 updateFinalSelectionList={handleSeatSelected}
                                 setCompleted={handleCompleted}
-                                totalSeats={cabin === "Business" ? noOfSeats.number : 0} />
+                                totalSeats={cabin === "Business" ? noOfSeats.number : 0} 
+                                initialSeats = {preChangeSeats}/>
                             <div className='rowNumber'>
                                 <p>Economy Class</p>
                             </div>
                             <EconomyClassRowSS flight={flight}
                                 updateFinalSelectionList={handleSeatSelected}
                                 setCompleted={handleCompleted}
-                                totalSeats={cabin === "Economy" ? noOfSeats.number : 0} />
+                                totalSeats={cabin === "Economy" ? noOfSeats.number : 0} 
+                                initialSeats = {preChangeSeats}/>
                         </div>
                     </div>
                 </div>
