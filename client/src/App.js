@@ -7,6 +7,7 @@ import Checkout from './components/user/Checkout';
 import FlightCreationForm from './components/FlightCreationForm';
 import Flight from './components/general/Flight';
 import UpdateFlight from './components/UpdateFlight';
+import AlternativeFlight from './components/user/AlternativeFlight';
 //import SeatSelection from './components/user/SeatSelection';
 import Login from './components/general/Login';
 import ReturnFlights from './components/general/ReturnFlights';
@@ -15,6 +16,7 @@ import UserProfile from './components/RegCustomer/userProfile';
 import ReservationHistory from './components/RegCustomer/ReservationHistory';
 import EditProfile from './components/RegCustomer/editProfile';
 import ViewItinerary from './components/RegCustomer/viewItinerary';
+import ChangeCheckout from './components/user/ChangeCheckout';
 import NavBar from './components/NavBar';
 import AlternativeFlights from './components/user/AlternativeFlights';
 import { UserContext } from "./Context";
@@ -52,9 +54,13 @@ function App() {
                               <Route path="/newFlight" element={<FlightCreationForm />} />
                               <Route path="/viewFlight/:id" element={<Flight />} />
                               <Route path="/returnFlight/:id" element={<ReturnFlight />} />
+                              <Route path="/alternativeFlight/:id" element={<AlternativeFlight />} />
                               <Route path="/updateFlight/:id" element={<UpdateFlight />} />
                               <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />}>
                                     <Route path='/checkout' element={<Checkout />} />
+                              </Route>
+                              <Route exact path='/changeCheckout' element={<PrivateRoute path='/changeCheckout' />}>
+                                    <Route path='/changeCheckout' element={<ChangeCheckout />} />
                               </Route>
                               <Route exact path='/changePassword' element={<PrivateRoute path='/changePassword' />}>
                                     <Route path='/changePassword' element={<ChangePassword />} />
