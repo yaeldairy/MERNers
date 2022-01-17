@@ -22,6 +22,8 @@ router.post('/payment',controller.makePayment)
 router.get('/getProfile', controller.getProfile);
 router.patch('/updateProfile', controller.updateProfile);
 router.post('/cancelReservation', controller.cancelReservation);
+router.post('/sendEmail', controller.sendEmail )
+
 // router.patch('/addFlight',controller.addFlight);
 
 

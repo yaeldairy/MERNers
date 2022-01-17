@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Navigate, useLocation, Link } from 'react-router-dom';
-import { Descriptions } from 'antd';
+import { Descriptions, Card, Typography } from 'antd';
 
 import { Button } from 'antd';
 import { Row, Col, Divider } from 'antd';
 import { UserContext } from "../../Context";
 import axios from 'axios';
+import DescriptionsItem from 'antd/lib/descriptions/Item';
+const { Title } = Typography;
 
 
 
@@ -81,8 +83,8 @@ export default function UserProfile() {
 
   return (
       <div>
-        <br />
-        <Descriptions  title="Profile Info" style={{ marginBottom:'50px'}} column={1} bordered>
+        <Card title={<Title level={2} style={{textAlign:'left'}}>Profile</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} >
+       <Descriptions layout="horizontal" column={1} bordered>
         <Descriptions.Item label="Username" >
         {userData.username}
         </Descriptions.Item>
@@ -99,6 +101,7 @@ export default function UserProfile() {
         {userData.passportNumber}
         </Descriptions.Item>
         </Descriptions>
+        </Card>
 
         <Divider />
         <div justify="space-around">
@@ -106,9 +109,9 @@ export default function UserProfile() {
             <Link to={{ pathname: `/profile/${userData.username}/edit` }} state={{ user: userData }}>
               Edit Profile
             </Link>
-          </Button>
+          </Button>&nbsp;&nbsp;&nbsp;
           <Button type="primary" size="large">
-            <Link to={{ pathname: `/profile/${userData.username}/password` }} state={{ userData: userData }}>
+            <Link to={{ pathname: `/changePassword` }} >
               Change Password
             </Link>
           </Button>

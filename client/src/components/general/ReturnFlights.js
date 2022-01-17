@@ -2,8 +2,9 @@ import React, { useEffect, useState , useContext } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { List, Typography } from 'antd';
 import FlightListItem from './FlightListItem';
-import {Button, Modal, Card ,Tooltip,Steps} from 'antd';
+import {Button, Spin , Card ,Tooltip,Steps} from 'antd';
 import {UserContext} from "../../Context";
+import axios from 'axios';
 import {FaPlaneArrival, FaPlaneDeparture} from "react-icons/fa"
 const { Step } = Steps;
 const { Title } = Typography;
@@ -12,13 +13,17 @@ function ReturnFlights(){
 
     const location = useLocation();
     const { flight, seatType, Adults, Children } = location.state;
-     const {flights, setFlights} = useContext(UserContext);
-    const [returnFlights, setReturnFlights] =useState(null)
-    const [displayed, setDisplayed] =useState(null)
+    const [flights, setFlights] = useState(UserContext);
+    const [displayed, setDisplayed] =useState([])
+    const [loading, setLoading]= useState(false);
 
      useEffect(()=>{
-
-         const filteredFlights = flights.filter((f)=>{
+      
+      axios.get('http://localhost:3001/flights')
+        .then((res) => {
+          
+          setFlights(res.data)
+          const filteredFlights = res.data.filter((f)=>{
 
             if(f.deptAirport!==flight.arrAirport || f.arrAirport!== flight.deptAirport){
                 return false;
@@ -43,10 +48,16 @@ function ReturnFlights(){
               }
               return true;
          })
-         console.log(filteredFlights)
+
          setDisplayed(filteredFlights)
-         setDisplayed(filteredFlights)
+          
+         
+        })
+        .catch((e) => {
+         // setError(true) 
+        })   
      },[])
+
      const displayFlex ={ display: "flex", direction: "row", marginTop:'10px'}
      
      const title= (input, type)=>{
@@ -71,7 +82,7 @@ function ReturnFlights(){
         <FlightListItem flight={flight} hideButton={true} />
         </Card>
       
-        { displayed &&
+        <Spin spinning={loading} delay={400} >
          <Card title={title("Available Return Flights","return")} bordered={false} >
         <List
             itemLayout="vertical"
@@ -81,7 +92,8 @@ function ReturnFlights(){
             renderItem={ f => (    
             <FlightListItem flight={f} departureFlight={flight} /> )} /> 
          </Card>
-          }
+         </Spin>
+          
          
         </Card>
         

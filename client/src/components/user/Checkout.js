@@ -12,7 +12,8 @@ const { Step } = Steps;
 
 function generateBookingNumber(length) {
   var result = '';
-  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  // var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var charactersLength = characters.length;
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() *
@@ -27,6 +28,8 @@ function Checkout() {
 
   const { accessToken, departureFlight, returnFlight, cabin, noOfSeats , username } = useContext(UserContext);
   const [success, setSuccess] = useState(false)
+  console.log(departureFlight);
+  console.log(returnFlight);
 
   const newSeats = (departureFlight) => {
 
@@ -78,7 +81,7 @@ function Checkout() {
     e.preventDefault();
     const bookingNumber = generateBookingNumber(7);
     const seats = newSeats(departureFlight);
-    console.log(noOfSeats)
+    // console.log(noOfSeats)
     try {
 
       const flightOne = await axios({ 
@@ -142,19 +145,46 @@ function Checkout() {
 
       //   }
       // });
-      // const emailBody = `<p>Hello, ${username}</p>
-      // <br/>
-      // <p>This is to confirm your booking number ${bookingNumber} for flights ${departureFlight.flightNum} and ${returnFlight.flightNum}.</p>
-      // <p>You have been charged an amount of $${calculatePrice(departureFlight) + calculatePrice(returnFlight)}.</p>
-      // <br/>
-      // <p>Best wishes,</p>
-      // <p>ACL Airlines</p>`;
-      // const saveBooking = await axios({
-      //   method: 'patch', //should be patch
-      //   url: 'http://localhost:3001/user/addBooking',
-      //   headers: { Authorization: `Bearer ${accessToken}` },
-      //   data: { bookingNumber, emailBody }
-      // });
+      const emailBody1 = `<p>Hello,</p>
+      <br/>
+      <p>This is to confirm your booking number ${bookingNumber} for flights ${departureFlight.flightNum} and ${returnFlight.flightNum}.</p>
+      <p>You have been charged an amount of $${calculatePrice(departureFlight) + calculatePrice(returnFlight)}.</p>
+      <br/>
+      <p>Best wishes,</p>
+      <p>ACL Airlines</p>`;
+      // var deptSeats = departureFlight.seat.length||"Not Specified"; 
+      // var retSeats = returnFlight.seat.length||"Not Specified"; 
+      const emailBody2 = `<p>Hello,</p>
+            <br/>
+            <p>This is your itinerary for your booking ${bookingNumber}.</p>
+            <br/>
+            <p>Departure Flight: ${departureFlight.flightNum}</p>
+            <p>Departure Airport: ${departureFlight.deptAirport}</p>
+            <p>Arrival Flight: ${departureFlight.arrAirport}</p>
+            <p>Date: ${departureFlight.date}</p>
+            <p>Departure time: ${departureFlight.deptTime}</p>
+            <p>Arrival time: ${departureFlight.arrTime}</p>
+            <p>Cabin: ${cabin}</p>
+            
+            <br/>
+            <p>Departure Flight: ${returnFlight.flightNum}</p>
+            <p>Departure Airport: ${returnFlight.deptAirport}</p>
+            <p>Arrival Flight: ${returnFlight.arrAirport}</p>
+            <p>Date: ${returnFlight.date}</p>
+            <p>Departure time: ${returnFlight.deptTime}</p>
+            <p>Arrival time: ${returnFlight.arrTime}</p>
+            <p>Cabin: ${cabin}</p>
+            <br/>
+            <p>Enjoy your trip!</p>
+            <br/>
+            <p>Best wishes,</p>
+            <p>ACL Airlines</p>`;
+      const saveBooking = await axios({
+        method: 'patch', //should be patch
+        url: 'http://localhost:3001/user/addBooking',
+        headers: { Authorization: `Bearer ${accessToken}` },
+        data: { bookingNumber, emailBody1, emailBody2 }
+      });
 
       setSuccess(true)
 

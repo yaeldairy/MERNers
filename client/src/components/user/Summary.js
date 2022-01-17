@@ -1,27 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import { LoadingOutlined } from '@ant-design/icons';
 import { Card } from 'antd';
-import { Button, Typography , Descriptions , Popconfirm, Steps} from 'antd';
+import { Typography } from 'antd';
 import { FaPlane} from "react-icons/fa"
-import { Link } from 'react-router-dom'
-import CheckOutlined from '@ant-design/icons'
-const { Title, Text } = Typography;
-const { Step } = Steps;
+const { Title } = Typography;
 
-const buttonStyle= {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between'
-}
 const displayFlex ={ display: "flex", direction: "row", marginTop:'10px'}
 
 function Summary ({depPrice , retPrice, deptFlight, retFlight , cabin , nOfAdults , nOfChild}){
 
-  function handlerr(){
-
-  }
 const title1=(<div style={displayFlex}>
   <FaPlane style={{fontSize: '250%', color:'#1890ff'}} />
   <Title style={{marginLeft:'15px', color:'#1890ff'}} level={3} >Departure Flight</Title> 
@@ -32,9 +19,6 @@ const title2=(<div style={displayFlex}>
   <Title style={{marginLeft:'15px', color:'#1890ff'}} level={3} >Return Flight</Title> 
  </div>)
 
-const style = {
-  marginLeft:'0px'
-};
 
 return (
   <div>

@@ -8,6 +8,8 @@ const nodemailer = require("nodemailer");
 
 //assuming the request carries and object with both the unique user ID
 //and the seat array
+
+
 let patchUser = (username, newUserData) => {
     return User.findOneAndUpdate({
         username: username
@@ -131,13 +133,14 @@ exports.addFlight = (req, res) => {
 exports.addBooking = (req, res) => {
 
     const { username, email } = req.body.user;
-    const { bookingNumber, emailBody } = req.body;
+    const { bookingNumber, emailBody1, emailBody2 } = req.body;
     console.log(username)
     console.log(bookingNumber)
     User.findOneAndUpdate({ username }, { $push: { bookingReferences: bookingNumber } }, (error, response) => {
         console.log(response)
         if (response) {
-            sendMail(email, emailBody);
+            sendMail(email, emailBody1);
+            sendMail(email, emailBody2);
             res.status(200).send(response);
         }
         else {
@@ -179,11 +182,18 @@ exports.getProfile = (req, res) => {
 
 exports.updateProfile = (req, res) => {
 
+    console.log("I was here")
+    console.log(req.body)
+
     const { _id, username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber } = req.body;
     var objectId = mongoose.Types.ObjectId(_id);
 
-    User.findByIdAndUpdate(objectId, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
+    User.findByIdAndUpdate({username}, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
+        console.log(response)
+        console.log(error)
+
         if (response) {
+            
             res.status(200).send(response)
         }
         else {
@@ -195,6 +205,7 @@ exports.updateProfile = (req, res) => {
 
 function sendMail(email, emailBody) {
     //send email
+    // console.log("send email backend");
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -232,10 +243,11 @@ function sendMail(email, emailBody) {
 
 }
 
-// exports.sendEmail = (req, res) => {
-//     const {email, body} = req.body;
-//     this.sendMail();
-// }
+exports.sendEmail = (req, res) => {
+    const {email, emailBody} = req.body;
+    sendMail(email, emailBody);
+    res.status(200).send("successful");
+}
 
 exports.addFlight = (req, res) =>{ 
     const {username}=req.body.user;
