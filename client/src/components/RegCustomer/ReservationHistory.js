@@ -11,8 +11,8 @@ export default function ReservationHistory() {
     const location = useLocation();
     const { user } = location.state;
     const [userData, setUserData] = useState(user);
-    const reservations = userData.flights;
-    const bookings = userData.bookingReferences;
+    const reservations = userData.flights;//<------ new API call
+    const bookings = userData.bookingReferences;//<------ new API call
 
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
@@ -22,8 +22,8 @@ export default function ReservationHistory() {
     var upcomingFlights = [];
     var previousFlights = [];
     useEffect(() => {
-        console.log(reservations)
-        console.log(bookings)
+        //console.log(reservations)
+        //console.log(bookings)
         getUpcomingTrips();
         getPreviousTrips();
 
@@ -38,12 +38,12 @@ export default function ReservationHistory() {
                             (trip.date.substring(6, 10) == yyyy && trip.date.substring(3, 5) > mm) ||
                             (trip.date.substring(6, 10) == yyyy && trip.date.substring(3, 5) == mm && trip.date.substring(0, 2) > dd)) {
                             if (tempTrip == null) {
-                                console.log("temp set")
+                                //console.log("temp set")
                                 tempTrip = trip;
                             }
                             else {
                                 upcomingFlights.push({ booking: booking, deptFlight: tempTrip, retFlight: trip });
-                                console.log("pushed");
+                                //console.log("pushed");
                                 tempTrip = null;
                                 break;
                             }
@@ -52,10 +52,10 @@ export default function ReservationHistory() {
                     else {
                         if (tempTrip == null) {
                             tempTrip = trip;
-                            console.log("temp set")
+                            //console.log("temp set")
                         }
                         else {
-                            console.log("pushed")
+                            //console.log("pushed")
                             upcomingFlights.push({ booking: booking, deptFlight: trip, retFlight: tempTrip });
                             tempTrip = null;
                             break;
@@ -66,8 +66,8 @@ export default function ReservationHistory() {
             }
             tempTrip = null;
         }
-        console.log("UPCOMING TRIPS------------------------")
-        console.log(upcomingFlights)
+        //console.log("UPCOMING TRIPS------------------------")
+        //console.log(upcomingFlights)
 
     }
 
@@ -81,12 +81,12 @@ export default function ReservationHistory() {
                             (trip.date.substring(6, 10) == yyyy && trip.date.substring(3, 5) == mm && trip.date.substring(0, 2) <= dd)) {
 
                             if (tempTrip == null) {
-                                console.log("temp set")
+                                //console.log("temp set")
                                 tempTrip = trip;
                             }
                             else {
                                 previousFlights.push({ booking: booking, deptFlight: trip, retFlight: tempTrip });
-                                console.log("pushed");
+                                //console.log("pushed");
                                 tempTrip = null;
                                 break;
                             }
@@ -95,10 +95,10 @@ export default function ReservationHistory() {
                     else {
                         if (tempTrip == null) {
                             tempTrip = trip;
-                            console.log("temp set")
+                            //console.log("temp set")
                         }
                         else {
-                            console.log("pushed")
+                            //console.log("pushed")
                             previousFlights.push({ booking: booking, deptFlight: tempTrip, retFlight: trip });
                             tempTrip = null;
                             break;
@@ -109,8 +109,8 @@ export default function ReservationHistory() {
             }
             tempTrip = null;
         }
-        console.log("PREVIOUS TRIPS------------------------")
-        console.log(previousFlights)
+        //console.log("PREVIOUS TRIPS------------------------")
+        //console.log(previousFlights)
 
     }
 

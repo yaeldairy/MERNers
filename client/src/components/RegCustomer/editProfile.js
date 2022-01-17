@@ -12,7 +12,7 @@ const { Title } = Typography;
 
 //ba3d el edit eh?
 export default function EditProfile() {
-    const { accessToken } = useContext(UserContext);
+    const { accessToken ,username} = useContext(UserContext);
     const location = useLocation();
     const { user } = location.state;
     const [userData, setUserData] = useState([user]);
@@ -49,23 +49,41 @@ export default function EditProfile() {
     // );
 
     //TODO fix the .then and .catch bodies
-    function onFinish() {
+    async function onFinish() {
         const hide = message.loading('Updating Your Profile...', 0)
-        axios.patch('http://localhost:3001/user/updateProfile', {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            },
-            data: userData
-        })
-            .then((res) => {
-                hide()
-                message.success('Data updated successfully. Redirecting...', 4)
-                window.location.href='/' ;
-            })
-            .catch((err) => {
-                hide()
-                message.error('Unable to connect to the server. Please try again later.');
-            })
+        console.log(accessToken)
+
+        try{
+            const edit = await axios({
+                method: 'patch', //should be patch
+                url: 'http://localhost:3001/user/updateProfile',
+                headers: { Authorization: `Bearer ${accessToken}` },
+                data:{...userData, username }
+            });
+            hide()
+            message.success('Data updated successfully. Redirecting...', 4)
+            window.location.href='/' ;
+
+        }
+        catch(e){
+            console.log(e)
+            hide()
+            message.error('Unable to connect to the server. Please try again later.');
+
+        }
+        // axios.patch('http://localhost:3001/user/updateProfile', {
+        //     headers: { Authorization: `Bearer ${accessToken}` },
+        //     data: userData
+        // })
+        //     .then((res) => {
+        //         hide()
+        //         message.success('Data updated successfully. Redirecting...', 4)
+        //         window.location.href='/' ;
+        //     })
+        //     .catch((err) => {
+        //         hide()
+        //         message.error('Unable to connect to the server. Please try again later.');
+        //     })
         //go back and update profile
     };
 

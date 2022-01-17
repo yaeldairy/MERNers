@@ -16,7 +16,7 @@ const title = (<Title level={2} >Flights</Title>)
 
 export default function Flights() {
 
-  const { flights, setFlights } = useContext(UserContext);
+  const [ flights, setFlights ]= useState(null);
   const [displayed, setDisplayed] = useState(null);
   const [error, setError] = useState(false)
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -31,6 +31,7 @@ export default function Flights() {
 
       })
       .catch((e) => {
+        console.log(e)
         setError(true)
       })
 
@@ -47,13 +48,8 @@ export default function Flights() {
     console.log(flight)
 
     setDisplayed(flights.filter((f) => {
-      // console.log("flight current")
-      //console.log(f)
-      //console.log("flight date current"+f.date)
+      
       console.log(flight)
-
-
-
       for (const property in flight) {
         console.log(property)
         // console.log(flight[property])

@@ -2,15 +2,15 @@ const express = require('express')
 const controller= require ('../controller/admin')
 const verifyToken = require ('../Auth/auth.validation.middleware')
 const permissionMiddleware = require ('../Auth/auth.permission.middleware')
-const authorize = require('../auth/middleware');
-const config = require ('../auth/config')
+//const authorize = require('../auth/middleware');
+//const config = require ('../auth/config')
 const jwt = require('jsonwebtoken');
 
 const router = express.Router()
 router.use(express.json())
 
-//router.use(verifyToken.validJWTNeeded)
-//router.use(permissionMiddleware.AdminPermission)
+router.use(verifyToken.validJWTNeeded)
+router.use(permissionMiddleware.AdminPermission)
 
 router.get('/test', controller.testRoute);
 

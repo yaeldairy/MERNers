@@ -1,11 +1,15 @@
+require('dotenv').config()
 const User = require('../db/models/user');
 const Flight = require('../db/models/flight');
 const mongoose = require('mongoose');
-
+const stripe = require('stripe')(process.env.STRIPE_SECRET_TEST);
+const cors = require("cors");
 const nodemailer = require("nodemailer");
 
 //assuming the request carries and object with both the unique user ID
 //and the seat array
+
+
 let patchUser = (username, newUserData) => {
     return User.findOneAndUpdate({
         username: username
@@ -181,11 +185,18 @@ exports.getProfile = (req, res) => {
 
 exports.updateProfile = (req, res) => {
 
+    console.log("I was here")
+    console.log(req.body)
+
     const { _id, username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber } = req.body;
     var objectId = mongoose.Types.ObjectId(_id);
 
-    User.findByIdAndUpdate(objectId, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
+    User.findByIdAndUpdate({username}, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
+        console.log(response)
+        console.log(error)
+
         if (response) {
+            
             res.status(200).send(response)
         }
         else {
@@ -374,4 +385,66 @@ exports.getFlight = (req, res) =>{
         res.status(400).send({});
         return;
     })
+}
+exports.makePayment = async(req,res) =>{
+        
+        let { amount, id } = req.body;
+        
+        try {
+            const total = amount.amount;
+          const payment = await stripe.paymentIntents.create({
+            amount : total*100,
+            currency: "EUR",
+            description: "ACL Airline",
+            payment_method: id,
+            confirm: true,
+          });
+          console.log("Payment", payment);
+          res.json({
+            message: "Payment successful",
+            success: true,
+          });
+        } catch (error) {
+          console.log("Error", error);
+          res.json({
+            message: "Payment failed",
+            success: false,
+          });
+        }
+}
+
+exports.bookTrip = async (req,res) =>{
+
+    console.log(req.body);
+    res.send(200).send("Booking successfully made!");
+
+
+    // const {username , email }=req.body.user;
+    // const { bookingNumber, emailBody } = req.body.email;
+    // const _id1 = req.body.departureFlight._id;
+    // const FId1 = mongoose.Types.ObjectId(_id1);
+    // const _id2 = req.body.returnFlight._id;
+    // const FId2 = mongoose.Types.ObjectId(_id2);
+    // const {departureFlight , returnFlight} = req.body;
+    // const remainingSeats1 = req.body.departureFlight.remainingSeats;
+    // const remainingSeats2 = req.body.returnFLight.remainingSeats;
+
+    // try{
+
+    //     const user = await User.findOneAndUpdate({ username }, { $push: { flights: departureFlight , returnFlight } });
+
+    //     const flight1 = await Flight.findOneAndUpdate({ _id: FId1 }, { remainingSeats : remainingSeats1});
+
+    //     const flight2 = await Flight.findOneAndUpdate({ _id: FId2 }, { remainingSeats : remainingSeats2});
+
+    //     const booking = await User.findOneAndUpdate({username}, { $push: { bookingReferences: bookingNumber }});
+        
+    //     sendMail(email, emailBody);
+
+    //     res.send(200).send("Booking successfully made!");
+    // }
+    // catch(e){
+    //     res.status(400).send(e)
+    // }
+
 }

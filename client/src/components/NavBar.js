@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Menu, message } from 'antd';
+import { Menu, message, Layout } from 'antd';
 import { HomeOutlined, UserOutlined, LogoutOutlined, MailOutlined, UnorderedListOutlined } from '@ant-design/icons';
 import { MenuItem } from '@mui/material';
 import { UserContext } from "../Context";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+const { Sider } = Layout;
 
 export default function NavBar() {
     const [userData, setUserData] = useState([]);
@@ -56,7 +57,7 @@ export default function NavBar() {
                     </Link>
                 </Menu.Item>
                 <Menu.Item icon={<UnorderedListOutlined />} style={{ width: 250}} >
-                    <Link to={{ pathname: `/profile/${userData.username}/reservations` }} state={{ user: userData }}>
+                    <Link to={{ pathname: `/bookings` }} state={{ user: userData }}>
                         Bookings
                     </Link>
                 </Menu.Item>
@@ -72,7 +73,7 @@ export default function NavBar() {
             </Menu.Item>
 
 
-         </Menu> 
+         </Menu>
          ):(<></>)}
         </>
     );
