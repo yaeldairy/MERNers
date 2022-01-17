@@ -13,49 +13,51 @@ exports.isPasswordAndUserMatch = async (req, res, next) => {
 
     User.find({ username: username }, async (error, response)=>{
 
-        console.log(response)
-        console.log(error)
-
+        // console.log(response)
+        // console.log(error)
         if (response){  
-
             const matched = await bcrypt.compare(password , response[0].password );
-
             if(matched){
-              
+                
                 req.body = {
                     username ,
                     email: response[0].email,
                     permissionLevel: 2,
                 };   
                
-                return next();    
+                
+                return next(); 
+                 
             } 
             return res.status(400).send({errors: ['Invalid username or password']});
                                
         } 
     })
 
-    Admin.find({ username: username }, async (error, response) =>{
+    // Admin.find({ username: username }, async (error, response) =>{
 
-        console.log(response)
-        console.log(error)
+    //     console.log(response)
+    //     console.log(error)
 
-        if (response){   
+    //     if (response){   
 
-            const matched = await bcrypt.compare(password , response[0].password );
+    //         console.log("me testing hena");
+    //         console.log(response);
+    //         console.log(response[0].password);
+    //         const matched = await bcrypt.compare(password , response[0].password );
 
-            if(matched){
+    //         if(matched){
 
-                req.body = {
-                    username,
-                    email: response[0].email,
-                    permissionLevel: 1,
-                };   
+    //             req.body = {
+    //                 username,
+    //                 email: response[0].email,
+    //                 permissionLevel: 1,
+    //             };   
 
-                return next();    
-            } 
-            return res.status(400).send({errors: ['Invalid username or password']});
-        } 
-    }) 
+    //             return next();    
+    //         } 
+    //         return res.status(400).send({errors: ['Invalid username or password']});
+    //     } 
+    // }) 
        
  };

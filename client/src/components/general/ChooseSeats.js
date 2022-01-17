@@ -35,7 +35,7 @@ function ChooseSeats ({flight}){
         setSeats({number: Adults+Children , Adults, Children})
         console.log(values)
         setIsModalVisible(false);
-        navigate('/availableFlights', {state :{type: 'return',flight, seatType, Adults, Children}})
+        navigate('/returnFlights', {state :{type: 'return',flight, seatType, Adults, Children}})
         }catch(e){
 
         }

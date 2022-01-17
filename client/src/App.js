@@ -4,6 +4,7 @@ import Flights from '../src/components/general/Flights';
 import { BrowserRouter as Router, Route, Routes, Link} from 'react-router-dom';
 import PrivateRoute from './components/router/PrivateRoute';
 import Checkout from './components/user/Checkout';
+import StripePay from './components/user/StripePay';
 import FlightCreationForm from './components/FlightCreationForm';
 import Flight from './components/general/Flight';
 import UpdateFlight from './components/UpdateFlight';
@@ -21,6 +22,10 @@ import NavBar from './components/NavBar';
 import AlternativeFlights from './components/user/AlternativeFlights';
 import { UserContext } from "./Context";
 import {Button} from 'antd';
+// import { loadStripe } from "@stripe/stripe-js";
+// import { Elements } from "@stripe/react-stripe-js";
+
+//const stripePromise = loadStripe(pk_test_51KH6wELePquds3rDYJlyvrCVLkIFTijWyb18tDaHClW7hwQWJTXHLWIZYiozGJya6kMOytEBwRDkgrEkbEAkn5M300NXV6Gv06);
 import ChangePassword from './components/user/ChangePassword';
 //import AvailableFlights from './components/general/ReturnFlights';
 // import { Navigate, useNavigate } from 'react-router-dom';
@@ -52,6 +57,7 @@ function App() {
                               <Route path="/login" element={<Login path='/' />} />
                               <Route path="/returnFlights" element={<ReturnFlights />} />
                               <Route path="/newFlight" element={<FlightCreationForm />} />
+                              <Route path="/payment" element={<StripePay />} />
                               <Route path="/viewFlight/:id" element={<Flight />} />
                               <Route path="/returnFlight/:id" element={<ReturnFlight />} />
                               <Route path="/alternativeFlight/:id" element={<AlternativeFlight />} />
