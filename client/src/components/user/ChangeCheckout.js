@@ -9,7 +9,7 @@ import axios from 'axios';
 
 function ChangeCheckout() {
     const location = useLocation();
-    const { oldFlight, oldUserFlight, newFlight, type, cabin, pricediff } = location.state;
+    const { oldFlight, oldUserFlight, newFlight, type, cabin,pricedif f } = location.state;
     const { accessToken } = useContext(UserContext);
     const [email, setEmail] = useState(null);
     const sendEmailCharge =
@@ -50,7 +50,7 @@ function ChangeCheckout() {
         _id: newFlight._id,
         flightNum: newFlight.flightNum,
         noOfSeats: oldUserFlight.noOfSeats,
-        seat: [],
+        takenSeats: [],
         price: oldUserFlight.noOfSeats.number * newFlight.price,
         type: type
     });

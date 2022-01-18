@@ -27,14 +27,18 @@ function ChooseCabin( { oldFlight, oldUserFlight, newFlight, type, price }) {
         setIsModalVisible(false);
     };
     const CalPrice = (price) => {
+        console.log((oldFlight.price * oldUserFlight.noOfSeats.number));
         switch (cabin) {
-    
-          case "First":
-            return newFlight.price - ((price + 200) * oldUserFlight.noOfSeats.number)
+            
+            case "First":
+              console.log("price: " + (newFlight.price * oldUserFlight.noOfSeats.number) - ((oldFlight.price + 200) * oldUserFlight.noOfSeats.number))
+            return (newFlight.price * oldUserFlight.noOfSeats.number) - ((oldFlight.price + 200) * oldUserFlight.noOfSeats.number)
           case "Business":
-            return newFlight.price - ((price + 100) * oldUserFlight.noOfSeats.number)
+              console.log("price: " +(newFlight.price * oldUserFlight.noOfSeats.number) - ((oldFlight.price + 100) * oldUserFlight.noOfSeats.number))
+            return (newFlight.price * oldUserFlight.noOfSeats.number) - ((oldFlight.price + 100) * oldUserFlight.noOfSeats.number)
           case "Economy":
-            return newFlight.price - (price * oldUserFlight.noOfSeats.number)
+              console.log("price: " + (newFlight.price * oldUserFlight.noOfSeats.number) - (oldFlight.price * oldUserFlight.noOfSeats.number))
+            return (newFlight.price * oldUserFlight.noOfSeats.number) - (oldFlight.price * oldUserFlight.noOfSeats.number)
           default:
             return 0;
           // return flight.price - (price * seats)||0;//revisit- adjust to cabin type
