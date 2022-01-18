@@ -14,7 +14,11 @@ const buttonStyle= {
 const displayFlex ={ display: "flex", direction: "row", marginTop:'10px'}
 
 function AlternativeFlightListItem({oldUserFlight, oldFlight, newFlight, pricediff, type}) {
+    // console.log(oldUserFlight);
     // console.log(oldFlight);
+    // console.log(newFlight);
+    // console.log(pricediff);
+    // console.log(type);
 
   const title=(<div style={displayFlex}>
       <FaPlane style={{fontSize: '250%'}} />

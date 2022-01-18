@@ -17,8 +17,10 @@ function AlternativeFlights() {
   const location = useLocation();
   const { type, flight, seatType } = location.state;
   const seats = flight.noOfSeats.number;
-  
-  //console.log(flight);
+  // console.log(type);
+  // console.log(flight);
+  // console.log(seatType);
+  // console.log(seats);
 
   const [displayed, setDisplayed] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -71,7 +73,7 @@ function AlternativeFlights() {
         // setError(true) 
       })
   }, [])
-  console.log(oldFlight);
+  
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -119,7 +121,9 @@ function AlternativeFlights() {
   };
 
   const CalPrice = (price) => {
-    return flight.totalPrice - (price * seats);//revisit- adjust to cabin type
+    // console.log(flight.totalPrice)
+    // console.log(price)
+    return flight.price - (price * seats)||0;//revisit- adjust to cabin type
   }
 
   const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }

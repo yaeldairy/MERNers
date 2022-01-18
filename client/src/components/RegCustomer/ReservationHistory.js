@@ -16,7 +16,6 @@ export default function ReservationHistory() {
     const [userData, setUserData] = useState(user);
     const reservations = userData.flights;//<------ new API call
     const bookings = userData.bookingReferences;//<------ new API call
-    const [done, setDone] = useState(false);
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
@@ -82,12 +81,12 @@ export default function ReservationHistory() {
                 }
 
             }
-            setUpcomingFlights(upcoming)
+            
             tempTrip = null;
         }
         // console.log("UPCOMING TRIPS------------------------")
         // console.log(upcomingFlights)
-
+        setUpcomingFlights(upcoming)
     }
 
     function getPreviousTrips() {
@@ -130,12 +129,10 @@ export default function ReservationHistory() {
                 }
 
             }
-            setPreviousFlights(previous)
+            
             tempTrip = null;
         }
-        console.log("PREVIOUS TRIPS------------------------")
-        console.log(previousFlights)
-        setDone(true);
+        setPreviousFlights(previous)
     }
 
 
@@ -144,7 +141,7 @@ export default function ReservationHistory() {
         <Card title={<Title level={2} style={{ textAlign: 'left' }}>Upcoming trips:</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} >
             <List dataSource={upcomingFlights}
                 renderItem={flight => (
-                    <ul><FlightListItem booking={flight.booking} deptFlight={flight.deptFlight} retFlight={flight.retFlight} amount={parseInt(flight.retFlight.totalPrice) + parseInt(flight.deptFlight.totalPrice)} userData={userData} editable={true} /></ul>
+                    <ul><FlightListItem booking={flight.booking} deptFlight={flight.deptFlight} retFlight={flight.retFlight} amount={parseInt(flight.retFlight.price) + parseInt(flight.deptFlight.price)} userData={userData} editable={true} /></ul>
 
                 )
                 } /></Card>
@@ -153,7 +150,7 @@ export default function ReservationHistory() {
         <Card title={<Title level={2} style={{ textAlign: 'left' }}>Previous trips:</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
             <List dataSource={previousFlights}
                 renderItem={flight => (
-                    <ul><FlightListItem booking={flight.booking} deptFlight={flight.deptFlight} retFlight={flight.retFlight} amount={parseInt(flight.retFlight.totalPrice) + parseInt(flight.deptFlight.totalPrice)} userData={userData} editable={false} /></ul>
+                    <ul><FlightListItem booking={flight.booking} deptFlight={flight.deptFlight} retFlight={flight.retFlight} amount={parseInt(flight.retFlight.price) + parseInt(flight.deptFlight.price)} userData={userData} editable={false} /></ul>
 
                 )
                 } /></Card>
