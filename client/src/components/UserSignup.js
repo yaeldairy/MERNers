@@ -3,6 +3,7 @@ import { Typography, Card, Form, Input, Button, message } from 'antd';
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const { Title, Text } = Typography;
 export default function UserSignup() {
 
@@ -22,7 +23,7 @@ export default function UserSignup() {
         flights:[]
 
     })
-
+    let navigate = useNavigate();
     const [form] = Form.useForm();
 
     function handler(event) {
@@ -45,7 +46,7 @@ export default function UserSignup() {
                 // console.log(res) 
                 message.success('Sign up complete. Redirecting...', 2)
                     .then(function () {
-                        window.location.href = '/'
+                        navigate('/');
                     }
                     )
 

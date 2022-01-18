@@ -5,7 +5,7 @@ import { Button, Card, Typography } from 'antd';
 import { FaPlane, FaLongArrowAltRight } from "react-icons/fa";
 import axios from 'axios';
 import { message, Popconfirm } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from "../../Context";
 const { Title, Text } = Typography;
 
@@ -13,13 +13,14 @@ const { Title, Text } = Typography;
 const buttonStyle = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    color : 'white'
 }
 const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }
 
 
 function FlightListItem({ booking, deptFlight, retFlight, amount, userData, editable }) {
-
+    let navigate = useNavigate();
     const { accessToken } = useContext(UserContext);
     const location = useLocation();
     console.log(location.pathname); 
@@ -59,8 +60,7 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
         ).then((res) => {
             hide()
             message.success('Reservation cancelled. A confirmation email will be sent.', 2);
-            window.location.href='/' ;
-            // window.location.href=location.pathname ;
+            navigate('/');
 
         }).catch((err) => {
             hide()

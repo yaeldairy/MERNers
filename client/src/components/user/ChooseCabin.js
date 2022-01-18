@@ -6,7 +6,7 @@ import ChangeCheckout from './ChangeCheckout';
 const { Option } = Select;
 
 
-function ChooseCabin( { oldFlight, oldUserFlight, newFlight, type, pricediff }) {
+function ChooseCabin( { oldFlight, oldUserFlight, newFlight, type, price }) {
     const [form] = Form.useForm();
     let navigate = useNavigate();
     // const { setCabin, setSeats } = useContext(UserContext);
@@ -26,6 +26,20 @@ function ChooseCabin( { oldFlight, oldUserFlight, newFlight, type, pricediff }) 
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+    const CalPrice = (price) => {
+        switch (cabin) {
+    
+          case "First":
+            return newFlight.price - ((price + 200) * oldUserFlight.noOfSeats.number)
+          case "Business":
+            return newFlight.price - ((price + 100) * oldUserFlight.noOfSeats.number)
+          case "Economy":
+            return newFlight.price - (price * oldUserFlight.noOfSeats.number)
+          default:
+            return 0;
+          // return flight.price - (price * seats)||0;//revisit- adjust to cabin type
+        }
+      }
     const handleSubmit = async () => {
         try {
             // const values = await form.validateFields();
@@ -33,7 +47,7 @@ function ChooseCabin( { oldFlight, oldUserFlight, newFlight, type, pricediff }) 
             console.log(cabin);
             setIsModalVisible(false);
             // return <ChangeCheckout  />//return
-            navigate(`/changeCheckout`, { state: { oldFlight: oldFlight, oldUserFlight: oldUserFlight, newFlight: newFlight, cabin: cabin, type: type, pricediff: pricediff } })
+            navigate(`/changeCheckout`, { state: { oldFlight: oldFlight, oldUserFlight: oldUserFlight, newFlight: newFlight, cabin: cabin, type: type, pricediff: CalPrice(price)} })
         } catch (e) {
 
         }

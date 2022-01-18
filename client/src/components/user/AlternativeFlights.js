@@ -36,7 +36,7 @@ function AlternativeFlights() {
         //(res.data)
         const filteredFlights = res.data.filter((f) => {
           // console.log(f);
-          if (f.flightNum === flight.flightNum){
+          if (f.flightNum === flight.flightNum) {
             setOldFlight(f);
             return false;
           }
@@ -73,7 +73,7 @@ function AlternativeFlights() {
         // setError(true) 
       })
   }, [])
-  
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -120,56 +120,50 @@ function AlternativeFlights() {
     setIsModalVisible(false);
   };
 
-  const CalPrice = (price) => {
-    // console.log(flight.totalPrice)
-    // console.log(price)
-    return flight.price - (price * seats)||0;//revisit- adjust to cabin type
-  }
+    const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }
 
-  const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }
-
-  const title = (input, type) => {
-    return (<div style={displayFlex}>
-      {type == "departure" ? <FaPlaneDeparture style={{ fontSize: '200%', color: '#1890ff' }} /> :
-        <FaPlaneArrival style={{ fontSize: '200%', color: '#1890ff' }} />}
-      <Title style={{ marginLeft: '15px', color: '#1890ff' }} level={3} >{input}</Title>
-    </div>)
-  }
+    const title = (input, type) => {
+      return (<div style={displayFlex}>
+        {type == "departure" ? <FaPlaneDeparture style={{ fontSize: '200%', color: '#1890ff' }} /> :
+          <FaPlaneArrival style={{ fontSize: '200%', color: '#1890ff' }} />}
+        <Title style={{ marginLeft: '15px', color: '#1890ff' }} level={3} >{input}</Title>
+      </div>)
+    }
 
 
-  return (
-    <div>
-      <Card title={<Title style={{ marginLeft: '15px' }} level={2} >Select alternative {type} flight</Title>} bordered={false}
-        style={{ marginLeft: '10%', marginRight: '10%', marginTop: '5%' }}  >
+    return (
+      <div>
+        <Card title={<Title style={{ marginLeft: '15px' }} level={2} >Select alternative {type} flight</Title>} bordered={false}
+          style={{ marginLeft: '10%', marginRight: '10%', marginTop: '5%' }}  >
 
 
-        <Card title={title(`chosen ${type} flight`, type)} style={{ marginTop: '30px' }}>
-          <FlightListItem flight={flight} hideButton={true} />
+          <Card title={title(`chosen ${type} flight`, type)} style={{ marginTop: '30px' }}>
+            <FlightListItem flight={flight} hideButton={true} />
+          </Card>
+
+          <Spin spinning={loading} delay={400} >
+            <Card title={title("Alternative Flights", type)} bordered={false} extra={<Button onClick={showModal} shape="circle" icon={<SearchOutlined />} />}>
+              <List
+                itemLayout="vertical"
+                size="large"
+                pagination={{ pageSize: 5 }}
+                dataSource={filtered}
+                renderItem={f => (
+                  <AlternativeFlightListItem oldUserFlight={flight} oldFlight={oldFlight} newFlight={f} price={f.price} type={type} />)} />
+            </Card>
+          </Spin>
+
         </Card>
 
-        <Spin spinning={loading} delay={400} >
-          <Card title={title("Alternative Flights", type)} bordered={false} extra={<Button onClick={showModal} shape="circle" icon={<SearchOutlined />} />}>
-            <List
-              itemLayout="vertical"
-              size="large"
-              pagination={{ pageSize: 5 }}
-              dataSource={filtered}
-              renderItem={f => (
-                <AlternativeFlightListItem oldUserFlight={flight} oldFlight = {oldFlight} newFlight={f} pricediff={CalPrice(f.price)} type={type} />)} />
-          </Card>
-        </Spin>
-
-      </Card>
-
-      <Modal
-        title="Search Flights"
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer={[ /*add modal buttons here */]}>
-        <SearchAlternativeFlights handleOk={handleOk} />
-      </Modal>
-    </div>
-  )
-}
-export default AlternativeFlights;
+        <Modal
+          title="Search Flights"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={[ /*add modal buttons here */]}>
+          <SearchAlternativeFlights handleOk={handleOk} />
+        </Modal>
+      </div>
+    )
+  }
+  export default AlternativeFlights;

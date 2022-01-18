@@ -6,77 +6,106 @@ import axios from 'axios';
 import { FaPlane } from "react-icons/fa";
 import { UserContext } from "../../Context";
 import SeatSelection from '../user/SeatSelection';
+import { listItemTextClasses } from '@mui/material';
 const { Title } = Typography;
 
 
-export default function ReservationHistory() {
+export default function ViewItinerary() {
+
     const location = useLocation();
     const { accessToken } = useContext(UserContext);
-    const { booking, userData, deptFlight, retFlight, amount } = location.state;
-    // const [redirectSSD, setRedirectSSD]=useState(false);
-    // const [redirectSSR, setRedirectSSR]=useState(false);
-    // const [currentFlight, setCurrentFlight] = useState({});
+    const [retFlight, setRetFlight]=useState(null);
+    const [deptFlight, setDeptFlight]=useState(null);
+    let { booking } = location.state;
+    const [redirectSSD, setRedirectSSD]=useState(false);
+    const [redirectSSR, setRedirectSSR]=useState(false);
+    const [currentFlight, setCurrentFlight] = useState({});
     // const [deptFlight, setDeptFlight]= useState();
     // const [retFlight, setRetFlight]= useState();
     //set deptFlight w retFlight bel response
-    // if (!userData) {
-    //     userData.firstName = "";
-    //     userData.lastName = "";
-    // }
-    //const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
-    // console.log(deptFlight.seat.length==0);
-    // const onChangeSeatDClick = (e) => {
-    //     e.preventDefault();
-    //     axios({
-    //         method: 'GET',
-    //         url:'http://localhost:3001/user/getFlight',
+   
 
-    //         params: {
-    //             flightId:deptFlight.flightId
-    //         }
-    //        ,
-    //          headers: {
-    //             'Authorization': `Bearer ${accessToken}`
-    //         }
-    //     })
-    //     .then ((res)=>{
-    //         setCurrentFlight(res.data);
-    //         setRedirectSSD(true);
-    //     })
-    //     .catch ((err) => {
-    //         console.log('Unable to get flight details')
-    //     })
-    // }
+    useEffect( async () => {
+        console.log(location.state);
+        axios({
+            method: 'GET',
+            url:'http://localhost:3001/user/booking',
 
-    // const onChangeSeatRClick = (e) => {
-    //     e.preventDefault();
-    //     axios({
-    //         method: 'GET',
-    //         url:'http://localhost:3001/user/getFlight',
+            params: {
+                bookingNum: booking
+            }
+           ,
+             headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then ((res)=>{
+            console.log("I WAS HERE")
+            console.log(res)
+            let responseObject = res.data;
+            setDeptFlight(responseObject.deptFlight)
+            setRetFlight(responseObject.retFlight)
+        })
+        .catch ((err) => {
+            console.log(err);
+            console.log('Unable to access DB') //TODO maybe change it to display an error message
+        })
+    }, [])
 
-    //         params: {
-    //             flightId:retFlight.flightId
-    //         }
-    //        ,
-    //          headers: {
-    //             'Authorization': `Bearer ${accessToken}`
-    //         }
-    //     })
-    //     .then ((res)=>{
-    //         setCurrentFlight(res.data);
-    //         setRedirectSSR(true);
-    //     })
-    //     .catch ((err) => {
-    //         console.log('Unable to get flight details')
-    //     })
-    // }
-    // if(redirectSSD){
-    //     // return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin = {deptFlight.cabin} noOfSeats = {deptFlight.noOfSeats} preChangeSeats = {deptFlight.seat}/>
-    //   }
+    const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
+    //console.log(deptFlight.seat.length==0);
+    const onChangeSeatDClick = (e) => {
+        e.preventDefault();
+        axios({
+            method: 'GET',
+            url:'http://localhost:3001/user/getFlight',
 
-    //   if(redirectSSR){
-    //     // return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSR} cabin = {retFlight.cabin} noOfSeats = {retFlight.noOfSeats} preChangeSeats = {retFlight.seat}/>
-    //   }
+            params: {
+                flightId:deptFlight.flightId
+            }
+           ,
+             headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then ((res)=>{
+            setCurrentFlight(res.data);
+            setRedirectSSD(true);
+        })
+        .catch ((err) => {
+            console.log('Unable to get flight details')
+        })
+    }
+
+    const onChangeSeatRClick = (e) => {
+        e.preventDefault();
+        axios({
+            method: 'GET',
+            url:'http://localhost:3001/user/getFlight',
+
+            params: {
+                flightId:retFlight.flightId
+            }
+           ,
+             headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then ((res)=>{
+            setCurrentFlight(res.data);
+            setRedirectSSR(true);
+        })
+        .catch ((err) => {
+            console.log('Unable to get flight details')
+        })
+    }
+    if(redirectSSD){
+        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin = {deptFlight.cabin} noOfSeats = {deptFlight.noOfSeats} preChangeSeats = {deptFlight.seat}/>
+      }
+
+      if(redirectSSR){
+         return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSR} cabin = {retFlight.cabin} noOfSeats = {retFlight.noOfSeats} preChangeSeats = {retFlight.seat}/>
+      }
     
 
     function sendEmail() {
@@ -109,7 +138,6 @@ export default function ReservationHistory() {
             method: 'POST',
             url: 'http://localhost:3001/user/sendEmail',
             data: {
-                email: userData.email,
                 emailBody: emailBody
 
             }, headers: {
@@ -134,7 +162,7 @@ export default function ReservationHistory() {
     </div>)
     return (
         <div>
-
+         {deptFlight && retFlight &&
             <Card title={<Title style={{ textAlign: 'left' }} level={2}>{booking} Itinerary</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} extra={email} >
                 <Card title={<div style={{ display: "flex", direction: "row", marginTop: '10px' }} type="inner">
                     <FaPlane style={{ fontSize: '250%' }} />
@@ -145,7 +173,7 @@ export default function ReservationHistory() {
                 Change Flight
                         </Link>
                         </a><a href="#" style={{display: 'block'}}  
-                        // onClick={onChangeSeatDClick}
+                        onClick={onChangeSeatDClick}
                         >Edit Seats</a></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
                     <Row>
                         <Col span={8} style={{ textAlign: 'left' }}>Departure airport:</Col>
@@ -171,21 +199,21 @@ export default function ReservationHistory() {
                         <Col span={8} style={{ textAlign: 'left' }}>Cabin:</Col>
                         <Col span={28}>{deptFlight.cabin}</Col>
                     </Row>
-                    {/* <Row>
+                    <Row>
                         <Col span={8} style={{ textAlign: 'left' }}>Seats:</Col>
-                        {(deptFlight.seat.length === 0 ? <Col span={28}>Not Specified</Col> : <Col span={28}>{deptFlight.seat.join()}</Col>)}
-                    </Row> */}
+                        {(deptFlight.takenSeats.length === 0 ? <Col span={28}>Not Specified</Col> : <Col span={28}>{deptFlight.takenSeats.join()}</Col>)}
+                    </Row>
                 </Card>
                 <Divider />
                 <Card title={<div style={{ display: "flex", direction: "row", marginTop: '10px' }} type="inner">
                     <FaPlane style={{ fontSize: '250%' }} />
                     <Title style={{ marginLeft: '15px' }} level={4} >Flight: {retFlight.flightNum}</Title>
                 </div>} extra={<><a href="#" style={{display: 'block'}}>
-                    <Link to={{pathname:`/changeFlight`}} state={{ type: retFlight.type, flight: retFlight, seatType: retFlight.cabin, Adults: retFlight.Adults, Children: retFlight.Children }} >
+                    <Link to={{pathname:`/changeFlight`}} state={{ type: retFlight.type, flight: retFlight, seatType: retFlight.cabin }} >
                 Change Flight
                         </Link>
                         </a><a href="#" style={{display: 'block'}} 
-                        // onClick={onChangeSeatRClick}
+                        onClick={onChangeSeatRClick}
                         >Edit Seats</a></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
                     <Row>
                         <Col span={8} style={{ textAlign: 'left' }}>Flight number:</Col>
@@ -215,13 +243,15 @@ export default function ReservationHistory() {
                         <Col span={8} style={{ textAlign: 'left' }}>Cabin:</Col>
                         <Col span={28}>{retFlight.cabin}</Col>
                     </Row>
-                    {/* <Row>
+                    <Row>
                         <Col span={8} style={{ textAlign: 'left' }}>Seats:</Col>
-                        {(retFlight.seat.length === 0 ? <Col span={28}>Not Specified</Col> : <Col span={28}>{retFlight.seat.join()}</Col>)}
-                    </Row> */}
+                        {(retFlight.takenSeats.length === 0 ? 
+                        <Col span={28}>Not Specified</Col> : 
+                        <Col span={28}>{retFlight.takenSeats.join()}</Col>)}
+                    </Row>
                 </Card>
             </Card>
-
+       }
         </div>
     )
 }

@@ -3,7 +3,7 @@ import { Form, Input, Button, DatePicker, TimePicker, message, Card, Divider, Ty
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 const {Title} = Typography;
 
 
@@ -12,9 +12,16 @@ export default function UpdateFlight(){
     const location = useLocation();
     const { flight } = location.state;
     const [flightData, setFlightData] = useState(flight);
-
+    let navigate = useNavigate();
     const [form] = Form.useForm();
-  
+    const oldEconomy  = parseInt(flight.nOfEconomy)
+    const oldBusiness = parseInt(flight.nOfBusiness)
+    const oldFirst = parseInt(flight.nOfFirst)
+    let oldRemaining = flight.remainingSeats
+    oldRemaining [0] = parseInt (oldRemaining [0])
+    oldRemaining [1] = parseInt (oldRemaining [1])
+    oldRemaining [2] = parseInt (oldRemaining [2])
+
     function handler (event){
        
         setFlightData({
@@ -43,9 +50,10 @@ export default function UpdateFlight(){
         let flightDuration = moment.utc(moment(arrivalTime,"DD/MM/YYYY HH:mm").diff(moment(departureTime,"DD/MM/YYYY HH:mm"))).format("HH:mm")
         setFlightData({
             ...flightData, //keeps rest as is
-            'duration' : flightDuration
+            'duration' : flightDuration,
+            'remainingSeats' : [oldRemaining[0]+(parseInt(flightData.nOfEconomy) -oldEconomy), oldRemaining[1]+(parseInt(flightData.nOfBusiness) -oldBusiness), oldRemaining[2]+(parseInt(flightData.nOfFirst) -oldFirst)]
         });
-    }, [flightData.date, flightData.deptTime, flightData.arrDate, flightData.arrTime])
+    }, [flightData.date, flightData.deptTime, flightData.arrDate, flightData.arrTime, flightData.nOfEconomy, flightData.nOfBusiness, flightData.nOfFirst])
     
     //TODO fix the .then and .catch bodies
     function onFinish (){
@@ -57,7 +65,7 @@ export default function UpdateFlight(){
                 // console.log(res)
                 message.success('Fligh updated successfully. Redirecting...', 2)
                 .then(function () {
-                    window.location.href='/' 
+                    navigate('/');
                 }
                 )
             })

@@ -291,7 +291,7 @@ exports.cancelReservation = (req, res) => {
     if (deptFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { nOfEconomy: deptSeats } },
+            { $inc: { 'remainingSeats.0': deptSeats } },
             { $push: { takenSeats: {$each: deptFlight.seat} } }
         )
             .catch(err => {
@@ -301,7 +301,7 @@ exports.cancelReservation = (req, res) => {
     else if (deptFlight.cabin == "Business")
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { nOfBusiness: deptSeats } },//retest
+            { $inc: { 'remainingSeats.1': deptSeats } },//retest
             { $push: { takenSeats: {$each: deptFlight.seat} } }
         )
             .catch(err => {
@@ -311,7 +311,7 @@ exports.cancelReservation = (req, res) => {
     else
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { nOfFirst: deptSeats } },
+            { $inc: { 'remainingSeats.2': deptSeats } },
             { $push: { takenSeats: {$each: deptFlight.seat} } }
         )
             .catch(err => {
@@ -321,7 +321,7 @@ exports.cancelReservation = (req, res) => {
     if (retFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { nOfEconomy: retSeats } },
+            { $inc: { 'remainingSeats.0': retSeats } },
             { $push: { takenSeats: {$each: retFlight.seat} } }
         )
             .catch(err => {
@@ -331,7 +331,7 @@ exports.cancelReservation = (req, res) => {
     else if (retFlight.cabin == "Business")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { nOfBusiness: retSeats } },
+            { $inc: { 'remainingSeats.1': retSeats } },
             { $push: { takenSeats: {$each: retFlight.seat} } }
         )
             .catch(err => {
@@ -341,7 +341,7 @@ exports.cancelReservation = (req, res) => {
     else
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { nOfFirst: retSeats } },
+            { $inc: { 'remainingSeats.2' : retSeats } },
             { $push: { takenSeats: {$each: retFlight.seat} } }
         )
             .catch(err => {
@@ -379,12 +379,14 @@ exports.getFlight = (req, res) =>{
         return;
     })
 }
-exports.makePayment = async(req,res) =>{
+exports.makePayment = async(req,res,next) =>{
+       console.log(req.body.amount);
+       console.log(req.body.id);
         
         let { amount, id } = req.body;
         
         try {
-            const total = amount.amount;
+          const total = amount;
           const payment = await stripe.paymentIntents.create({
             amount : total*100,
             currency: "EUR",
@@ -393,18 +395,31 @@ exports.makePayment = async(req,res) =>{
             confirm: true,
           });
           console.log("Payment", payment);
-          res.json({
-            message: "Payment successful",
-            success: true,
-          });
+          next();
         } catch (error) {
           console.log("Error", error);
-          res.json({
-            message: "Payment failed",
-            success: false,
-          });
+          res.status(400).send({ paymentError:true });
         }
 }
+
+exports.getReservations = (req,res)=>{
+    let {userId} = req.query;
+    User.findById(userId)
+    .then((rslt)=>{
+        let bookings = rslt.bookingReferences;
+        let reservations = rslt.flights;
+        let referencesAndReservations = {
+            bookings : bookings,
+            reservations : reservations
+        }
+        res.status(200).send(referencesAndReservations);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
+}
+
+
 
 exports.bookTrip = async (req,res) =>{
 
@@ -451,7 +466,7 @@ exports.bookTrip = async (req,res) =>{
         res.status(200).send("successful");
     }
     catch(e){
-        res.status(400).send(e);
+        res.status(400).send({paymentError: false});
     }
 
 }
@@ -490,4 +505,48 @@ exports.editBooking = async(req,res) => {
     catch(e){
         res.status(400).send("An error occurred!");
     }
+}
+exports.getReservations = (req,res)=>{
+    const {username} = req.body.user;
+    User.findOne({ username: username })
+    .then((rslt)=>{
+        let bookings = rslt.bookingReferences;
+        let reservations = rslt.flights;
+        let referencesAndReservations = {
+            bookings : bookings,
+            reservations : reservations
+        }
+        res.status(200).send(referencesAndReservations);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
+}
+
+exports.getBooking =  (req,res) => {
+    console.log(req.query)
+    let bookingNum = (req.query).bookingNum;
+    const {username} = req.body.user;
+    User.findOne({ username: username })
+    .then((rslt)=>{
+        const flightsArray = rslt.flights;
+    const deptFlight =  (flightsArray.filter(flight => {
+        return ((flight.bookingNumber === bookingNum)&& flight.type === 'departure')
+      }))[0]
+    
+      const retFlight =  (flightsArray.filter(flight => {
+        return ((flight.bookingNumber === bookingNum)&& flight.type === 'return')
+      }))[0]
+
+    let deptAndRet = {
+        deptFlight : deptFlight,
+        retFlight : retFlight
+    }
+    console.log(deptAndRet)
+      res.status(200).send(deptAndRet); 
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
+   
 }

@@ -28,8 +28,13 @@ function Checkout() {
 
   const { accessToken, departureFlight, returnFlight, cabin, noOfSeats , username } = useContext(UserContext);
   const [success, setSuccess] = useState(false)
+  const [bookingNumber, setBookingNum]=useState(null)
   console.log(departureFlight);
   console.log(returnFlight);
+
+  useEffect(()=>{
+    setBookingNum(generateBookingNumber(7));
+  },[])
 
   const newSeats = () => {
 
@@ -74,11 +79,12 @@ function Checkout() {
 
   }
 
-var bookingNumber;
-  const onClick = async (e) => {
 
-    e.preventDefault();
-    const bookingNumber = generateBookingNumber(7);
+
+  const onClick = async (id) => {
+
+    //e.preventDefault();
+  
     newSeats();
 
     console.log(noOfSeats)
@@ -118,12 +124,14 @@ var bookingNumber;
             <br/>
             <p>Best wishes,</p>
             <p>ACL Airlines</p>`;
-      
+           console.log(id)
             const flightOne = await axios({ 
               method: 'patch', //should be patch
               url: 'http://localhost:3001/user/bookTrip',
               headers: { Authorization: `Bearer ${accessToken}` },
               data: {
+                id,
+                amount:calculatePrice(departureFlight)+calculatePrice(returnFlight),
                 emailBody1, 
                 emailBody2,
                bookingNumber,
@@ -148,7 +156,7 @@ var bookingNumber;
                }
               }
             });
-      setSuccess(true)
+      //setSuccess(true)
 
     } catch (e) {
       console.log(e)
@@ -156,11 +164,18 @@ var bookingNumber;
     }
   }
 
+  const onConfirm = async (e) => {
+      setSuccess(true);
+
+  }
+
   const title = (<Title level={2} >Booking Summary</Title>)
 
   if (success) {
     //return <BookingSuccess departureFlight={departureFlight} returnFlight={returnFlight} />
-    return <StripePay amount={calculatePrice(departureFlight) + calculatePrice(returnFlight)} booking={bookingNumber}/>
+    return <StripePay amount={calculatePrice(departureFlight) + calculatePrice(returnFlight)} 
+    booking={bookingNumber}
+    onClick={onClick}/>
   }
 
   return (
@@ -176,16 +191,9 @@ var bookingNumber;
       <Summary depPrice={calculatePrice(departureFlight)} retPrice={calculatePrice(returnFlight)} deptFlight={departureFlight} retFlight={returnFlight} nOfAdults={noOfSeats.Adults} nOfChild={noOfSeats.Children} cabin={cabin} />
       <div style={{ textAlign: 'center' }}>
 
-        <Button size='large' style={{ marginTop: '50px' }} type="primary">
-          <Popconfirm
-            title="Are you sure you want to book this flight?"
-            onConfirm={onClick}
-
-            okText="Yes"
-            cancelText="No"
-          >
-            Book Flight
-          </Popconfirm>
+        <Button size='large' style={{ marginTop: '50px' }} type="primary"
+        onClick={onConfirm}>    
+            Proceed to payment       
         </Button>
 
       </div>

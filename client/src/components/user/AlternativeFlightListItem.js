@@ -13,7 +13,7 @@ const buttonStyle= {
 }
 const displayFlex ={ display: "flex", direction: "row", marginTop:'10px'}
 
-function AlternativeFlightListItem({oldUserFlight, oldFlight, newFlight, pricediff, type}) {
+function AlternativeFlightListItem({oldUserFlight, oldFlight, newFlight, price, type}) {
     // console.log(oldUserFlight);
     // console.log(oldFlight);
     // console.log(newFlight);
@@ -31,7 +31,7 @@ function AlternativeFlightListItem({oldUserFlight, oldFlight, newFlight, pricedi
 
   const extra =()=>{
     return( < Button type="primary" style={buttonStyle}>
-      <Link to={{pathname:`/alternativeFlight/${newFlight.flightNum}`}} state={{ oldUserFlight, oldFlight, newFlight, pricediff, type }}>
+      <Link to={{pathname:`/alternativeFlight/${newFlight.flightNum}`}} state={{ oldUserFlight, oldFlight, newFlight, price, type }}>
          Flight Details
       </Link>
       </Button>)

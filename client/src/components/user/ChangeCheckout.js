@@ -117,7 +117,7 @@ function ChangeCheckout() {
                 url: 'http://localhost:3001/user/editBooking',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
-                    sendEmail,
+                    email: sendEmail,
                     newUserFlight,
                     oldUserFlight,
                     newFlight,
@@ -131,7 +131,7 @@ function ChangeCheckout() {
                 url: 'http://localhost:3001/user/editBooking',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
-                    sendEmailRefund,
+                    email: sendEmailRefund,
                     newUserFlight,
                     oldUserFlight,
                     newFlight,
@@ -145,7 +145,7 @@ function ChangeCheckout() {
                 url: 'http://localhost:3001/user/editBooking',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
-                    sendEmailCharge,
+                    email: sendEmailCharge,
                     newUserFlight,
                     oldUserFlight,
                     newFlight,
@@ -155,6 +155,8 @@ function ChangeCheckout() {
         }
 
     }
+
+    
 
     useEffect(() => {
         setFlight();
