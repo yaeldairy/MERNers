@@ -10,24 +10,24 @@ const stripePromise = loadStripe("pk_test_51KH6wELePquds3rDYJlyvrCVLkIFTijWyb18t
 
 
 const CARD_OPTIONS = {
-    iconStyle: "solid",
-    style: {
-      base: {
-        iconColor: "#c4f0ff",
-        color: "#fff",
-        fontWeight: 500,
-        fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
-        fontSize: "16px",
-        fontSmoothing: "antialiased",
-        ":-webkit-autofill": { color: "#fce883" },
-        "::placeholder": { color: "#87bbfd" },
-      },
-      invalid: {
-        iconColor: "#ffc7ee",
-        color: "#ffc7ee",
-      },
+  iconStyle: "solid",
+  style: {
+    base: {
+      iconColor: "#c4f0ff",
+      color: "#fff",
+      fontWeight: 500,
+      fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
+      fontSize: "16px",
+      fontSmoothing: "antialiased",
+      ":-webkit-autofill": { color: "#fce883" },
+      "::placeholder": { color: "#87bbfd" },
     },
-  };
+    invalid: {
+      iconColor: "#ffc7ee",
+      color: "#ffc7ee",
+    },
+  },
+};
 
 function PaymentForm( {amount, onClick } ){
     const { accessToken } = useContext(UserContext);
@@ -62,7 +62,7 @@ function PaymentForm( {amount, onClick } ){
           console.log("Error" , error)
       }
     }
-    else{
+    else {
       console.log(error.message)
     }
     }
@@ -102,9 +102,9 @@ function PaymentForm( {amount, onClick } ){
           {/*redirect to itenerary */}
           <h2 className="title">Payment has been made successfully!</h2>
         </div>
-       
+
       }
-      </>
-    );
+    </>
+  );
 }
 export default PaymentForm;

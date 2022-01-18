@@ -23,6 +23,7 @@ export default function FlightCreationForm (){
         nOfFirst: 0,
         price:0,
         takenSeats: [],
+        remainingSeats: []
     })
     
     const [form] = Form.useForm();
@@ -56,9 +57,10 @@ export default function FlightCreationForm (){
         let flightDuration = moment.utc(moment(arrivalTime,"DD/MM/YYYY HH:mm").diff(moment(departureTime,"DD/MM/YYYY HH:mm"))).format("HH:mm")
         setFlightData({
             ...flightData, //keeps rest as is
-            'duration' : flightDuration
+            'duration' : flightDuration,
+            'remainingSeats' : [flightData.nOfEconomy, flightData.nOfBusiness, flightData.nOfFirst]
         });
-    }, [flightData.date, flightData.deptTime, flightData.arrDate, flightData.arrTime])
+    }, [flightData.date, flightData.deptTime, flightData.arrDate, flightData.arrTime, flightData.nOfEconomy, flightData.nOfBusiness, flightData.nOfFirst])
     
  
     

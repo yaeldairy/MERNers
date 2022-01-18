@@ -6,13 +6,14 @@ import axios from 'axios';
 import { FaPlane } from "react-icons/fa";
 import { UserContext } from "../../Context";
 import SeatSelection from '../user/SeatSelection';
+import { listItemTextClasses } from '@mui/material';
 const { Title } = Typography;
 
 
 export default function ReservationHistory() {
     const location = useLocation();
     const { accessToken } = useContext(UserContext);
-    const { booking, userData, deptFlight, retFlight, amount } = location.state;
+    let { booking, userData, deptFlight, retFlight, amount } = location.state;
     // const [redirectSSD, setRedirectSSD]=useState(false);
     // const [redirectSSR, setRedirectSSR]=useState(false);
     // const [currentFlight, setCurrentFlight] = useState({});
@@ -23,6 +24,30 @@ export default function ReservationHistory() {
         userData.firstName = "";
         userData.lastName = "";
     }
+
+    useEffect(() => {
+        axios({
+            method: 'GET',
+            url:'http://localhost:3001/user/booking',
+
+            params: {
+                bookingNum: booking
+            }
+           ,
+             headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then ((res)=>{
+            let responseObject = res.data;
+            deptFlight = responseObject.deptFlight
+            retFlight = responseObject.retFlight
+        })
+        .catch ((err) => {
+            console.log('Unable to access DB') //TODO maybe change it to display an error message
+        })
+    }, [])
+
     //const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
     // console.log(deptFlight.seat.length==0);
     // const onChangeSeatDClick = (e) => {
@@ -80,7 +105,7 @@ export default function ReservationHistory() {
     
 
     function sendEmail() {
-        const emailBody = `<p>Hello ${userData.firstName} ${userData.lastName},</p>
+        const emailBody = `<p>Hello,</p>
             <br/>
             <p>This is your itinerary for your booking ${booking}.</p>
             <br/>
@@ -109,7 +134,6 @@ export default function ReservationHistory() {
             method: 'POST',
             url: 'http://localhost:3001/user/sendEmail',
             data: {
-                email: userData.email,
                 emailBody: emailBody
 
             }, headers: {

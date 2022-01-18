@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Divider, Typography, Select, List, Card } from 'antd';
 import "antd/dist/antd.css";
 import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { UserContext } from "../../Context";
 import FlightListItem from './FlightListItem';
 import { speedDialActionClasses } from '@mui/material';
 const { Title } = Typography;
@@ -11,11 +13,12 @@ const { Title } = Typography;
 export default function ReservationHistory() {
     const location = useLocation();
     const { user } = location.state;
+    const {accessToken} = useContext(UserContext)
     const [upcomingFlights, setUpcomingFlights] = useState([]);
     const [previousFlights, setPreviousFlights] = useState([]);
     const [userData, setUserData] = useState(user);
-    const reservations = userData.flights;//<------ new API call
-    const bookings = userData.bookingReferences;//<------ new API call
+    let reservations = userData.flights;//<------ new API call
+    let bookings = userData.bookingReferences;//<------ new API call
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
@@ -25,27 +28,37 @@ export default function ReservationHistory() {
     //var previousFlights = [];
 
     useEffect(() => {
-        //console.log(reservations)
-        console.log(bookings)
-         getUpcomingTrips();
-         getPreviousTrips();
+        axios({
+            method: 'GET',
+            url:'http://localhost:3001/user/reservations',
 
-        // for (let i = 0; i < bookings.length; i++)
-        //     for (let j = 0; j < reservations.length; j++)
-        //         if (reservations[j].bookingNumber == bookings[i]) {
-        //             console.log("trip "+i+j)
-        //         }
+             headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        .then ((res)=>{
+            let responseObject = res.data;
+            bookings = responseObject.bookings
+            reservations = responseObject.reservations;
+            console.log('response:')
+            console.log(responseObject)
+        })
+        .catch ((err) => {
+            console.log('Unable to access DB') //TODO maybe change it to display an error message
+        })
+        //console.log(bookings)
+        getUpcomingTrips();
+        getPreviousTrips();
 
-
-    }, []);
+    }, [])
 
 
 
     function getUpcomingTrips() {
-        console.log("upcoming")
+        //console.log("upcoming")
         let upcoming=[]
         for (const booking of bookings) {
-            console.log(booking);
+            //console.log(booking);
             for (const trip of reservations) {
                 if (trip.bookingNumber == booking) {
                     if (trip.type === "departure") {
@@ -97,7 +110,7 @@ export default function ReservationHistory() {
             for (const trip of reservations) {
                 if (trip.bookingNumber === booking) {
                     if (trip.type === "departure") {
-                        console.log(trip.date);
+                        //console.log(trip.date);
                         if ((trip.date.substring(6, 10) < yyyy) ||
                             (trip.date.substring(6, 10) == yyyy && trip.date.substring(3, 5) < mm) ||
                             (trip.date.substring(6, 10) == yyyy && trip.date.substring(3, 5) == mm && trip.date.substring(0, 2) <= dd)) {
