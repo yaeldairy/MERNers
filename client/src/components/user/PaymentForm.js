@@ -37,6 +37,7 @@ function PaymentForm( {onClick , booking } ){
     const [success , setSuccess] = useState(false)
     const stripe = useStripe()
     const elements = useElements()
+    console.log(booking);
  
     const handleSubmit = async (e) => {
       e.preventDefault()
@@ -44,6 +45,7 @@ function PaymentForm( {onClick , booking } ){
         type : "card",
         card: elements.getElement(CardElement)
       })
+      console.log(error)
      if(!error){
       try{
         console.log(paymentMethod)
@@ -83,7 +85,7 @@ function PaymentForm( {onClick , booking } ){
     </div>)
 
     if (success) {
-      navigate(`/bookings/${booking}`, {  state : {booking}  })
+      navigate(`/bookings/${booking}`, { state : {booking: booking} })
     }
     return (
       <>

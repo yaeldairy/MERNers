@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { Button, Card, Typography } from 'antd';
@@ -14,7 +14,7 @@ const buttonStyle = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    color : 'white'
+    color: 'white'
 }
 const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }
 
@@ -23,7 +23,8 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
     let navigate = useNavigate();
     const { accessToken } = useContext(UserContext);
     const location = useLocation();
-    console.log(location.pathname); 
+    console.log(location.pathname);
+    // const [flag, setFlag] = useState(false);
     // var vis = true;
 
     const title = (<div style={displayFlex}>
@@ -61,28 +62,35 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
             hide()
             message.success('Reservation cancelled. A confirmation email will be sent.', 2);
             navigate('/');
+            navigate('/bookings', { state: { userData } });
 
         }).catch((err) => {
             hide()
             message.error('Unable to connect to the server. Please try again later.');
 
         });
-
+        // if (flag === true) {
+        //     console.log("flag")
+        //     navigate('/bookings', { state: { user: userData } })
+        // }
+        // else console.log(flag);
     };
+
 
     return (
         <div>
-            <Card 
-                style={{ marginTop: 16, 
+            <Card
+                style={{
+                    marginTop: 16,
                     // visibility: vis ? 'visible' : 'hidden' 
                 }}
                 type="inner"
                 title={title}
-                extra={<><Button style={{display: 'block'}}><Link to={{ pathname: `/bookings/${booking}` }} state={{ booking: booking, userData: userData, deptFlight: deptFlight, retFlight: retFlight, amount }}>
+                extra={<><Button style={{ display: 'block' }}><Link to={{ pathname: `/bookings/${booking}` }} state={{ booking: booking }}>
                     View Itinerary
                 </Link>
                 </Button>&nbsp;
-                    {editable ? <Button type="primary" style={{buttonStyle, display: 'block'}}>
+                    {editable ? <Button type="primary" style={{ buttonStyle, display: 'block' }}>
                         <Popconfirm title="Are you sure you want to cancel this trip?" onConfirm={handler} okText="Yes" cancelText="No">
                             <a href="#">Cancel Trip</a>
                         </Popconfirm>
