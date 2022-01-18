@@ -114,10 +114,9 @@ function ChangeCheckout() {
         if (pricediff === 0) {
             const updateBooking = await axios({
                 method: 'patch', //should be patch
-                url: 'http://localhost:3001/user/editBooking',
+                url: 'http://localhost:3001/user/editBookingNoPay',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
-                    id,
                     email: sendEmail,
                     newUserFlight,
                     oldUserFlight,
@@ -132,6 +131,8 @@ function ChangeCheckout() {
                 url: 'http://localhost:3001/user/editBooking',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
+                    id,
+                    amount: pricediff,
                     email: sendEmailRefund,
                     newUserFlight,
                     oldUserFlight,
@@ -146,6 +147,8 @@ function ChangeCheckout() {
                 url: 'http://localhost:3001/user/editBooking',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
+                    id,
+                    amount: pricediff,
                     email: sendEmailCharge,
                     newUserFlight,
                     oldUserFlight,

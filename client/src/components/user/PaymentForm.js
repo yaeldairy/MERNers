@@ -30,7 +30,7 @@ const CARD_OPTIONS = {
   },
 };
 
-function PaymentForm( {onClick , booking } ){
+function PaymentForm( {onClick , booking , amount} ){
 
     let navigate = useNavigate();
     const { accessToken } = useContext(UserContext);
@@ -91,11 +91,13 @@ function PaymentForm( {onClick , booking } ){
       <>
       
         <Card type="inner" title={title} style={{ marginLeft:'30%' , marginRight:'30%', marginTop:'5%'}}>
+        <div  style={{textAlign:'center'}}/>
+        <div className="FormRow" style={{textAlign:'center'}}>Total Price : {amount}</div>
         <form onSubmit={handleSubmit} style={{marginLeft:'6%' , marginTop:'10%'}}>
           <fieldset className="FormGroup">
-            <div className="FormRow" style={{textAlign:'center'}}>
+              
               <CardElement options={CARD_OPTIONS}/>
-            </div>
+            
           </fieldset>
           <div style={{ textAlign: 'center' }}>
           <Button size='large' style={{ marginTop: '50px' }} type="primary" ghost>

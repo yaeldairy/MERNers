@@ -14,6 +14,7 @@ router.patch('/addFlight', controller.addFlight )
 router.patch('/updateSeats', controller.updateSeats )
 router.patch('/bookTrip' , [controller.makePayment , controller.bookTrip])
 router.patch('/editBooking' , [controller.makePayment , controller.editBooking])
+router.patch('/editBookingNoPay' , controller.editBooking);
 //router.post('/payment',controller.makePayment)
 //router.post('/payment',controller.makePayment);
 router.get('/reservations', controller.getReservations);
