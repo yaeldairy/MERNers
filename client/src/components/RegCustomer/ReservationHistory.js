@@ -30,7 +30,7 @@ export default function ViewItinerary() {
     //var previousFlights = [];
 
     useEffect( async() => {
-       await axios({
+       axios({
             method: 'GET',
             url:'http://localhost:3001/user/reservations',
 
@@ -42,10 +42,6 @@ export default function ViewItinerary() {
             let responseObject = res.data;
             setBookings(responseObject.bookings)
             setReservations(responseObject.reservations);
-            getUpcomingTrips();
-            getPreviousTrips();
-
-            
         })
         .catch ((err) => {
             console.log('Unable to access DB') //TODO maybe change it to display an error message
@@ -53,10 +49,16 @@ export default function ViewItinerary() {
         //console.log(bookings)
     }, [])
 
+    useEffect(() => {
+        getUpcomingTrips();
+        getPreviousTrips();
+    }, [bookings, reservations])
+
 
 
     function getUpcomingTrips() {
-        //console.log("upcoming")
+        console.log('current reservations')
+        console.log(reservations)
         let upcoming=[]
         for (const booking of bookings) {
             //console.log(booking);
