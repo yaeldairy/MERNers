@@ -95,6 +95,9 @@ function App() {
                               <Route exact path='/payment' element={<PrivateRoute path='/payment' />}>
                                     <Route path='/payment' element={<PaymentForm />} />
                               </Route>
+                              <Route exact path='/viewItenerary' element={<PrivateRoute path='/viewItenerary' />}>
+                                    <Route path='/viewItenerary' element={<ViewItinerary/>} />
+                              </Route>
                         </Routes>
                   </div>
             </Router>

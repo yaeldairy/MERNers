@@ -381,12 +381,14 @@ exports.getFlight = (req, res) =>{
         return;
     })
 }
-exports.makePayment = async(req,res) =>{
+exports.makePayment = async(req,res,next) =>{
+       console.log(req.body.amount);
+       console.log(req.body.id);
         
         let { amount, id } = req.body;
         
         try {
-            const total = amount.amount;
+          const total = amount;
           const payment = await stripe.paymentIntents.create({
             amount : total*100,
             currency: "EUR",
@@ -395,16 +397,10 @@ exports.makePayment = async(req,res) =>{
             confirm: true,
           });
           console.log("Payment", payment);
-          res.json({
-            message: "Payment successful",
-            success: true,
-          });
+          next();
         } catch (error) {
           console.log("Error", error);
-          res.json({
-            message: "Payment failed",
-            success: false,
-          });
+          res.status(400).send({ paymentError:true });
         }
 }
 
@@ -423,33 +419,6 @@ exports.getReservations = (req,res)=>{
     .catch((err)=>{
         res.status(400).send(err);
     })
-}
-
-exports.getBooking = async (req,res) => {
-    let bookingNum = (req.query).bookingNum;
-    let userId = (req.query).bookingNum;
-    try{
-    const user = await User.findById(userId);
-    }
-    catch(err){
-        res.status(400).send(err);
-        return;
-    }
-    const flightsArray = user.flights;
-    const deptFlight =  (flightsArray.filter(flight => {
-        return ((flight.bookingNumber === bookingNum)&& flight.type === 'departure')
-      }))[0]
-    
-      const retFlight =  (flightsArray.filter(flight => {
-        return ((flight.bookingNumber === bookingNum)&& flight.type === 'return')
-      }))[0]
-
-    let deptAndRet = {
-        deptFlight : deptFlight,
-        retFlight : retFlight
-    }
-    console.log(deptAndRet)
-      res.status(200).send(deptAndRet);
 }
 
 
@@ -499,7 +468,51 @@ exports.bookTrip = async (req,res) =>{
         res.status(200).send("successful");
     }
     catch(e){
-        res.status(400).send(e);
+        res.status(400).send({paymentError: false});
     }
 
+}
+exports.getReservations = (req,res)=>{
+    const {username} = req.body.user;
+    User.findOne({ username: username })
+    .then((rslt)=>{
+        let bookings = rslt.bookingReferences;
+        let reservations = rslt.flights;
+        let referencesAndReservations = {
+            bookings : bookings,
+            reservations : reservations
+        }
+        res.status(200).send(referencesAndReservations);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
+}
+
+exports.getBooking =  (req,res) => {
+    console.log(req.query)
+    let bookingNum = (req.query).bookingNum;
+    const {username} = req.body.user;
+    User.findOne({ username: username })
+    .then((rslt)=>{
+        const flightsArray = rslt.flights;
+    const deptFlight =  (flightsArray.filter(flight => {
+        return ((flight.bookingNumber === bookingNum)&& flight.type === 'departure')
+      }))[0]
+    
+      const retFlight =  (flightsArray.filter(flight => {
+        return ((flight.bookingNumber === bookingNum)&& flight.type === 'return')
+      }))[0]
+
+    let deptAndRet = {
+        deptFlight : deptFlight,
+        retFlight : retFlight
+    }
+    console.log(deptAndRet)
+      res.status(200).send(deptAndRet); 
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
+   
 }

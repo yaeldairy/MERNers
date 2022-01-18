@@ -14,7 +14,14 @@ export default function UpdateFlight(){
     const [flightData, setFlightData] = useState(flight);
     let navigate = useNavigate();
     const [form] = Form.useForm();
-  
+    const oldEconomy  = parseInt(flight.nOfEconomy)
+    const oldBusiness = parseInt(flight.nOfBusiness)
+    const oldFirst = parseInt(flight.nOfFirst)
+    let oldRemaining = flight.remainingSeats
+    oldRemaining [0] = parseInt (oldRemaining [0])
+    oldRemaining [1] = parseInt (oldRemaining [1])
+    oldRemaining [2] = parseInt (oldRemaining [2])
+
     function handler (event){
        
         setFlightData({
@@ -43,9 +50,10 @@ export default function UpdateFlight(){
         let flightDuration = moment.utc(moment(arrivalTime,"DD/MM/YYYY HH:mm").diff(moment(departureTime,"DD/MM/YYYY HH:mm"))).format("HH:mm")
         setFlightData({
             ...flightData, //keeps rest as is
-            'duration' : flightDuration
+            'duration' : flightDuration,
+            'remainingSeats' : [oldRemaining[0]+(parseInt(flightData.nOfEconomy) -oldEconomy), oldRemaining[1]+(parseInt(flightData.nOfBusiness) -oldBusiness), oldRemaining[2]+(parseInt(flightData.nOfFirst) -oldFirst)]
         });
-    }, [flightData.date, flightData.deptTime, flightData.arrDate, flightData.arrTime])
+    }, [flightData.date, flightData.deptTime, flightData.arrDate, flightData.arrTime, flightData.nOfEconomy, flightData.nOfBusiness, flightData.nOfFirst])
     
     //TODO fix the .then and .catch bodies
     function onFinish (){
