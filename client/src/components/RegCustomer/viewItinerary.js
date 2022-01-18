@@ -57,51 +57,52 @@ export default function ViewItinerary() {
     }, [])
 
     const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
-    //console.log(deptFlight.seat.length==0);
     const onChangeSeatDClick = (e) => {
         e.preventDefault();
+        console.log('dept flight ID')
+        console.log(deptFlight._id)
         axios({
             method: 'GET',
-            url: 'http://localhost:3001/user/getFlight',
+            url:'http://localhost:3001/user/getFlight',
 
             params: {
                 flightId: deptFlight._id
             }
-            ,
-            headers: {
+           ,
+             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         })
-            .then((res) => {
-                setCurrentFlight(res.data);
-                setRedirectSSD(true);
-            })
-            .catch((err) => {
-                console.log('Unable to get flight details')
-            })
+        .then ((res)=>{
+            setCurrentFlight(res.data);
+            setRedirectSSD(true);
+        })
+        .catch ((err) => {
+            console.log('Unable to get flight details')
+        })
     }
 
     const onChangeSeatRClick = (e) => {
         e.preventDefault();
         axios({
             method: 'GET',
-            url: 'http://localhost:3001/user/getFlight',
+            url:'http://localhost:3001/user/getFlight',
 
             params: {
                 flightId: retFlight._id
             }
-            ,
-            headers: {
+           ,
+             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         })
-            .then((res) => {
-                setCurrentFlight(res.data);
-                setRedirectSSR(true);
-            })
-            .catch((err) => {
-                console.log('Unable to get flight details')
-            })
+        .then ((res)=>{
+            setCurrentFlight(res.data);
+            setRedirectSSR(true);
+        })
+        .catch ((err) => {
+            console.log('Unable to get flight details')
+        })
     }
     
     if(redirectSSD){
