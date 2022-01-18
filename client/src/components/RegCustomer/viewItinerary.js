@@ -168,17 +168,17 @@ export default function ReservationHistory() {
                         <Col span={8} style={{ textAlign: 'left' }}>Cabin:</Col>
                         <Col span={28}>{deptFlight.cabin}</Col>
                     </Row>
-                    {/* <Row>
+                    <Row>
                         <Col span={8} style={{ textAlign: 'left' }}>Seats:</Col>
-                        {(deptFlight.seat.length === 0 ? <Col span={28}>Not Specified</Col> : <Col span={28}>{deptFlight.seat.join()}</Col>)}
-                    </Row> */}
+                        {(deptFlight.takenSeats.length === 0 ? <Col span={28}>Not Specified</Col> : <Col span={28}>{deptFlight.seat.join()}</Col>)}
+                    </Row>
                 </Card>
                 <Divider />
                 <Card title={<div style={{ display: "flex", direction: "row", marginTop: '10px' }} type="inner">
                     <FaPlane style={{ fontSize: '250%' }} />
                     <Title style={{ marginLeft: '15px' }} level={4} >Flight: {retFlight.flightNum}</Title>
                 </div>} extra={<><a href="#" style={{display: 'block'}}>
-                    <Link to={{pathname:`/changeFlight`}} state={{ type: retFlight.type, flight: retFlight, seatType: retFlight.cabin, Adults: retFlight.Adults, Children: retFlight.Children }} >
+                    <Link to={{pathname:`/changeFlight`}} state={{ type: retFlight.type, flight: retFlight, seatType: retFlight.cabin }} >
                 Change Flight
                         </Link>
                         </a><a href="#" style={{display: 'block'}} 
@@ -212,10 +212,10 @@ export default function ReservationHistory() {
                         <Col span={8} style={{ textAlign: 'left' }}>Cabin:</Col>
                         <Col span={28}>{retFlight.cabin}</Col>
                     </Row>
-                    {/* <Row>
+                    <Row>
                         <Col span={8} style={{ textAlign: 'left' }}>Seats:</Col>
-                        {(retFlight.seat.length === 0 ? <Col span={28}>Not Specified</Col> : <Col span={28}>{retFlight.seat.join()}</Col>)}
-                    </Row> */}
+                        {(retFlight.takenSeats.length === 0 ? <Col span={28}>Not Specified</Col> : <Col span={28}>{retFlight.seat.join()}</Col>)}
+                    </Row>
                 </Card>
             </Card>
 

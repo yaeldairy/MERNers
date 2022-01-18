@@ -3,7 +3,7 @@ import { Form, Input, Button, DatePicker, TimePicker, message, Card, Divider, Ty
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 const {Title} = Typography;
 
 
@@ -12,7 +12,7 @@ export default function UpdateFlight(){
     const location = useLocation();
     const { flight } = location.state;
     const [flightData, setFlightData] = useState(flight);
-
+    let navigate = useNavigate();
     const [form] = Form.useForm();
   
     function handler (event){
@@ -57,7 +57,7 @@ export default function UpdateFlight(){
                 // console.log(res)
                 message.success('Fligh updated successfully. Redirecting...', 2)
                 .then(function () {
-                    window.location.href='/' 
+                    navigate('/');
                 }
                 )
             })

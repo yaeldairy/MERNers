@@ -1,5 +1,5 @@
 import 'antd/dist/antd.css';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
@@ -29,11 +29,17 @@ function Login() {
   if (location.state) {
     path = location.state.path;
   }
-  const { setAccessToken, setPermissionLevel, setUsername } = useContext(UserContext);
+  const { accessToken, setAccessToken, setPermissionLevel, setUsername } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    if (accessToken)  
+      navigate('/');
+
+  },[]);
 
   const onSubmit = async () => {
 
@@ -69,7 +75,7 @@ function Login() {
       // console.log()
       if (e.errorFields)
         setError("Please fill all input fields")
-      else if(e.response.data.errors)
+      else if (e.response.data.errors)
         setError(e.response.data.errors);
       else
         setError("Oops, There seems to be a network problem, please try again :/")
@@ -100,7 +106,7 @@ function Login() {
                   message: 'Please enter username',
                 },
               ]}>
-                <Input placeholder="Username: " allowClear/>
+              <Input placeholder="Username: " allowClear />
               {/* <TextArea placeholder="Username:" allowClear /> */}
             </Form.Item>
 
@@ -117,9 +123,9 @@ function Login() {
               <Input.Password
                 placeholder="Password: "
                 iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                allowClear 
-                // onKeyDown={(e)=>{if (e.key === 'Enter') {onSubmit}}}
-                />
+                allowClear
+              // onKeyDown={(e)=>{if (e.key === 'Enter') {onSubmit}}}
+              />
             </Form.Item>
 
             {error && <Alert message={error} type="error" />}

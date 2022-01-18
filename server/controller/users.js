@@ -293,7 +293,7 @@ exports.cancelReservation = (req, res) => {
     if (deptFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { nOfEconomy: deptSeats } },
+            { $inc: { 'remainingSeats.0': deptSeats } },
             { $push: { takenSeats: {$each: deptFlight.seat} } }
         )
             .catch(err => {
@@ -303,7 +303,7 @@ exports.cancelReservation = (req, res) => {
     else if (deptFlight.cabin == "Business")
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { nOfBusiness: deptSeats } },//retest
+            { $inc: { 'remainingSeats.1': deptSeats } },//retest
             { $push: { takenSeats: {$each: deptFlight.seat} } }
         )
             .catch(err => {
@@ -313,7 +313,7 @@ exports.cancelReservation = (req, res) => {
     else
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
-            { $inc: { nOfFirst: deptSeats } },
+            { $inc: { 'remainingSeats.2': deptSeats } },
             { $push: { takenSeats: {$each: deptFlight.seat} } }
         )
             .catch(err => {
@@ -323,7 +323,7 @@ exports.cancelReservation = (req, res) => {
     if (retFlight.cabin == "Economy")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { nOfEconomy: retSeats } },
+            { $inc: { 'remainingSeats.0': retSeats } },
             { $push: { takenSeats: {$each: retFlight.seat} } }
         )
             .catch(err => {
@@ -333,7 +333,7 @@ exports.cancelReservation = (req, res) => {
     else if (retFlight.cabin == "Business")
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { nOfBusiness: retSeats } },
+            { $inc: { 'remainingSeats.1': retSeats } },
             { $push: { takenSeats: {$each: retFlight.seat} } }
         )
             .catch(err => {
@@ -343,7 +343,7 @@ exports.cancelReservation = (req, res) => {
     else
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
-            { $inc: { nOfFirst: retSeats } },
+            { $inc: { 'remainingSeats.2' : retSeats } },
             { $push: { takenSeats: {$each: retFlight.seat} } }
         )
             .catch(err => {

@@ -11,38 +11,44 @@ function ChangeCheckout() {
     const location = useLocation();
     const { oldFlight, oldUserFlight, newFlight, type, cabin, pricediff } = location.state;
     const { accessToken } = useContext(UserContext);
-    const [ email, setEmail ] = useState(null);
+    const [email, setEmail] = useState(null);
     const [newUserFlight, setNewUserFlight] = useState(null);
     let navigate = useNavigate();
-    console.log(oldFlight);
-    console.log(oldUserFlight);
-    console.log(newFlight);
-    console.log(type);
-    console.log(cabin);
-    console.log(pricediff);
+    // console.log("BEFOREEEE");
+    // console.log(oldFlight);
+    // console.log(oldUserFlight);
+    // console.log(newFlight);
+    // console.log(type);
+    // console.log(cabin);
+    // console.log(pricediff);
 
 
     function setFlight() {
+        console.log("fel switch")
+        console.log(newFlight.remainingSeats);
         switch (cabin) {
             case "First":
-                newFlight.remainingSeats.First -= oldUserFlight.noOfSeats.number; break;
+                newFlight.remainingSeats[2] -= oldUserFlight.noOfSeats.number; break;
             case "Business":
-                newFlight.remainingSeats.Business -= oldUserFlight.noOfSeats.number; break;
+                newFlight.remainingSeats[1] -= oldUserFlight.noOfSeats.number; break;
             case "Economy":
-                newFlight.remainingSeats.Economy -= oldUserFlight.noOfSeats.number; break;
+                newFlight.remainingSeats[0] -= oldUserFlight.noOfSeats.number; break;
             default: break;
         }
-
+        console.log(newFlight.remainingSeats);
+        console.log("fel switch tany")
+        console.log(oldFlight.remainingSeats);
         switch (oldUserFlight.cabin) {
             case "First":
-                oldFlight.remainingSeats.First += oldUserFlight.noOfSeats.number; break;
+                oldFlight.remainingSeats[2] += oldUserFlight.noOfSeats.number; break;
             case "Business":
-                oldFlight.remainingSeats.Business += oldUserFlight.noOfSeats.number; break;
+                oldFlight.remainingSeats[1] += oldUserFlight.noOfSeats.number; break;
             case "Economy":
-                oldFlight.remainingSeats.Economy += oldUserFlight.noOfSeats.number; break;
+                oldFlight.remainingSeats[0] += oldUserFlight.noOfSeats.number; break;
             default: break;
-
         }
+
+        console.log(oldFlight.remainingSeats);
 
         var index;
         for (let i = 0; i < oldUserFlight.takenSeats.length; i++) {
@@ -64,21 +70,14 @@ function ChangeCheckout() {
             price: oldUserFlight.noOfSeats.number * newFlight.price,
             type: type
         });
-    }
-    const updateBack = async () => {
-        // e.preventDefault();
-        const updateBooking = await axios({
-            method: 'patch', //should be patch
-            url: 'http://localhost:3001/user/updateBooking',
-            headers: { Authorization: `Bearer ${accessToken}` },
-            data: {
-                email,
-                newUserFlight,
-                oldUserFlight,
-                newFlight,
-                oldFlight,
-            }
-        });
+        console.log("BEFOREEEE");
+        console.log(oldFlight);
+        console.log(oldUserFlight);
+        console.log(newFlight);
+        console.log(newUserFlight);
+        console.log(type);
+        console.log(cabin);
+        console.log(pricediff);
     }
 
     const sendEmailCharge =
@@ -109,6 +108,52 @@ function ChangeCheckout() {
     <p>Best wishes,</p>
     <p>ACL Airlines</p>`;
 
+
+    const updateBack = async () => {
+        if (pricediff === 0) {
+            const updateBooking = await axios({
+                method: 'patch', //should be patch
+                url: 'http://localhost:3001/user/updateBooking',
+                headers: { Authorization: `Bearer ${accessToken}` },
+                data: {
+                    sendEmail,
+                    newUserFlight,
+                    oldUserFlight,
+                    newFlight,
+                    oldFlight,
+                }
+            });
+        }
+        else if (pricediff < 0) {
+            const updateBooking = await axios({
+                method: 'patch', //should be patch
+                url: 'http://localhost:3001/user/updateBooking',
+                headers: { Authorization: `Bearer ${accessToken}` },
+                data: {
+                    sendEmailRefund,
+                    newUserFlight,
+                    oldUserFlight,
+                    newFlight,
+                    oldFlight,
+                }
+            });
+        }
+        else {
+            const updateBooking = await axios({
+                method: 'patch', //should be patch
+                url: 'http://localhost:3001/user/updateBooking',
+                headers: { Authorization: `Bearer ${accessToken}` },
+                data: {
+                    sendEmailCharge,
+                    newUserFlight,
+                    oldUserFlight,
+                    newFlight,
+                    oldFlight,
+                }
+            });
+        }
+
+    }
 
     useEffect(() => {
         setFlight();

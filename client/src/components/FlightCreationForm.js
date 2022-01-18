@@ -3,12 +3,13 @@ import {Typography, Card, Form, Input, Button, DatePicker, TimePicker, message }
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const { Title } = Typography;
 export default function FlightCreationForm (){
 
     //const [value, functiontoupdatevalue] = useState(initialvalue) 
     //We deconstruct array                   //this returns an array
-  
+    let navigate = useNavigate();
     const [flightData, setFlightData] = useState({
         flightNum: "",
         deptAirport: "", 
@@ -71,9 +72,9 @@ export default function FlightCreationForm (){
                 hide()
                 form.resetFields();
                 // console.log(res) 
-                message.success('Fligh added successfully. Redirecting...', 2)
+                message.success('Flight added successfully. Redirecting...', 2)
                 .then(function () {
-                    window.location.href='/' 
+                    navigate('/')
                 }
                 )
                  
