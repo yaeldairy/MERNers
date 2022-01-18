@@ -105,7 +105,7 @@ export default function ReservationHistory() {
     
 
     function sendEmail() {
-        const emailBody = `<p>Hello ${userData.firstName} ${userData.lastName},</p>
+        const emailBody = `<p>Hello,</p>
             <br/>
             <p>This is your itinerary for your booking ${booking}.</p>
             <br/>
@@ -134,7 +134,6 @@ export default function ReservationHistory() {
             method: 'POST',
             url: 'http://localhost:3001/user/sendEmail',
             data: {
-                email: userData.email,
                 emailBody: emailBody
 
             }, headers: {
