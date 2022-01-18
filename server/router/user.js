@@ -16,8 +16,9 @@ router.patch('/addBooking',controller.addBooking)
 router.patch('/selectSeats',controller.selectSeats)
 router.patch('/addFlight', controller.addFlight )
 router.patch('/updateSeats', controller.updateSeats )
-router.patch('/bookTrip' , controller.bookTrip)
-router.post('/payment',controller.makePayment)
+router.patch('/bookTrip' , [controller.makePayment , controller.bookTrip])
+//router.patch('/editBooking' , [controller.makePayment , controller.bookTrip])
+//router.post('/payment',controller.makePayment)
 
 router.get('/getProfile', controller.getProfile);
 router.patch('/updateProfile', controller.updateProfile);

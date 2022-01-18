@@ -75,6 +75,7 @@ function Checkout() {
   }
 
 var bookingNumber;
+
   const onClick = async (e) => {
 
     e.preventDefault();
@@ -156,11 +157,18 @@ var bookingNumber;
     }
   }
 
+  const onConfirm = async (e) => {
+      setSuccess(true);
+
+  }
+
   const title = (<Title level={2} >Booking Summary</Title>)
 
   if (success) {
     //return <BookingSuccess departureFlight={departureFlight} returnFlight={returnFlight} />
-    return <StripePay amount={calculatePrice(departureFlight) + calculatePrice(returnFlight)} booking={bookingNumber}/>
+    return <StripePay amount={calculatePrice(departureFlight) + calculatePrice(returnFlight)} 
+    booking={bookingNumber}
+    onClick={onClick}/>
   }
 
   return (
@@ -176,16 +184,9 @@ var bookingNumber;
       <Summary depPrice={calculatePrice(departureFlight)} retPrice={calculatePrice(returnFlight)} deptFlight={departureFlight} retFlight={returnFlight} nOfAdults={noOfSeats.Adults} nOfChild={noOfSeats.Children} cabin={cabin} />
       <div style={{ textAlign: 'center' }}>
 
-        <Button size='large' style={{ marginTop: '50px' }} type="primary">
-          <Popconfirm
-            title="Are you sure you want to book this flight?"
-            onConfirm={onClick}
-
-            okText="Yes"
-            cancelText="No"
-          >
-            Book Flight
-          </Popconfirm>
+        <Button size='large' style={{ marginTop: '50px' }} type="primary"
+        onClick={onConfirm}>    
+            Proceed to payment       
         </Button>
 
       </div>

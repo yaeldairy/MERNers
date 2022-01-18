@@ -381,12 +381,12 @@ exports.getFlight = (req, res) =>{
         return;
     })
 }
-exports.makePayment = async(req,res) =>{
+exports.makePayment = async(req,res,next) =>{
         
         let { amount, id } = req.body;
         
         try {
-            const total = amount.amount;
+          const total = amount.amount;
           const payment = await stripe.paymentIntents.create({
             amount : total*100,
             currency: "EUR",
@@ -395,16 +395,10 @@ exports.makePayment = async(req,res) =>{
             confirm: true,
           });
           console.log("Payment", payment);
-          res.json({
-            message: "Payment successful",
-            success: true,
-          });
+          next();
         } catch (error) {
           console.log("Error", error);
-          res.json({
-            message: "Payment failed",
-            success: false,
-          });
+          res.status(400).send({ paymentError:true });
         }
 }
 
@@ -453,7 +447,7 @@ exports.bookTrip = async (req,res) =>{
         res.status(200).send("successful");
     }
     catch(e){
-        res.status(400).send(e);
+        res.status(400).send({paymentError: false});
     }
 
 }
