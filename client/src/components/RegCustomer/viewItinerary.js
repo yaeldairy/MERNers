@@ -65,7 +65,7 @@ export default function ViewItinerary() {
             url: 'http://localhost:3001/user/getFlight',
 
             params: {
-                flightId: deptFlight.flightId
+                flightId: deptFlight._id
             }
             ,
             headers: {
@@ -88,7 +88,7 @@ export default function ViewItinerary() {
             url: 'http://localhost:3001/user/getFlight',
 
             params: {
-                flightId: retFlight.flightId
+                flightId: retFlight._id
             }
             ,
             headers: {
@@ -103,14 +103,7 @@ export default function ViewItinerary() {
                 console.log('Unable to get flight details')
             })
     }
-    if (redirectSSD) {
-        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin={deptFlight.cabin} noOfSeats={deptFlight.noOfSeats} preChangeSeats={deptFlight.seat} />
-    }
-
-    if (redirectSSR) {
-        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSR} cabin={retFlight.cabin} noOfSeats={retFlight.noOfSeats} preChangeSeats={retFlight.seat} />
-    }
-
+    
     if(redirectSSD){
         return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin = {deptFlight.cabin} noOfSeats = {deptFlight.noOfSeats} preChangeSeats = {deptFlight.takenSeats}/>
       }
