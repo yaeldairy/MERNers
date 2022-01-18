@@ -8,7 +8,7 @@ import axios from 'axios';
 
 function ChangeCheckout(data) {
     const { oldFlight, oldUserFlight, newFlight, type, cabin, pricediff } = data;
-    const { accessToken } = useContext(UserContext);
+    const { accessToken , username} = useContext(UserContext);
     const { email, setEmail } = useState(null);
     const [newUserFlight, setNewUserFlight] = useState(null);
     let navigate = useNavigate();
@@ -60,7 +60,7 @@ function ChangeCheckout(data) {
         e.preventDefault();
         const updateBooking = await axios({
             method: 'patch', //should be patch
-            url: 'http://localhost:3001/user/updateBooking',
+            url: 'http://localhost:3001/user/editBooking',
             headers: { Authorization: `Bearer ${accessToken}` },
             data: {
                 email,
@@ -68,6 +68,8 @@ function ChangeCheckout(data) {
                 oldUserFlight,
                 newFlight,
                 oldFlight,
+                oId : newFlight.flightId,
+                nId : oldFlight.flightId
             }
         });
     }
