@@ -19,10 +19,10 @@ export default function ReservationHistory() {
     // const [deptFlight, setDeptFlight]= useState();
     // const [retFlight, setRetFlight]= useState();
     //set deptFlight w retFlight bel response
-    if (!userData) {
-        userData.firstName = "";
-        userData.lastName = "";
-    }
+    // if (!userData) {
+    //     userData.firstName = "";
+    //     userData.lastName = "";
+    // }
     //const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
     // console.log(deptFlight.seat.length==0);
     // const onChangeSeatDClick = (e) => {
@@ -80,7 +80,7 @@ export default function ReservationHistory() {
     
 
     function sendEmail() {
-        const emailBody = `<p>Hello ${userData.firstName} ${userData.lastName},</p>
+        const emailBody = `<p>Hello,</p>
             <br/>
             <p>This is your itinerary for your booking ${booking}.</p>
             <br/>

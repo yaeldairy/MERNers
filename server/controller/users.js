@@ -408,7 +408,7 @@ exports.makePayment = async(req,res) =>{
 
 exports.bookTrip = async (req,res) =>{
 
-    console.log(req.body);
+    //console.log(req.body);
      let {departureFlight , returnFlight} = req.body;
      const {username , email }=req.body.user;
      const { bookingNumber , emailBody1 , emailBody2 } = req.body ;
@@ -419,8 +419,8 @@ exports.bookTrip = async (req,res) =>{
      const _id2 = req.body.returnFlight._id;
      const FId2 = mongoose.Types.ObjectId(_id2);
     
-     console.log(departureFlight);
-     console.log(returnFlight);
+    //  console.log(departureFlight);
+    //  console.log(returnFlight);
     
 
      delete departureFlight.nOfEconomy;
@@ -433,10 +433,10 @@ exports.bookTrip = async (req,res) =>{
      delete returnFlight.nOfFirst;
      delete returnFlight.remainingSeats;
      
-     console.log("----------------------");
-     console.log(departureFlight);
-     console.log(returnFlight);
-     console.log("----------------------");
+    //  console.log("----------------------");
+    //  console.log(departureFlight);
+    //  console.log(returnFlight);
+    //  console.log("----------------------");
 
     try{
 
@@ -461,17 +461,26 @@ exports.editBooking = async(req,res) => {
     const emailBody = req.body.email;
     const oldFlight = req.body.oldUserFlight;
     const newFlight = req.body.newUserFlight;
-    const Fid1 = req.body.oId;
-    const Fid2 = req.body.nId;
+    const Fid1 = oldFlight._id;
+    const Fid2 = newFlight._id;
     const FId1 = mongoose.Types.ObjectId(Fid1);
     const FId2 = mongoose.Types.ObjectId(Fid2);
-    oldFlight.flightId = FId1;
-    newFlight.flightId = FId2;
     const newF = req.body.newFlight;
     const oldF = req.body.oldFlight;
+    newF._id = FId2;
+    oldF._id = FId1;
+    // console.log(FId1);
+    // console.log(FId2);
+    // console.log(oldF);
+    // console.log(newF);
+    console.log(emailBody);
+    console.log(email);
+    // console.log("newUserFlight: ");
+    // console.log(newFlight);
+    // console.log(oldFlight);
 
     try{
-        const user1 = await User.findOneAndUpdate({ username},{ $pull: { flights: { flightId: FId1 }}});
+        const user1 = await User.findOneAndUpdate({username},{ $pull: { flights: { _id: Fid1 }}});
         const user2 = await User.findOneAndUpdate({username} ,{$push: {flights : newFlight}});
         const flight1 = await Flight.findOneAndReplace({_id : FId1} , oldF);
         const flight2 = await Flight.findOneAndReplace({_id : FId2} , newF);

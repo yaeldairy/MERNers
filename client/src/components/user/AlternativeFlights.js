@@ -38,7 +38,7 @@ function AlternativeFlights() {
           // console.log(f);
           if (f.flightNum === flight.flightNum){
             setOldFlight(f);
-            
+            return false;
           }
 
 
