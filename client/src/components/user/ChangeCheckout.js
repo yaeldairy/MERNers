@@ -110,13 +110,14 @@ function ChangeCheckout() {
     
 
 
-    const updateBack = async () => {
+    const updateBack = async (id) => {
         if (pricediff === 0) {
             const updateBooking = await axios({
                 method: 'patch', //should be patch
                 url: 'http://localhost:3001/user/editBooking',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
+                    id,
                     email: sendEmail,
                     newUserFlight,
                     oldUserFlight,
