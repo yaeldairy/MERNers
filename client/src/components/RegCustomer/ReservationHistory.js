@@ -10,7 +10,7 @@ const { Title } = Typography;
 
 
 
-export default function ReservationHistory() {
+export default function ViewItenerary() {
     const location = useLocation();
     const { user } = location.state;
     const {accessToken} = useContext(UserContext)

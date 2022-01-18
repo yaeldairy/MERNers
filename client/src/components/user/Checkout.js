@@ -28,8 +28,13 @@ function Checkout() {
 
   const { accessToken, departureFlight, returnFlight, cabin, noOfSeats , username } = useContext(UserContext);
   const [success, setSuccess] = useState(false)
+  const [bookingNumber, setBookingNum]=useState(null)
   console.log(departureFlight);
   console.log(returnFlight);
+
+  useEffect(()=>{
+    setBookingNum(generateBookingNumber(7));
+  },[])
 
   const newSeats = () => {
 
@@ -74,12 +79,12 @@ function Checkout() {
 
   }
 
-var bookingNumber;
 
-  const onClick = async (e) => {
 
-    e.preventDefault();
-    const bookingNumber = generateBookingNumber(7);
+  const onClick = async (id) => {
+
+    //e.preventDefault();
+  
     newSeats();
 
     console.log(noOfSeats)
@@ -119,12 +124,14 @@ var bookingNumber;
             <br/>
             <p>Best wishes,</p>
             <p>ACL Airlines</p>`;
-      
+           console.log(id)
             const flightOne = await axios({ 
               method: 'patch', //should be patch
               url: 'http://localhost:3001/user/bookTrip',
               headers: { Authorization: `Bearer ${accessToken}` },
               data: {
+                id,
+                amount:calculatePrice(departureFlight)+calculatePrice(returnFlight),
                 emailBody1, 
                 emailBody2,
                bookingNumber,
@@ -149,7 +156,7 @@ var bookingNumber;
                }
               }
             });
-      setSuccess(true)
+      //setSuccess(true)
 
     } catch (e) {
       console.log(e)

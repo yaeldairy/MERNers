@@ -10,22 +10,23 @@ import { listItemTextClasses } from '@mui/material';
 const { Title } = Typography;
 
 
-export default function ReservationHistory() {
+export default function ViewItenerary() {
+
     const location = useLocation();
     const { accessToken } = useContext(UserContext);
-    let { booking, userData, deptFlight, retFlight, amount } = location.state;
+    const [retFlight, setRetFlight]=useState(null);
+    const [deptFlight, setDeptFlight]=useState(null);
+    let { booking } = location.state;
     // const [redirectSSD, setRedirectSSD]=useState(false);
     // const [redirectSSR, setRedirectSSR]=useState(false);
     // const [currentFlight, setCurrentFlight] = useState({});
     // const [deptFlight, setDeptFlight]= useState();
     // const [retFlight, setRetFlight]= useState();
     //set deptFlight w retFlight bel response
-    if (!userData) {
-        userData.firstName = "";
-        userData.lastName = "";
-    }
+   
 
-    useEffect(() => {
+    useEffect( async () => {
+        console.log(location.state);
         axios({
             method: 'GET',
             url:'http://localhost:3001/user/booking',
@@ -39,9 +40,11 @@ export default function ReservationHistory() {
             }
         })
         .then ((res)=>{
+            console.log("I WAS HERE")
+            console.log(res)
             let responseObject = res.data;
-            deptFlight = responseObject.deptFlight
-            retFlight = responseObject.retFlight
+            setDeptFlight(responseObject.deptFlight)
+            setRetFlight(responseObject.retFlight)
         })
         .catch ((err) => {
             console.log('Unable to access DB') //TODO maybe change it to display an error message
@@ -158,7 +161,7 @@ export default function ReservationHistory() {
     </div>)
     return (
         <div>
-
+         {deptFlight && retFlight &&
             <Card title={<Title style={{ textAlign: 'left' }} level={2}>{booking} Itinerary</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} extra={email} >
                 <Card title={<div style={{ display: "flex", direction: "row", marginTop: '10px' }} type="inner">
                     <FaPlane style={{ fontSize: '250%' }} />
@@ -245,7 +248,7 @@ export default function ReservationHistory() {
                     </Row> */}
                 </Card>
             </Card>
-
+       }
         </div>
     )
 }

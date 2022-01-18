@@ -8,11 +8,12 @@ const PUBLIC_KEY =
 
 const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
-function StripePay({ amount, onClick }) {
+function StripePay({ amount, onClick , booking}) {
   return (
     <Elements stripe={stripeTestPromise}>
       <PaymentForm
         amount={amount}
+        booking={booking}
         onClick ={onClick}
       />
     </Elements>

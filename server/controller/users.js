@@ -382,11 +382,13 @@ exports.getFlight = (req, res) =>{
     })
 }
 exports.makePayment = async(req,res,next) =>{
+       console.log(req.body.amount);
+       console.log(req.body.id);
         
         let { amount, id } = req.body;
         
         try {
-          const total = amount.amount;
+          const total = amount;
           const payment = await stripe.paymentIntents.create({
             amount : total*100,
             currency: "EUR",
@@ -417,33 +419,6 @@ exports.getReservations = (req,res)=>{
     .catch((err)=>{
         res.status(400).send(err);
     })
-}
-
-exports.getBooking = async (req,res) => {
-    let bookingNum = (req.query).bookingNum;
-    let userId = (req.query).bookingNum;
-    try{
-    const user = await User.findById(userId);
-    }
-    catch(err){
-        res.status(400).send(err);
-        return;
-    }
-    const flightsArray = user.flights;
-    const deptFlight =  (flightsArray.filter(flight => {
-        return ((flight.bookingNumber === bookingNum)&& flight.type === 'departure')
-      }))[0]
-    
-      const retFlight =  (flightsArray.filter(flight => {
-        return ((flight.bookingNumber === bookingNum)&& flight.type === 'return')
-      }))[0]
-
-    let deptAndRet = {
-        deptFlight : deptFlight,
-        retFlight : retFlight
-    }
-    console.log(deptAndRet)
-      res.status(200).send(deptAndRet);
 }
 
 
@@ -515,6 +490,7 @@ exports.getReservations = (req,res)=>{
 }
 
 exports.getBooking =  (req,res) => {
+    console.log(req.query)
     let bookingNum = (req.query).bookingNum;
     const {username} = req.body.user;
     User.findOne({ username: username })
@@ -532,6 +508,7 @@ exports.getBooking =  (req,res) => {
         deptFlight : deptFlight,
         retFlight : retFlight
     }
+    console.log(deptAndRet)
       res.status(200).send(deptAndRet); 
     })
     .catch((err)=>{

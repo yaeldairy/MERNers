@@ -2,6 +2,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import React, { useState , useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context";
 import { Button, Card, Typography, Modal, Steps, Popconfirm } from 'antd';
 import {FaCcStripe } from "react-icons/fa"
@@ -29,7 +30,9 @@ const CARD_OPTIONS = {
   },
 };
 
-function PaymentForm( {amount, onClick } ){
+function PaymentForm( {onClick , booking } ){
+
+    let navigate = useNavigate();
     const { accessToken } = useContext(UserContext);
     const [success , setSuccess] = useState(false)
     const stripe = useStripe()
@@ -41,23 +44,30 @@ function PaymentForm( {amount, onClick } ){
         type : "card",
         card: elements.getElement(CardElement)
       })
-    if(!error){
+     if(!error){
       try{
+        console.log(paymentMethod)
         const {id} = paymentMethod
-        const response = await axios({
-          method: 'post',
-          url: 'http://localhost:3001/user/payment',
-          headers: { Authorization: `Bearer ${accessToken}` },
-          data: {
-            amount,
-            id
-          }
-        });
-        if(response.data.success){
-          console.log("Successful payment")
-          setSuccess(true)
-        }
-      }
+        onClick(id);
+        setSuccess(true);
+
+    //     console.log(amount);
+    //     const {id} = paymentMethod
+       
+    //     const response = await axios({
+    //       method: 'post',
+    //       url: 'http://localhost:3001/user/bookTrip',
+    //       headers: { Authorization: `Bearer ${accessToken}` },
+    //       data: {
+    //         amount,
+    //         id
+    //       }
+    //     });
+    //     if(response.data.success){
+    //       console.log("Successful payment")
+    //       setSuccess(true)
+    //     }
+     }
       catch(error){
           console.log("Error" , error)
       }
@@ -71,9 +81,13 @@ function PaymentForm( {amount, onClick } ){
       <FaCcStripe style={{fontSize:'60px'}}/>
       <Title style={{ color:'#6495ED' , fontSize:'30px'}} level={3} >Payment Page</Title> 
     </div>)
+
+    if (success) {
+      navigate("/viewItenerary", {  state : {booking}  })
+    }
     return (
       <>
-        {!success?
+      
         <Card type="inner" title={title} style={{ marginLeft:'30%' , marginRight:'30%', marginTop:'5%'}}>
         <form onSubmit={handleSubmit} style={{marginLeft:'6%' , marginTop:'10%'}}>
           <fieldset className="FormGroup">
@@ -85,25 +99,17 @@ function PaymentForm( {amount, onClick } ){
           <Button size='large' style={{ marginTop: '50px' }} type="primary" ghost>
           <Popconfirm
             title="Are you sure you want to book this flight?"
-            onConfirm={onClick}
+            onConfirm={handleSubmit}
             okText="Yes"
             cancelText="No"
           >
            Confirm Booking
           </Popconfirm>
         </Button>
-
-          </div>
-               
+          </div>      
         </form>
         </Card>
-        :
-        <div>
-          {/*redirect to itenerary */}
-          <h2 className="title">Payment has been made successfully!</h2>
-        </div>
-
-      }
+    
     </>
   );
 }
