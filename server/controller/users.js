@@ -457,3 +457,45 @@ exports.bookTrip = async (req,res) =>{
     }
 
 }
+exports.getReservations = (req,res)=>{
+    const {username} = req.body.user;
+    User.findOne({ username: username })
+    .then((rslt)=>{
+        let bookings = rslt.bookingReferences;
+        let reservations = rslt.flights;
+        let referencesAndReservations = {
+            bookings : bookings,
+            reservations : reservations
+        }
+        res.status(200).send(referencesAndReservations);
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
+}
+
+exports.getBooking =  (req,res) => {
+    let bookingNum = (req.query).bookingNum;
+    const {username} = req.body.user;
+    User.findOne({ username: username })
+    .then((rslt)=>{
+        const flightsArray = rslt.flights;
+    const deptFlight =  (flightsArray.filter(flight => {
+        return ((flight.bookingNumber === bookingNum)&& flight.type === 'departure')
+      }))[0]
+    
+      const retFlight =  (flightsArray.filter(flight => {
+        return ((flight.bookingNumber === bookingNum)&& flight.type === 'return')
+      }))[0]
+
+    let deptAndRet = {
+        deptFlight : deptFlight,
+        retFlight : retFlight
+    }
+      res.status(200).send(deptAndRet); 
+    })
+    .catch((err)=>{
+        res.status(400).send(err);
+    })
+   
+}

@@ -24,7 +24,8 @@ router.patch('/updateProfile', controller.updateProfile);
 router.post('/cancelReservation', controller.cancelReservation);
 router.post('/sendEmail', controller.sendEmail );
 router.get('/getFlight', controller.getFlight);
-
+router.get('/reservations', controller.getReservations);
+router.get('/booking', controller.getBooking);
 // router.patch('/addFlight',controller.addFlight);
 
 
