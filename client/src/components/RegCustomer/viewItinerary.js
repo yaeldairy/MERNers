@@ -57,52 +57,99 @@ export default function ViewItinerary() {
     }, [])
 
     const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
-    //console.log(deptFlight.seat.length==0);
     const onChangeSeatDClick = (e) => {
         e.preventDefault();
+        console.log('dept flight ID')
+        console.log(deptFlight._id)
         axios({
             method: 'GET',
-            url: 'http://localhost:3001/user/getFlight',
+            url:'http://localhost:3001/user/getFlight',
 
             params: {
-                flightId: deptFlight.flightId
+                flightId:deptFlight._id
             }
-            ,
-            headers: {
+           ,
+             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         })
-            .then((res) => {
-                setCurrentFlight(res.data);
-                setRedirectSSD(true);
-            })
-            .catch((err) => {
-                console.log('Unable to get flight details')
-            })
+        .then ((res)=>{
+            setCurrentFlight(res.data);
+            setRedirectSSD(true);
+        })
+        .catch ((err) => {
+            console.log('Unable to get flight details')
+        })
     }
 
     const onChangeSeatRClick = (e) => {
         e.preventDefault();
         axios({
             method: 'GET',
-            url: 'http://localhost:3001/user/getFlight',
+            url:'http://localhost:3001/user/getFlight',
 
             params: {
-                flightId: retFlight.flightId
+                flightId:retFlight._id
             }
-            ,
-            headers: {
+           ,
+             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         })
-            .then((res) => {
-                setCurrentFlight(res.data);
-                setRedirectSSR(true);
-            })
-            .catch((err) => {
-                console.log('Unable to get flight details')
-            })
+        .then ((res)=>{
+            setCurrentFlight(res.data);
+            setRedirectSSR(true);
+        })
+        .catch ((err) => {
+            console.log('Unable to get flight details')
+        })
     }
+    //console.log(deptFlight.seat.length==0);
+    // const onChangeSeatDClick = (e) => {
+    //     e.preventDefault();
+    //     axios({
+    //         method: 'GET',
+    //         url: 'http://localhost:3001/user/getFlight',
+
+    //         params: {
+    //             flightId: deptFlight.flightId
+    //         }
+    //         ,
+    //         headers: {
+    //             'Authorization': `Bearer ${accessToken}`
+    //         }
+    //     })
+    //         .then((res) => {
+    //             setCurrentFlight(res.data);
+    //             setRedirectSSD(true);
+    //         })
+    //         .catch((err) => {
+    //             console.log('Unable to get flight details')
+    //         })
+    // }
+
+    // const onChangeSeatRClick = (e) => {
+    //     e.preventDefault();
+    //     axios({
+    //         method: 'GET',
+    //         url: 'http://localhost:3001/user/getFlight',
+
+    //         params: {
+    //             flightId: retFlight.flightId
+    //         }
+    //         ,
+    //         headers: {
+    //             'Authorization': `Bearer ${accessToken}`
+    //         }
+    //     })
+    //         .then((res) => {
+    //             setCurrentFlight(res.data);
+    //             setRedirectSSR(true);
+    //         })
+    //         .catch((err) => {
+    //             console.log('Unable to get flight details')
+    //         })
+    // }
     if (redirectSSD) {
         return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin={deptFlight.cabin} noOfSeats={deptFlight.noOfSeats} preChangeSeats={deptFlight.seat} />
     }
@@ -110,14 +157,6 @@ export default function ViewItinerary() {
     if (redirectSSR) {
         return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSR} cabin={retFlight.cabin} noOfSeats={retFlight.noOfSeats} preChangeSeats={retFlight.seat} />
     }
-
-    if(redirectSSD){
-        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin = {deptFlight.cabin} noOfSeats = {deptFlight.noOfSeats} preChangeSeats = {deptFlight.takenSeats}/>
-      }
-
-      if(redirectSSR){
-        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSR} cabin = {retFlight.cabin} noOfSeats = {retFlight.noOfSeats} preChangeSeats = {retFlight.takenSeats}/>
-      }
     
 
     function sendEmail() {
