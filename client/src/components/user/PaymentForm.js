@@ -30,9 +30,10 @@ const CARD_OPTIONS = {
     },
   };
 
-function PaymentForm({amount, booking} ){
+function PaymentForm({amount, booking, bookFlag} ){
     const { accessToken } = useContext(UserContext);
-    const [success , setSuccess] = useState(false)
+    const [success , setSuccess] = useState(false);
+    // const []
     const stripe = useStripe()
     const elements = useElements();
     let navigate = useNavigate();
@@ -44,6 +45,7 @@ function PaymentForm({amount, booking} ){
         card: elements.getElement(CardElement)
       })
     if(!error){
+
       try{
         const {id} = paymentMethod
         const response = await axios({
@@ -55,6 +57,7 @@ function PaymentForm({amount, booking} ){
             id
           }
         });
+
         if(response.data.success){
           console.log("Successful payment")
           setSuccess(true)

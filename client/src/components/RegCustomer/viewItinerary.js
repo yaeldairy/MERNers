@@ -11,21 +11,15 @@ const { Title } = Typography;
 
 export default function ReservationHistory() {
     const location = useLocation();
-    const { username, accessToken } = useContext(UserContext);
-    const { booking, userData, deptFlight, retFlight, amount } = location.state;
+    const { accessToken } = useContext(UserContext);
+    const { booking, deptFlight, retFlight, amount } = location.state;
     // const [redirectSSD, setRedirectSSD]=useState(false);
     // const [redirectSSR, setRedirectSSR]=useState(false);
     // const [currentFlight, setCurrentFlight] = useState({});
     // const [deptFlight, setDeptFlight]= useState();
     // const [retFlight, setRetFlight]= useState();
     //set deptFlight w retFlight bel response
-    if (!userData) {
-        userData.firstName = "";
-        userData.lastName = "";
-    }
     
-
-
 
     //const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
     // console.log(deptFlight.seat.length==0);
@@ -84,7 +78,7 @@ export default function ReservationHistory() {
     
 
     function sendEmail() {
-        const emailBody = `<p>Hello ${userData.firstName} ${userData.lastName},</p>
+        const emailBody = `<p>Hello,</p>
             <br/>
             <p>This is your itinerary for your booking ${booking}.</p>
             <br/>
@@ -113,7 +107,6 @@ export default function ReservationHistory() {
             method: 'POST',
             url: 'http://localhost:3001/user/sendEmail',
             data: {
-                email: userData.email,
                 emailBody: emailBody
 
             }, headers: {
