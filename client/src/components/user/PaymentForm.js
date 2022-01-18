@@ -48,7 +48,7 @@ function PaymentForm( {onClick , booking } ){
       try{
         console.log(paymentMethod)
         const {id} = paymentMethod
-        onClick(id);
+        await onClick(id);
         setSuccess(true);
 
     //     console.log(amount);

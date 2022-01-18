@@ -66,10 +66,11 @@ exports.selectSeats = (req, res) => {
         .then((result) => {
             let flightsArray = result.flights
             let flightIndex = flightsArray.findIndex(
-                (flight) => (flight.flightId).toString() === data.flightId)
+                (flight) => (flight._id).toString() === data.flightId)
             let currentFlight = flightsArray[flightIndex];
-            let oldSeats = (currentFlight.seat)? currentFlight.seat : [] ;
-            currentFlight.seat = data.seats
+            console.log(currentFlight)
+            let oldSeats = (currentFlight.takenSeats)? currentFlight.takenSeats : [] ;
+            currentFlight.takenSeats = data.seats
             flightsArray[flightIndex] = currentFlight
             let finalFlightsObject = { flights: flightsArray }
             let errorOccured = false;
