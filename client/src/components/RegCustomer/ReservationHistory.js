@@ -17,10 +17,10 @@ export default function ViewItinerary() {
     const [upcomingFlights, setUpcomingFlights] = useState([]);
     const [previousFlights, setPreviousFlights] = useState([]);
     const [userData, setUserData] = useState(user);
-    // const [bookings, setBookings] = useState([]);
-    // const [reservations, setReservations] = useState([]);
-    let reservations = null;
-    let bookings = null; 
+    const [reservations,setReservations] = useState([]);
+    const [bookings,setBookings] = useState([]);
+    //let reservations = userData.flights;//<------ new API call
+    //let bookings = userData.bookingReferences;//<------ new API call
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
@@ -40,19 +40,17 @@ export default function ViewItinerary() {
         })
         .then ((res)=>{
             let responseObject = res.data;
-            bookings = responseObject.bookings;
-            reservations = responseObject.reservations;
-            console.log('response:')
-            console.log(responseObject)
+            setBookings(responseObject.bookings)
+            setReservations(responseObject.reservations);
+            getUpcomingTrips();
+            getPreviousTrips();
+
+            
         })
         .catch ((err) => {
             console.log('Unable to access DB') //TODO maybe change it to display an error message
         })
-        console.log(bookings)
-        console.log(reservations)
-        getUpcomingTrips();
-        getPreviousTrips();
-
+        //console.log(bookings)
     }, [])
 
 
