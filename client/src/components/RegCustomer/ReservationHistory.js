@@ -25,18 +25,10 @@ export default function ReservationHistory() {
     //var previousFlights = [];
 
     useEffect(() => {
-        //console.log(reservations)
+        
         console.log(bookings)
          getUpcomingTrips();
          getPreviousTrips();
-
-        // for (let i = 0; i < bookings.length; i++)
-        //     for (let j = 0; j < reservations.length; j++)
-        //         if (reservations[j].bookingNumber == bookings[i]) {
-        //             console.log("trip "+i+j)
-        //         }
-
-
     }, []);
 
 

@@ -4,7 +4,9 @@ import axios from "axios";
 import React, { useState , useContext } from "react";
 import {Button , Card, Typography} from 'antd';
 import { UserContext } from "../../Context";
+import { useNavigate } from "react-router-dom";
 const {Title} = Typography;
+
 const stripePromise = loadStripe("pk_test_51KH6wELePquds3rDYJlyvrCVLkIFTijWyb18tDaHClW7hwQWJTXHLWIZYiozGJya6kMOytEBwRDkgrEkbEAkn5M300NXV6Gv06");
 
 
@@ -28,11 +30,12 @@ const CARD_OPTIONS = {
     },
   };
 
-function PaymentForm( amount ){
+function PaymentForm({amount, booking} ){
     const { accessToken } = useContext(UserContext);
     const [success , setSuccess] = useState(false)
     const stripe = useStripe()
-    const elements = useElements()
+    const elements = useElements();
+    let navigate = useNavigate();
  
     const handleSubmit = async (e) => {
       e.preventDefault()
@@ -55,6 +58,7 @@ function PaymentForm( amount ){
         if(response.data.success){
           console.log("Successful payment")
           setSuccess(true)
+          navigate(`/bookings/${booking}`, { state: { booking: booking } })
         }
       }
       catch(error){

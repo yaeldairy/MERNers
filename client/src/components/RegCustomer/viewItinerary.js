@@ -11,7 +11,7 @@ const { Title } = Typography;
 
 export default function ReservationHistory() {
     const location = useLocation();
-    const { accessToken } = useContext(UserContext);
+    const { username, accessToken } = useContext(UserContext);
     const { booking, userData, deptFlight, retFlight, amount } = location.state;
     // const [redirectSSD, setRedirectSSD]=useState(false);
     // const [redirectSSR, setRedirectSSR]=useState(false);
@@ -23,6 +23,10 @@ export default function ReservationHistory() {
         userData.firstName = "";
         userData.lastName = "";
     }
+    
+
+
+
     //const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
     // console.log(deptFlight.seat.length==0);
     // const onChangeSeatDClick = (e) => {
