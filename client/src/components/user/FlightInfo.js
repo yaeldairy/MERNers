@@ -1,6 +1,6 @@
 import { Descriptions } from 'antd';
 
-function FlightInfo ({flight, pricediff}){
+function FlightInfo ({flight, price}){
   // console.log("hereeeee")
   // console.log(pricediff);
 //TODO check what info they need here (duration, arrDate)
@@ -33,8 +33,8 @@ function FlightInfo ({flight, pricediff}){
         <Descriptions.Item label="Baggage Allowance" >
           {flight.baggageAllowance}
         </Descriptions.Item>
-        <Descriptions.Item label="Price difference" >
-          {pricediff}
+        <Descriptions.Item label="Price (Economy)" >
+          {price}
         </Descriptions.Item>
         </Descriptions>
     )

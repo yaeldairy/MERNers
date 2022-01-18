@@ -9,7 +9,8 @@ const { Title, Text } = Typography;
 const buttonStyle= {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    color : 'white'
 }
 const displayFlex ={ display: "flex", direction: "row", marginTop:'10px'}
 

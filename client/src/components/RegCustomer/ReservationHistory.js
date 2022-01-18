@@ -10,7 +10,7 @@ const { Title } = Typography;
 
 
 
-export default function ViewItenerary() {
+export default function ViewItinerary() {
     const location = useLocation();
     const { user } = location.state;
     const {accessToken} = useContext(UserContext)
@@ -29,8 +29,8 @@ export default function ViewItenerary() {
     //var upcomingFlights = [];
     //var previousFlights = [];
 
-    useEffect(() => {
-        axios({
+    useEffect( async() => {
+       await axios({
             method: 'GET',
             url:'http://localhost:3001/user/reservations',
 
@@ -73,7 +73,7 @@ export default function ViewItenerary() {
                                 tempTrip = trip;
                             }
                             else {
-                                upcoming.push({ booking: booking, deptFlight: tempTrip, retFlight: trip });
+                                upcoming.push({ booking: booking, deptFlight: trip, retFlight: tempTrip });
                                 //console.log("pushed");
                                 tempTrip = null;
                                 break;
@@ -87,7 +87,7 @@ export default function ViewItenerary() {
                         }
                         else {
                             //console.log("pushed")
-                            upcoming.push({ booking: booking, deptFlight: trip, retFlight: tempTrip });
+                            upcoming.push({ booking: booking, deptFlight: tempTrip, retFlight: trip });
                             tempTrip = null;
                             break;
                         }

@@ -11,11 +11,11 @@ const { Title } = Typography;
 function AlternativeFlight (){
    
     const location = useLocation();
-    const { oldUserFlight, oldFlight, newFlight, pricediff, type } = location.state; // choose cabin
+    const { oldUserFlight, oldFlight, newFlight, price, type } = location.state; // choose cabin
     console.log(oldUserFlight);
     console.log(oldFlight);
     console.log(newFlight);
-    console.log(pricediff);
+    // console.log(pricediff);
     console.log(type);
     const [bookingFlag, setBookingFlag] = useState(false);
     
@@ -41,9 +41,9 @@ function AlternativeFlight (){
         style={{marginTop:'50px'}}    
         title={title}
         bordered={false}>
-        <FlightInfo flight={newFlight} pricediff={pricediff}/>
+        <FlightInfo flight={newFlight} price={price}/>
         {/* <Button type="primary" > */}
-        <ChooseCabin oldFlight = {oldFlight} oldUserFlight = {oldUserFlight} newFlight= {newFlight} type= {type} pricediff= {pricediff}/>
+        <ChooseCabin oldFlight = {oldFlight} oldUserFlight = {oldUserFlight} newFlight= {newFlight} type= {type} price= {price}/>
         
         {/* </Button> */}
         </Card>

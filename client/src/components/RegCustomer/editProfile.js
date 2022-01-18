@@ -3,7 +3,7 @@ import { Form, Input, Button, message, Card, Divider, Typography } from 'antd';
 import "antd/dist/antd.css";
 // import moment from 'moment';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from "../../Context";
 
@@ -12,6 +12,7 @@ const { Title } = Typography;
 
 //ba3d el edit eh?
 export default function EditProfile() {
+    let navigate = useNavigate();
     const { accessToken ,username} = useContext(UserContext);
     const location = useLocation();
     const { user } = location.state;
@@ -62,7 +63,7 @@ export default function EditProfile() {
             });
             hide()
             message.success('Data updated successfully. Redirecting...', 4)
-            window.location.href='/' ;
+            navigate('/');
 
         }
         catch(e){
@@ -78,7 +79,7 @@ export default function EditProfile() {
         //     .then((res) => {
         //         hide()
         //         message.success('Data updated successfully. Redirecting...', 4)
-        //         window.location.href='/' ;
+        //         
         //     })
         //     .catch((err) => {
         //         hide()
