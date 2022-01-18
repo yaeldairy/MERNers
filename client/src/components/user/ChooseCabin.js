@@ -6,40 +6,34 @@ import ChangeCheckout from './ChangeCheckout';
 const { Option } = Select;
 
 
-function ChooseCabin({ data }) {
-    const { oldFlight, oldUserFlight, newFlight, cabin, type, pricediff } = data;
-
+function ChooseCabin( { oldFlight, oldUserFlight, newFlight, type, pricediff }) {
     const [form] = Form.useForm();
     let navigate = useNavigate();
-    const { setCabin, setSeats } = useContext(UserContext);
+    // const { setCabin, setSeats } = useContext(UserContext);
+    const [cabin, setCabin] = useState();
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectValue, setSelectValue] = useState("nOfEconomy");
-    // const [adultsMax , setAdultsMax]= useState(0)
-    // const [childrenMax , setChildrenMax]= useState(0)
+    // const [selectValue, setSelectValue] = useState();
 
     const showModal = () => {
         setIsModalVisible(true);
     };
 
-    const handleOk = () => {
-        setIsModalVisible(false);
-        return <ChangeCheckout oldFlight={oldFlight} oldUserFlight={oldUserFlight} newFlight={newFlight} cabin={cabin} type={type} pricediff={pricediff} />//return
-
-    };
+    // const handleOk = () => {
+    //     setIsModalVisible(false);
+        
+    // };
 
     const handleCancel = () => {
         setIsModalVisible(false);
     };
     const handleSubmit = async () => {
         try {
-            const values = await form.validateFields();
-
-            const { cabin } = values
-            setCabin(cabin);
-            // setSeats({number: Adults+Children , Adults, Children})
-            console.log(values)
+            // const values = await form.validateFields();
+            // setCabin(selectValue);
+            console.log(cabin);
             setIsModalVisible(false);
-            // navigate('/returnFlights', {state :{type: 'return',flight, seatType, Adults, Children}})
+            // return <ChangeCheckout  />//return
+            navigate(`/changeCheckout`, { state: { oldFlight: oldFlight, oldUserFlight: oldUserFlight, newFlight: newFlight, cabin: cabin, type: type, pricediff: pricediff } })
         } catch (e) {
 
         }
@@ -47,54 +41,22 @@ function ChooseCabin({ data }) {
     };
 
     const onSelectChange = (value) => {
-
-        console.log("value")
-        console.log(value)
-        setSelectValue(value)
-        // if (value == "Economy") {
-        //     setSelectValue(value)
-        // }
-        // else if (value == "Business") {
-        //     setSelectValue("nOfBusiness")
-        // } else {
-        //     setSelectValue("nOfFirst")
-        // }
+        setCabin(value)
     }
-
-    // const onAdultsChange = (value) => {
-    //     setChildrenMax(flight[selectValue] - value)
-
-    // }
-    // const onChildrenChange = (value) => {
-    //     setAdultsMax(flight[selectValue] - value)
-    // }
-
-    // useEffect(() => {
-
-    // setChildrenMax(flight[selectValue])
-    // setAdultsMax(flight[selectValue])
-    // form.setFieldsValue({ Adults: 1, Children: 0 })
-
-    // }, [selectValue]);
-
-
-
 
     return (
         <div>
-            <Button type="primary" onClick={showModal}>  Book Flight </Button>
+            <Button type="primary" onClick={showModal}> Book Flight </Button>
 
             <Modal title="Choose seats" visible={isModalVisible}
-                onOk={handleOk}
+                // onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[
                     <Button key="bookFlight" onClick={handleSubmit}>
                         Book Flight
-                    </Button>,
+                    </Button>
                 ]}>
                 <Form
-                    // onFinish={onFinish}
-                    // onFinishFailed={onFinishFailed}
                     form={form}>
 
                     <Form.Item
@@ -110,7 +72,6 @@ function ChooseCabin({ data }) {
                         <Select
                             showSearch
                             placeholder="Select cabin"
-                            // optionFilterProp="children"
                             value="Economy"
                             onChange={(value) => { onSelectChange(value) }}
                         >

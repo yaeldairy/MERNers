@@ -3,15 +3,24 @@ import { useContext, useEffect, useState } from 'react';
 import { UserContext } from "../../Context";
 import StripePay from './StripePay';
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 
-function ChangeCheckout(data) {
-    const { oldFlight, oldUserFlight, newFlight, type, cabin, pricediff } = data;
-    const { accessToken , username} = useContext(UserContext);
-    const { email, setEmail } = useState(null);
+function ChangeCheckout() {
+    const location = useLocation();
+    const { oldFlight, oldUserFlight, newFlight, type, cabin, pricediff } = location.state;
+    const { accessToken } = useContext(UserContext);
+    const [ email, setEmail ] = useState(null);
     const [newUserFlight, setNewUserFlight] = useState(null);
     let navigate = useNavigate();
+    console.log(oldFlight);
+    console.log(oldUserFlight);
+    console.log(newFlight);
+    console.log(type);
+    console.log(cabin);
+    console.log(pricediff);
+
 
     function setFlight() {
         switch (cabin) {
@@ -36,14 +45,14 @@ function ChangeCheckout(data) {
         }
 
         var index;
-        for (let i = 0; i < oldUserFlight.seat.length; i++) {
-            index = oldFlight.takenSeats.indexOf(oldUserFlight.seat[i]);
+        for (let i = 0; i < oldUserFlight.takenSeats.length; i++) {
+            index = oldFlight.takenSeats.indexOf(oldUserFlight.takenSeats[i]);
             oldFlight.takenSeats.splice(index, 1);
         }
         setNewUserFlight({
             arrAirport: newFlight.arrAirport,
             arrTime: newFlight.arrTime,
-            bookingNumber: oldUserFlight.booking,
+            bookingNumber: oldUserFlight.bookingNumber,
             cabin: cabin,
             date: newFlight.date,
             deptAirport: newFlight.deptAirport,
@@ -52,12 +61,12 @@ function ChangeCheckout(data) {
             flightNum: newFlight.flightNum,
             noOfSeats: oldUserFlight.noOfSeats,
             seat: [],
-            totalPrice: oldUserFlight.noOfSeats.number * newFlight.price,
+            price: oldUserFlight.noOfSeats.number * newFlight.price,
             type: type
         });
     }
-    const updateBack = async (e) => {
-        e.preventDefault();
+    const updateBack = async () => {
+        // e.preventDefault();
         const updateBooking = await axios({
             method: 'patch', //should be patch
             url: 'http://localhost:3001/user/editBooking',
@@ -77,7 +86,7 @@ function ChangeCheckout(data) {
     const sendEmailCharge =
         `<p>Hello,</p>
     <br/>
-    <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
+    <p>This is to confirm your flight change in booking ${oldUserFlight.bookingNumber} for flights.</p>
     <p>You have been charged an amount of ${pricediff}.</p>
     <br/>
     <p>Best wishes,</p>
@@ -87,7 +96,7 @@ function ChangeCheckout(data) {
     const sendEmailRefund =
         `<p>Hello,</p>
     <br/>
-    <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
+    <p>This is to confirm your flight change in booking ${oldUserFlight.bookingNumber} for flights.</p>
     <p>You will be refunded an amount of ${Math.abs(pricediff)}.</p>
     <br/>
     <p>Best wishes,</p>
@@ -96,7 +105,7 @@ function ChangeCheckout(data) {
     const sendEmail =
         `<p>Hello,</p>
     <br/>
-    <p>This is to confirm your flight change in booking ${oldUserFlight.booking} for flights.</p>
+    <p>This is to confirm your flight change in booking ${oldUserFlight.bookingNumber} for flights.</p>
     <p></p>
     <br/>
     <p>Best wishes,</p>
@@ -113,12 +122,12 @@ function ChangeCheckout(data) {
             setEmail(sendEmailCharge);
         updateBack();
         if (pricediff <= 0)
-            navigate(`/bookings/${oldUserFlight.booking}`, { state: { booking: oldUserFlight.booking } })
+            navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber } })
     }, [])
 
     return (
         (pricediff > 0 ?
-            <StripePay amount={pricediff} booking={oldUserFlight.booking} /> : <></>)
+            <StripePay amount={pricediff} booking={oldUserFlight.bookingNumber} /> : <></>)
 
     )
 }
