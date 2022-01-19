@@ -47,7 +47,7 @@ export default function NavBar() {
             })
 
     }, []);
-    
+
 
     // const onCollapse = (collapsed) => {
     //     // console.log(collapsed);
@@ -87,46 +87,46 @@ export default function NavBar() {
     return (
         <>
             {userData ? (
-                // <Content style={{ padding: '0 50px' }}>
+                // <p className='navstyle'>
+                /* // <Content style={{ padding: '0 50px' }}>
                 //     <Layout className="site-layout-background" style={{ padding: '24px 0' }}>
-                //         <Sider className="site-layout-background" width={200}>
-                            <Menu
-                                // onClick={this.handleClick}
-                                style={{ width: 1500, display: "flex", flexDirection: "row", display: "flex" }}
-                                defaultSelectedKeys={['1']}
-                                defaultOpenKeys={['sub1']}
-                                mode="inline"
-                                theme="dark"
-                            >
+                //         <Sider className="site-layout-background" width={200}> */
+                                <Menu
+                                    // onClick={this.handleClick}
+                                    style={{ width: 1500, display: "flex", flexDirection: "row", display: "flex" }}
+                                    defaultSelectedKeys={['1']}
+                                    defaultOpenKeys={['sub1']}
+                                    mode="inline"
+                                    theme="dark"
+                                    // className='navstyle'
+                                >
 
-                                <MenuItem style={{ width: 250, marginLeft: '3%' }}><Link to={{ pathname: `/` }}><HomeOutlined />   Hello {userData.firstName} {userData.lastName}!</Link></MenuItem>
-                                {/* <Menu icon={<UserOutlined />} title="Profile" style={{ }}> */}
-                                <Menu.Item icon={<UserOutlined />} style={{ width: 250 }} >
-                                    <Link to={{ pathname: `/profile` }} state={{ user: userData }}>
-                                        Your Account
-                                    </Link>
-                                </Menu.Item>
-                                <Menu.Item icon={<UnorderedListOutlined />} style={{ width: 250 }} >
-                                    <Link to={{ pathname: `/bookings` }} state={{ user: userData }}>
-                                        Bookings
-                                    </Link>
-                                </Menu.Item>
-                                {/* </Menu> */}
+                                    <MenuItem style={{ width: 250, marginLeft: '3%' }}><Link to={{ pathname: `/` }}><HomeOutlined />   Hello {userData.firstName} {userData.lastName}!</Link></MenuItem>
+                                    {/* <Menu icon={<UserOutlined />} title="Profile" style={{ }}> */}
+                                    <Menu.Item icon={<UserOutlined />} style={{ width: 250 }} >
+                                        <Link to={{ pathname: `/profile` }} state={{ user: userData }}>
+                                            Your Account
+                                        </Link>
+                                    </Menu.Item>
+                                    <Menu.Item icon={<UnorderedListOutlined />} style={{ width: 250 }} >
+                                        <Link to={{ pathname: `/bookings` }} state={{ user: userData }}>
+                                            Bookings
+                                        </Link>
+                                    </Menu.Item>
+                                    {/* </Menu> */}
 
-                                <Menu.Item icon={<MailOutlined />} style={{ width: 250 }} onClick={copyToClip}>
-                                    Contact Us
-                                </Menu.Item>
-                                <Menu.Item icon={<LogoutOutlined />} style={{ width: 250 }}>
-                                    <Link to={{ pathname: `/` }}>
-                                        Logout
-                                    </Link>
-                                </Menu.Item>
+                                    <Menu.Item icon={<MailOutlined />} style={{ width: 250 }} onClick={copyToClip}>
+                                        Contact Us
+                                    </Menu.Item>
+                                    <Menu.Item icon={<LogoutOutlined />} style={{ width: 250 }}>
+                                        <Link to={{ pathname: `/` }}>
+                                            Logout
+                                        </Link>
+                                    </Menu.Item>
 
 
-                            </Menu>
-                //         </Sider>
-                //     </Layout>
-                // </Content>
+                                </Menu>
+                            // </p>
             ) : (<></>)}
         </>
     );

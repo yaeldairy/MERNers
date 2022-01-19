@@ -50,7 +50,11 @@ export default function ViewItinerary() {
 
     }, [])
 
+    const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
+    //console.log(deptFlight.seat.length==0);
+    
     //const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
+    // console.log(deptFlight.seat.length==0);
     const onChangeSeatDClick = (e) => {
         e.preventDefault();
         axios({
@@ -58,7 +62,7 @@ export default function ViewItinerary() {
             url:'http://localhost:3001/user/getFlight',
 
             params: {
-                flightId: deptFlight._id
+                flightId:deptFlight._id
             }
            ,
              headers: {
@@ -81,7 +85,7 @@ export default function ViewItinerary() {
             url:'http://localhost:3001/user/getFlight',
 
             params: {
-                flightId: retFlight._id
+                flightId:retFlight._id
             }
            ,
              headers: {
@@ -96,7 +100,6 @@ export default function ViewItinerary() {
             console.log('Unable to get flight details')
         })
     }
-    
     if(redirectSSD){
         return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin = {deptFlight.cabin} noOfSeats = {deptFlight.noOfSeats} preChangeSeats = {deptFlight.takenSeats}/>
       }

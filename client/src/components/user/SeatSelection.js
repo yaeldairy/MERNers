@@ -30,6 +30,9 @@ export default function SeatSelection({ flight, setRedirect, cabin, noOfSeats, p
             message.error('Kindly select seats for all members of you reservation');
         }
         else {
+            console.log(username)
+            console.log(selectedSeats)
+            console.log(flight._id)
             axios({
                 method: 'patch', //should be patch
                 url: 'http://localhost:3001/user/selectSeats',
@@ -42,6 +45,7 @@ export default function SeatSelection({ flight, setRedirect, cabin, noOfSeats, p
                     navigate('/')
                 })
                 .catch((err) => {
+                    console.log(err)
                     message.error('Unable to connect to the server. Please try again later.');
                 })
 

@@ -9,7 +9,7 @@ import axios from 'axios';
 
 function ChangeCheckout() {
     const location = useLocation();
-    const { oldFlight, oldUserFlight, newFlight, type, cabin,pricediff } = location.state;
+    const { oldFlight, oldUserFlight, newFlight, type, cabin, pricediff } = location.state;
     const { accessToken } = useContext(UserContext);
     const [email, setEmail] = useState(null);
     const sendEmailCharge =
@@ -55,13 +55,14 @@ function ChangeCheckout() {
         type: type
     });
     let navigate = useNavigate();
-    // console.log("BEFOREEEE");
-    // console.log(oldFlight);
-    // console.log(oldUserFlight);
-    // console.log(newFlight);
-    // console.log(type);
-    // console.log(cabin);
-    // console.log(pricediff);
+    // var flag = false;
+    console.log("before");
+    console.log(oldFlight);
+    console.log(oldUserFlight);
+    console.log(newFlight);
+    console.log(type);
+    console.log(cabin);
+    console.log(pricediff);
 
 
     function setFlight() {
@@ -97,7 +98,7 @@ function ChangeCheckout() {
             oldFlight.takenSeats.splice(index, 1);
         }
         // setNewUserFlight();
-        console.log("BEFOREEEE");
+        console.log("after");
         console.log(oldFlight);
         console.log(oldUserFlight);
         console.log(newFlight);
@@ -107,14 +108,14 @@ function ChangeCheckout() {
         console.log(pricediff);
     }
 
-    
 
 
-    const updateBack = async () => {
+
+    const updateBack = async (id) => {
         if (pricediff === 0) {
             const updateBooking = await axios({
                 method: 'patch', //should be patch
-                url: 'http://localhost:3001/user/editBooking',
+                url: 'http://localhost:3001/user/editBookingNoPay',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
                     email: sendEmail,
@@ -124,11 +125,12 @@ function ChangeCheckout() {
                     oldFlight,
                 }
             });
+            navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber } })
         }
         else if (pricediff < 0) {
             const updateBooking = await axios({
                 method: 'patch', //should be patch
-                url: 'http://localhost:3001/user/editBooking',
+                url: 'http://localhost:3001/user/editBookingNoPay',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
                     email: sendEmailRefund,
@@ -138,6 +140,7 @@ function ChangeCheckout() {
                     oldFlight,
                 }
             });
+            navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber } })
         }
         else {
             const updateBooking = await axios({
@@ -145,6 +148,8 @@ function ChangeCheckout() {
                 url: 'http://localhost:3001/user/editBooking',
                 headers: { Authorization: `Bearer ${accessToken}` },
                 data: {
+                    id,
+                    amount: pricediff,
                     email: sendEmailCharge,
                     newUserFlight,
                     oldUserFlight,
@@ -152,11 +157,17 @@ function ChangeCheckout() {
                     oldFlight,
                 }
             });
+            console.log(pricediff)
+            console.log(pricediff <= 0)
+            // if (pricediff <= 0)
+        
         }
 
     }
-
     
+
+
+
 
     useEffect(() => {
         setFlight();
@@ -167,9 +178,14 @@ function ChangeCheckout() {
         else
             setEmail(sendEmailCharge);
         updateBack();
-        if (pricediff <= 0)
-            navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber } })
+        // navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber } })
+        // else
+        // return <StripePay amount={pricediff} booking={oldUserFlight.bookingNumber} onClick={updateBack} />
+
     }, [])
+
+    // if (pricediff <= 0 && flag)
+        // navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber } })
 
     return (
         (pricediff > 0 ?
