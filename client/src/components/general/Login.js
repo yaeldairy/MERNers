@@ -1,7 +1,7 @@
 import 'antd/dist/antd.css';
 import { useState, useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from 'axios';
 import { Divider } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
@@ -133,7 +133,8 @@ function Login() {
             <Button style={{width:"100%"}} type="primary" onClick={onSubmit}>
               Log in
             </Button>
-            Dont have an account? <a href="http://localhost:3000/signup">Register now!</a>
+            Dont have an account? <a href = "#">
+               {/* href="http://localhost:3000/signup"> */}<Link to = {{ pathname: `/signup` }}>Register now!</Link></a>
           </Form>
         </Card>
       </Spin>

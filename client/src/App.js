@@ -20,6 +20,7 @@ import EditProfile from './components/RegCustomer/editProfile';
 import ViewItinerary from './components/RegCustomer/viewItinerary';
 import ChangeCheckout from './components/user/ChangeCheckout';
 import NavBar from './components/NavBar';
+import UserSignup from './components/UserSignup';
 import AlternativeFlights from './components/user/AlternativeFlights';
 import { UserContext } from "./Context";
 import {Button} from 'antd';
@@ -63,6 +64,7 @@ function App() {
                               <Route path="/returnFlight/:id" element={<ReturnFlight />} />
                               <Route path="/alternativeFlight/:id" element={<AlternativeFlight />} />
                               <Route path="/updateFlight/:id" element={<UpdateFlight />} />
+                              <Route path='/signup' element={<UserSignup/>}/>
 
                               <Route exact path='/checkout' element={<PrivateRoute path='/checkout' />}>
                                     <Route path='/checkout' element={<Checkout />} />
@@ -95,6 +97,7 @@ function App() {
                               <Route exact path='/payment' element={<PrivateRoute path='/payment' />}>
                                     <Route path='/payment' element={<PaymentForm />} />
                               </Route>
+                              
                         </Routes>
                   </div>
             </Router>

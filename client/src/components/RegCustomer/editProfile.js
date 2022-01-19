@@ -17,7 +17,7 @@ export default function EditProfile() {
     const location = useLocation();
     const { user } = location.state;
     const [userData, setUserData] = useState([user]);
-    console.log(userData[0].firstName);
+    // console.log(userData[0].firstName);
     const [form] = Form.useForm();
     function handler(event) {
 
@@ -44,7 +44,7 @@ export default function EditProfile() {
     //TODO fix the .then and .catch bodies
     async function onFinish() {
         const hide = message.loading('Updating Your Profile...', 0)
-        console.log(accessToken)
+        // console.log(accessToken)
 
         try{
             const edit = await axios({

@@ -196,7 +196,10 @@ exports.updateProfile = (req, res) => {
     const { _id, username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, phoneNumber2, email, passportNumber } = req.body;
 
     User.findOneAndUpdate({username}, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, phoneNumber2, email, passportNumber }, (error, response) => {
+        //IT'S NOT UPDATING
+        console.log("resp")
         console.log(response)
+        console.log("error")
         console.log(error)
 
         if (response) {
