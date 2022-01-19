@@ -131,4 +131,10 @@ exports.changePassword =(req,res)=>{
     })
     
 }
+exports.encPassword=async (req,res)=>{
+
+    const {password}=req.body;
+   const pass= await bcrypt.hash(password, 10);
+    res.status(200).send(pass)
+}
 

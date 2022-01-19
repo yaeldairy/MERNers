@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'; //use effect is for renders
+import React, { useEffect, useState,  useContext } from 'react'; 
 import {Typography, Card, Form, Input, Button, DatePicker, TimePicker, message } from 'antd';
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
+import { UserContext } from "../Context";
+import Unauthorized from './response/Unauthorized';
 const { Title } = Typography;
 export default function FlightCreationForm (){
-
-    //const [value, functiontoupdatevalue] = useState(initialvalue) 
-    //We deconstruct array                   //this returns an array
+    
+    const { permissionLevel} = useContext(UserContext);
+ 
   
     const [flightData, setFlightData] = useState({
         flightNum: "",
@@ -51,7 +53,12 @@ export default function FlightCreationForm (){
         });
     }
 
+    useEffect(()=>{
+        console.log(permissionLevel)
+        
+    },[])
     useEffect(() => {
+        console.log(permissionLevel)
         let departureTime  = flightData.date + ' ' + flightData.deptTime;
         let arrivalTime = flightData.arrDate + ' ' + flightData.arrTime;
         let flightDuration = moment.utc(moment(arrivalTime,"DD/MM/YYYY HH:mm").diff(moment(departureTime,"DD/MM/YYYY HH:mm"))).format("HH:mm")
@@ -88,6 +95,10 @@ export default function FlightCreationForm (){
     }
     function onFinishFailed (){
         message.error ('Please review input');
+    }
+
+    if(permissionLevel==2){
+        return <Unauthorized/>
     }
     
     const title=(<Title  level={2} >Create New Flight</Title> )

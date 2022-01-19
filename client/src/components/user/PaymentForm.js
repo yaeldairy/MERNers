@@ -4,7 +4,7 @@ import axios from "axios";
 import React, { useState , useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context";
-import { Button, Card, Typography, Modal, Steps, Popconfirm } from 'antd';
+import { Button, Card, Typography, Modal, Steps, Popconfirm , Alert,} from 'antd';
 import {FaCcStripe } from "react-icons/fa"
 const {Title} = Typography;
 const stripePromise = loadStripe("pk_test_51KH6wELePquds3rDYJlyvrCVLkIFTijWyb18tDaHClW7hwQWJTXHLWIZYiozGJya6kMOytEBwRDkgrEkbEAkn5M300NXV6Gv06");
@@ -35,10 +35,12 @@ function PaymentForm( {onClick , booking } ){
     let navigate = useNavigate();
     const { accessToken } = useContext(UserContext);
     const [success , setSuccess] = useState(false)
+    const [error, setError] = useState(false);
     const stripe = useStripe()
     const elements = useElements()
  
     const handleSubmit = async (e) => {
+      console.log(elements.getElement(CardElement))
       e.preventDefault()
       const {error , paymentMethod} = await stripe.createPaymentMethod({
         type : "card",
@@ -50,29 +52,13 @@ function PaymentForm( {onClick , booking } ){
         const {id} = paymentMethod
         onClick(id);
         setSuccess(true);
-
-    //     console.log(amount);
-    //     const {id} = paymentMethod
-       
-    //     const response = await axios({
-    //       method: 'post',
-    //       url: 'http://localhost:3001/user/bookTrip',
-    //       headers: { Authorization: `Bearer ${accessToken}` },
-    //       data: {
-    //         amount,
-    //         id
-    //       }
-    //     });
-    //     if(response.data.success){
-    //       console.log("Successful payment")
-    //       setSuccess(true)
-    //     }
      }
       catch(error){
           console.log("Error" , error)
       }
     }
     else {
+      setError(error.message)
       console.log(error.message)
     }
     }
@@ -88,14 +74,17 @@ function PaymentForm( {onClick , booking } ){
     return (
       <>
       
-        <Card type="inner" title={title} style={{ marginLeft:'30%' , marginRight:'30%', marginTop:'5%'}}>
-        <form onSubmit={handleSubmit} style={{marginLeft:'6%' , marginTop:'10%'}}>
+        <Card type="inner" title={title} style={{ marginLeft:'30%' , marginRight:'30%', marginTop:'5%', textAlign:'center'}}>
+        <form onSubmit={handleSubmit} style={{marginRight:'5%',marginLeft:'5%' , marginTop:'10%'}}>
           <fieldset className="FormGroup">
-            <div className="FormRow" style={{textAlign:'center'}}>
+            <div className="FormRow" >
               <CardElement options={CARD_OPTIONS}/>
             </div>
           </fieldset>
           <div style={{ textAlign: 'center' }}>
+
+          {error && <Alert style={{marginTop:'30px'}} message={error} type="error" />}
+
           <Button size='large' style={{ marginTop: '50px' }} type="primary" ghost>
           <Popconfirm
             title="Are you sure you want to book this flight?"

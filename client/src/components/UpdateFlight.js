@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react'; //use effect is for renders
+import React, { useState, useEffect, useContext  } from 'react'; //use effect is for renders
 import { Form, Input, Button, DatePicker, TimePicker, message, Card, Divider, Typography} from 'antd';
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
+import { UserContext } from "../Context";
+import Unauthorized from './response/Unauthorized';
+
 import { useLocation } from 'react-router-dom';
 const {Title} = Typography;
 
@@ -11,6 +14,7 @@ const {Title} = Typography;
 export default function UpdateFlight(){
     const location = useLocation();
     const { flight } = location.state;
+    const { permissionLevel} = useContext(UserContext);
     const [flightData, setFlightData] = useState(flight);
     const [form] = Form.useForm();
     const oldEconomy  = parseInt(flight.nOfEconomy)

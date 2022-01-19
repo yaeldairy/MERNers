@@ -12,6 +12,7 @@ import AlternativeFlight from './components/user/AlternativeFlight';
 import PaymentForm from './components/user/PaymentForm';
 //import SeatSelection from './components/user/SeatSelection';
 import Login from './components/general/Login';
+import NotFound404 from './components/response/NotFound404';
 import ReturnFlights from './components/general/ReturnFlights';
 import ReturnFlight from './components/general/ReturnFlight';
 import UserProfile from './components/RegCustomer/userProfile';
@@ -22,17 +23,23 @@ import ChangeCheckout from './components/user/ChangeCheckout';
 import NavBar from './components/NavBar';
 import AlternativeFlights from './components/user/AlternativeFlights';
 import { UserContext } from "./Context";
-import {Button} from 'antd';
+import {Button , Layout} from 'antd';
+
 // import { loadStripe } from "@stripe/stripe-js";
 // import { Elements } from "@stripe/react-stripe-js";
 
 //const stripePromise = loadStripe(pk_test_51KH6wELePquds3rDYJlyvrCVLkIFTijWyb18tDaHClW7hwQWJTXHLWIZYiozGJya6kMOytEBwRDkgrEkbEAkn5M300NXV6Gv06);
 import ChangePassword from './components/user/ChangePassword';
+import AdminLogin from './components/general/AdminLogin';
+import SiderAdmin from './components/navigation/SiderAdmin';
+import SiderUser from './components/navigation/SiderUser';
+import { Header } from 'antd/lib/layout/layout';
+
 //import AvailableFlights from './components/general/ReturnFlights';
 // import { Navigate, useNavigate } from 'react-router-dom';
 
 function App() {
-      const { accessToken } = React.useContext(UserContext);
+      const { accessToken, permissionLevel } = React.useContext(UserContext);
       console.log("APP"+accessToken);
       const path = '/';
       // let navigate = useNavigate();
@@ -45,19 +52,42 @@ function App() {
       return (<>
             {/* <NavBar /> */}
             <Router>
-            {(accessToken)?(<NavBar style={{zIndex:2}}/>):(<></>)}
-            {(!accessToken)?(<><Button type="primary" onClick={handler} style={{zIndex:2,float: "right", marginRight: '3%', marginTop: '2%'}}>
+            {/*(accessToken)?(<NavBar style={{zIndex:2}}/>):(<></>)*/}
+             <Header/>
+            {/*(!accessToken)?(<><Button type="primary" onClick={handler} style={{zIndex:2,float: "right", marginRight: '3%', marginTop: '2%'}}>
                   <Link to={{pathname:`/login`}} state={{ path }} >
                         Login
                         </Link>
-                  </Button><br/></>):(<></>)}
+                  </Button><br/></>):(<></>)*/}
+             <Layout style={{display: 'flex', flexDirection: 'row', overflow: 'hidden', height: 'calc(100vh - 64px)'}}>
+
+            <Layout style={{flex: 0}}>
+          
+              {permissionLevel==1 && <SiderAdmin/>}
+              {permissionLevel==2 && <SiderUser/>}
+          
+             </Layout>
+
+             <Layout style={{
+            flex: 1,
+            paddingLeft: 50,
+            paddingTop: 50,
+            paddingRight: 20,
+            paddingBottom: 50,
+            overflowY: 'scroll'
+             }}>
                   <div className="App">
 
                         <Routes>
                               <Route path="/" element={<Flights />} />
                               <Route path="/login" element={<Login path='/' />} />
+                              <Route path="/adminLogin" element={<AdminLogin path='/' />} />
                               <Route path="/returnFlights" element={<ReturnFlights />} />
-                              <Route path="/newFlight" element={<FlightCreationForm />} />
+
+                              <Route exact path='/newFlight' element={<PrivateRoute path='/newFlight' />}>
+                                    <Route path='/newFlight' element={<FlightCreationForm />} />
+                              </Route>
+                             
                               <Route path="/payment" element={<StripePay />} />
                               <Route path="/viewFlight/:id" element={<Flight />} />
                               <Route path="/returnFlight/:id" element={<ReturnFlight />} />
@@ -98,8 +128,11 @@ function App() {
                               <Route exact path='/viewItenerary' element={<PrivateRoute path='/viewItenerary' />}>
                                     <Route path='/viewItenerary' element={<ViewItinerary/>} />
                               </Route>
+                              <Route component={<NotFound404/>}/>
                         </Routes>
                   </div>
+                  </Layout>
+                  </Layout>
             </Router>
             </>
             );

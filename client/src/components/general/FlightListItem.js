@@ -27,7 +27,7 @@ function FlightListItem({flight, hideButton, departureFlight }) {
     }
     if(departureFlight){
 
-      return (<Button type="primary" style={buttonStyle}> 
+      return (<Button type="primary" ghost style={buttonStyle}> 
        <Link to={{pathname:`/returnFlight/${flight.flightNum}`}} state={{ flight, departureFlight }}>
          Flight Details
       </Link> </Button>)

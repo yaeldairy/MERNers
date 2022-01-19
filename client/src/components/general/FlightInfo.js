@@ -20,13 +20,13 @@ function FlightInfo ({flight}){
           {flight.arrTime}
         </Descriptions.Item>
         <Descriptions.Item label="Firstclass Seats" >
-          {flight.nOfFirst}
+          {flight.remainingSeats[2]}
         </Descriptions.Item>
         <Descriptions.Item label="Bussiness Seats" >
-          {flight.nOfBusiness}
+          {flight.remainingSeats[1]}
         </Descriptions.Item>
         <Descriptions.Item label="Economy Seats" >
-          {flight.nOfEconomy}
+          {flight.remainingSeats[0]}
         </Descriptions.Item>
         <Descriptions.Item label="Baggage Allowance" >
           {flight.baggageAllowance}

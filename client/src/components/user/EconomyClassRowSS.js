@@ -44,7 +44,7 @@ export default function EconomyClassRowSS({flight,updateFinalSelectionList,setCo
         if (remainingSeats == 0){
             setCompleted(true)
         }
-        else if (remainingSeats == 1){
+        else if (remainingSeats > 1){
             setCompleted(false)
         }
     }, [selectedSeats])

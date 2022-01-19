@@ -40,7 +40,7 @@ export default function FirstClassRowSS({flight, updateFinalSelectionList,setCom
         if (remainingSeats == 0){
             setCompleted(true)
         }
-        else if (remainingSeats == 1){
+        else if (remainingSeats > 1){
             setCompleted(false)
         }
     }, [selectedSeats])

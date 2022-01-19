@@ -6,6 +6,7 @@ import axios from 'axios';
 import { UserContext } from "../../Context";
 import FlightListItem from './FlightListItem';
 import { speedDialActionClasses } from '@mui/material';
+import NetworkError from '../response/NetworkError';
 const { Title } = Typography;
 
 
@@ -16,6 +17,7 @@ export default function ViewItenerary() {
     const {accessToken} = useContext(UserContext)
     const [upcomingFlights, setUpcomingFlights] = useState([]);
     const [previousFlights, setPreviousFlights] = useState([]);
+    const [error, setError] = useState(false);
     const [userData, setUserData] = useState(user);
     let reservations = userData.flights;//<------ new API call
     let bookings = userData.bookingReferences;//<------ new API call
@@ -45,6 +47,7 @@ export default function ViewItenerary() {
         })
         .catch ((err) => {
             console.log('Unable to access DB') //TODO maybe change it to display an error message
+            setError(true)
         })
         //console.log(bookings)
         getUpcomingTrips();
@@ -147,7 +150,9 @@ export default function ViewItenerary() {
         }
         setPreviousFlights(previous)
     }
-
+   if(error){
+      return <NetworkError/>
+   }
 
     return(
     <>

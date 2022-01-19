@@ -1,5 +1,5 @@
 import 'antd/dist/antd.css';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
@@ -21,9 +21,8 @@ import {
 const { Title } = Typography;
 const { TextArea } = Input;
 
-function Login() {
+function AdminLogin() {
 
- 
   let navigate = useNavigate();
   const location = useLocation();
   let path = null;
@@ -36,12 +35,6 @@ function Login() {
   const [success, setSuccess] = useState(false);
   const [form] = Form.useForm();
 
-  useEffect(()=>{
-    setAccessToken(null)
-    setPermissionLevel(null)
-    localStorage.clear();
-  },[])
-
   const onSubmit = async () => {
 
     try {
@@ -52,7 +45,7 @@ function Login() {
       console.log('Success:', values);
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3001/login',
+        url: 'http://localhost:3001/adminLogin',
         data: {
           username: values.username,
           password: values.password
@@ -94,7 +87,7 @@ function Login() {
     <div >
 
       <Spin spinning={loading} delay={400} >
-        <Card title={<Title level={3} >Login</Title>}
+        <Card title={<Title level={3} >Admin Login</Title>}
           type='inner'
           style={{ marginLeft: '15%', marginRight: '15%', marginTop: '5%' }}>
 
@@ -133,7 +126,7 @@ function Login() {
 
             {error && <Alert message={error} type="error" />}
 
-            <Button type="primary" onClick={onSubmit} style={{marginTop:'30px'}}>
+            <Button type="primary" onClick={onSubmit} style={{marginTop:'30px'}} >
               Login
             </Button>
           </Form>
@@ -142,4 +135,4 @@ function Login() {
     </div>
   );
 }
-export default Login;
+export default AdminLogin;
