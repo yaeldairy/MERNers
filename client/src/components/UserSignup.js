@@ -47,7 +47,7 @@ export default function UserSignup() {
                 // console.log(res) 
                 message.success('Sign up successful! Redirecting...', 2)
                     .then(function () {
-                        navigate('/');
+                        navigate('/login');
                     }
                     )
 

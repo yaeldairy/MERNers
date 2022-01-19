@@ -47,18 +47,18 @@ function AlternativeFlights() {
           }
           switch (seatType) {
             case "First":
-              if (f.nOfFirst < seats) {
+              if (f.remainingSeats[2] < seats) {
                 return false;
               }
               break;
             case "Economy":
-              if (f.nOfEconomy < seats) {
+              if (f.remainingSeats[0]  < seats) {
                 return false;
               }
               break;
 
             case "Business":
-              if (f.nOfBusiness < seats) {
+              if (f.remainingSeats[1]  < seats) {
                 return false;
               }
               break;

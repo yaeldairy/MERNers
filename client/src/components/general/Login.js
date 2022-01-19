@@ -133,11 +133,14 @@ function Login() {
 
             {error && <Alert message={error} type="error" />}
 
-            <Button type="primary" onClick={onSubmit} style={{marginTop:'30px'}}>
+            <Button type="primary" onClick={onSubmit} style={{marginTop:'30px', marginBottom:'30px'}}>
               Login
             </Button>
-            Dont have an account? <a href = "#">
-               {/* href="http://localhost:3000/signup"> */}<Link to = {{ pathname: `/signup` }}>Register now!</Link></a>
+            <h4>
+            Dont have an account? 
+               {/* href="http://localhost:3000/signup"> */}<Link to = {{ pathname: `/signup` }}>Register now!</Link>
+            </h4>
+             
           </Form>
         </Card>
       </Spin>

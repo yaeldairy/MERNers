@@ -64,8 +64,11 @@ export default function Flights() {
       
       console.log(flight)
       for (const property in flight) {
-        //console.log(property)
-        // console.log(flight[property])
+        console.log(property)
+        console.log("F property")
+        console.log(f[property])
+        console.log("input property")
+         console.log(flight[property])
 
         if (property == "noOfAdults" || property == "noOfChildren") {
           if (f.remainingSeats[2] + f.remainingSeats[1]  + f.remainingSeats[0]  < (flight.noOfAdults + flight.noOfChildren)) {

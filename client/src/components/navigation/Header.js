@@ -18,14 +18,16 @@ function Header() {
               left: 0,
             }}>
       <div style={{display: 'flex', flexDirection:'row-reverse'}}>
-  </div>
-     
+        
       <Menu theme="dark" mode="horizontal" id="m" defaultSelectedKeys={['1']}>
       
       <Menu.Item key="2" icon={  <PlusOutlined  style={{color:'white'}}/>}>
             <Link to={"/login"} style={{color: 'white'}}>Login</Link>
       </Menu.Item>  
       </Menu> 
+
+    </div>
+     
     </Header>
   );
 }

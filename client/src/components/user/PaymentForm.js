@@ -4,7 +4,7 @@ import axios from "axios";
 import React, { useState , useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context";
-import { Button, Card, Typography, Modal, Steps, Popconfirm , Alert,} from 'antd';
+import { Button, Card, Typography, Modal, Steps, Popconfirm , Alert , message} from 'antd';
 import {FaCcStripe } from "react-icons/fa"
 const {Title} = Typography;
 const stripePromise = loadStripe("pk_test_51KH6wELePquds3rDYJlyvrCVLkIFTijWyb18tDaHClW7hwQWJTXHLWIZYiozGJya6kMOytEBwRDkgrEkbEAkn5M300NXV6Gv06");
@@ -41,6 +41,7 @@ function PaymentForm( {onClick , booking , amount} ){
     console.log(booking);
  
     const handleSubmit = async (e) => {
+      const hide = message.loading('Reserving your flight');
       console.log(elements.getElement(CardElement))
       e.preventDefault()
       const {error , paymentMethod} = await stripe.createPaymentMethod({
@@ -54,21 +55,21 @@ function PaymentForm( {onClick , booking , amount} ){
         const {id} = paymentMethod
         await onClick(id);
         setSuccess(true);
+        message.success('Reservation made successfully.', 2)
      }
       catch(error){
           console.log("Error" , error)
-          hide()
+         // hide()
           message.error ('Unable to connect to the server. Please try again later.');
       }
     }
     else {
       setError(error.message)
       console.log(error.message)
-      hide()
-      message.error ('Unable to connect to the server. Please try again later.');
+  
     }
-    hide()
-    message.success('Reservation made successfully.', 2)
+  
+    
     }
     const displayFlex ={ display: "flex", direction:"row", marginTop:'10px'}
     const title=(<div style={{displayFlex}}>
