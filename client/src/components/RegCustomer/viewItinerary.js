@@ -22,6 +22,8 @@ export default function ViewItinerary() {
     const [currentFlight, setCurrentFlight] = useState({});
     // var dseats = "Not Specified"
     // var rseats = "Not Specified";
+    if(!editable)
+    editable = true;
 
 
     useEffect(() => {

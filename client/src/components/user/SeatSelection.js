@@ -40,18 +40,23 @@ export default function SeatSelection({ flight, setRedirect, cabin, noOfSeats, p
                 data: { username: username, seats: selectedSeats, flightId: flight._id }
             })
                 .then((res) => {
-                    // console.log(res)
-                    message.success('Seats Selected Successfully. Redirecting...')
-                    navigate(`/bookings/${booking}`, {state: { booking: booking }})
+                    message.success('Seats Selected Successfully.')
+                    navigate('/')
+                    navigate(`/bookings/${booking}`, { state: { booking: booking } })
                 })
                 .catch((err) => {
                     console.log(err)
                     message.error('Unable to connect to the server. Please try again later.');
+                    navigate('/')
+                    navigate(`/bookings/${booking}`, { state: { booking: booking } })
                 })
 
 
         }
     }
+
+
+
     return (
         <div className='seatSelectionMain'>
             <div className='leftHalfSS'>
