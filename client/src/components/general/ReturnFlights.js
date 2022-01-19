@@ -28,20 +28,29 @@ function ReturnFlights(){
             if(f.deptAirport!==flight.arrAirport || f.arrAirport!== flight.deptAirport){
                 return false;
             }
+            if ((f.date.substring(6, 10) < flight.date.substring(6, 10)) ||
+            (f.date.substring(6, 10) == flight.date.substring(6, 10)) && 
+            f.date.substring(3, 5) < flight.date.substring(3, 5) ||
+            (f.date.substring(6, 10) == flight.date.substring(6, 10)) && 
+            f.date.substring(3, 5) == flight.date.substring(3, 5) && 
+            f.date.substring(0, 2) < flight.date.substring(0, 2)) {
+               return false;
+
+            }
             switch (seatType) {
                 case "First":
-                    if(f.nOfFirst<(Adults+Children)){
+                    if(f.remainingSeats[2]<(Adults+Children)){
                       return false;
                     }
                 break;     
                 case "Economy":
-                    if(f.nOfEconomy<(Adults+Children)){
+                    if(f.remainingSeats[1]<(Adults+Children)){
                         return false;
                       }
                 break;
                  
                 case "Business":
-                    if(f.nOfBusiness<(Adults+Children)){
+                    if(f.remainingSeats[0]<(Adults+Children)){
                         return false;
                       }
                 break;   

@@ -28,7 +28,7 @@ function FlightListItem({flight, hideButton, departureFlight }) {
     }
     if(departureFlight){
 
-      return (<Button type="primary" style={buttonStyle} > 
+      return (<Button type="primary" ghost style={buttonStyle}> 
        <Link to={{pathname:`/returnFlight/${flight.flightNum}`}} state={{ flight, departureFlight }}>
          Flight Details
       </Link> </Button>)
@@ -58,6 +58,7 @@ function FlightListItem({flight, hideButton, departureFlight }) {
     <Text style={{fontSize: '120%'}} italic>Flight date: {flight.date}</Text>
     <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>Departure time: {flight.deptTime}</Text>
     <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>Arrival time: {flight.arrTime}</Text>
+    <Text style={{fontSize: '120%',marginLeft:'15px'}} italic>Duration: {flight.duration} hours </Text>
     </div>
     </div> 
     </Card>

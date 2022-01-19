@@ -8,10 +8,11 @@ export const UserProvider = ({children}) => {
 
   const token = localStorage.getItem("accessToken") || null;
   const name= localStorage.getItem("username") || null;
+  const permission= localStorage.getItem("permissionLevel") || null;
   const parsedToken = JSON.parse(token)
   const [accessToken, setAccessToken] = useState(parsedToken || null);
   const [username, setUsername] = useState(name || null);/////////////
-  const [permissionLevel, setPermissionLevel] = useState(parsedToken || null);
+  const [permissionLevel, setPermissionLevel] = useState(permission || null);
   const [departureFlight, setDepartureFlight] = useState(null);
   const [returnFlight, setReturnFlight] = useState(null);
   const [cabin, setCabin] = useState(null);

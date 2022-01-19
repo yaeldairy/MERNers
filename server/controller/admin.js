@@ -18,8 +18,10 @@ exports.testRoute = (req, res) => {
 
 exports.updateFlight =(req,res)=> {
 
-    const {_id,flightNum,deptAirport,arrAirport,deptTime,arrTime,duration,date,arrDate,nOfEconomy,nOfBusiness, nOfFirst, price, remainingSeats} = req.body;
-    // console.log(req.body);
+    const {_id,flightNum,deptAirport,arrAirport,deptTime,arrTime,duration,date,arrDate,nOfEconomy,nOfBusiness, nOfFirst, price, remainingSeats} = req.body.flightData;
+    console.log(req.body);
+    console.log("FLIGHT DATA");
+    console.log(req.body.flightData);
     var objectId = mongoose.Types.ObjectId(_id);
     // console.log(objectId);
 
@@ -55,7 +57,7 @@ exports.deleteFlight =(req,res)=> {
 };
 
 exports.insertFlight = (req, res) => {
-    createFlight(req.body)
+    createFlight(req.body.flightData)
         .then((result) => {
             res.status(201).send({id: result._id});
         })

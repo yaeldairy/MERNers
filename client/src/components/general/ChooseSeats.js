@@ -14,6 +14,7 @@ function ChooseSeats ({flight}){
     const [selectValue, setSelectValue] = useState("nOfEconomy");
     const [adultsMax , setAdultsMax]= useState(0)
     const [childrenMax , setChildrenMax]= useState(0)
+    const [index , setIndex]= useState(0)
     
     const showModal = () => {
         setIsModalVisible(true);
@@ -49,26 +50,29 @@ function ChooseSeats ({flight}){
 
         if(value=="Economy"){
             setSelectValue("nOfEconomy")    
+            setIndex(0);
         }
         else if(value=="Business"){
             setSelectValue("nOfBusiness")
+            setIndex(1);
         }else {
             setSelectValue("nOfFirst")
+            setIndex(2);
         }        
       }
 
       const onAdultsChange= (value)=>{
-          setChildrenMax(flight[selectValue]-value)
+          setChildrenMax(flight.remainingSeats[index]-value)
          
       }
       const onChildrenChange= (value)=>{
-         setAdultsMax(flight[selectValue]-value)
+         setAdultsMax(flight.remainingSeats[index]-value)
       }
 
       useEffect(() => {
 
-         setChildrenMax(flight[selectValue])  
-         setAdultsMax(flight[selectValue])  
+         setChildrenMax(flight.remainingSeats[index])  
+         setAdultsMax(flight.remainingSeats[index])  
          form.setFieldsValue( { Adults: 1, Children:0 } )
         
         }, [selectValue]);
@@ -88,8 +92,6 @@ function ChooseSeats ({flight}){
       </Button>,   
     ]}>
     <Form
-   // onFinish={onFinish}
-   // onFinishFailed={onFinishFailed}
     form = {form}> 
 
      <Form.Item
@@ -134,7 +136,7 @@ function ChooseSeats ({flight}){
               message: 'Please Specify number of children',
             }
           ]}>
-          <InputNumber  onChange={(value)=>{onChildrenChange(value)}} min={0} max={childrenMax}/>
+          <InputNumber onChange={(value)=>{onChildrenChange(value)}} min={0} max={childrenMax}/>
     </Form.Item>
 
    </Form>

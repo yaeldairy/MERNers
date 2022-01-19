@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Navigate, useLocation, Link } from 'react-router-dom';
 import { Descriptions, Card, Typography } from 'antd';
-
 import { Button } from 'antd';
 import { Row, Col, Divider } from 'antd';
 import { UserContext } from "../../Context";
 import axios from 'axios';
+import NetworkError from '../response/NetworkError';
 import DescriptionsItem from 'antd/lib/descriptions/Item';
 const { Title } = Typography;
 
@@ -15,6 +15,7 @@ export default function UserProfile() {
   const { accessToken } = useContext(UserContext);
   //const location = useLocation();
   const [userData, setUserData] = useState([]);
+  const [error, setError] = useState(false);
  
   useEffect(() => {
       axios.get('http://localhost:3001/user/getProfile', {
@@ -29,47 +30,13 @@ export default function UserProfile() {
         })
         .catch((err) => {
           console.log("prof err" + err)
+          setError(true)
         })
   },[]);
 
-  // const userData =
-  // {
-  //   _id: "61c253a68aed84cae46284a5",
-  //   username: "Ahmed1",
-  //   password: "ahmed123",
-  //   firstName: "ahmed",
-  //   lastName: "mohammed",
-  //   homeAddress: "Cairo",
-  //   countryCode: "+20",
-  //   phoneNumber: "01005648989",
-  //   email: "y.aeldairy@gmail.com",
-  //   passportNumber: "A89786755",
-  //   bookingReferences: ["KHGVFCDFGH"],
-  //   flights: [{
-  //     flightId: "61a3bc8e819c80059970e8bd",
-  //     bookingNum:"KHGVFCDFGH",
-  //     deptAirport: "LAX",
-  //     arrAirport: "JFK",
-  //     deptTime: "07:20",
-  //     arrTime: "15:33",
-  //     date: "12-01-2022",
-  //     totalPrice: "700",
-  //     type: "departure",
-  //     seat: ["B2","B3"]
-  //   },
-  //   {
-  //     flightId: "61a3bc8e819c80059970e8bd",
-  //     bookingNum:"KHGVFCDFGH",
-  //     deptAirport: "JFK",
-  //     arrAirport: "LAX",
-  //     deptTime: "07:20",
-  //     arrTime: "15:33",
-  //     date: "12-01-2023",
-  //     totalPrice: "500",
-  //     type: "arrival",
-  //     seat: ["A3", "A2"]
-  //   }] 
-  // }
+  if (error) {
+    return (<NetworkError/>)
+  }
 
   if (userData.phoneNumber2 === ''){
   return (

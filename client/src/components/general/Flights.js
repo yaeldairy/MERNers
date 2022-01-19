@@ -8,6 +8,7 @@ import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import SearchForm from '../SearchForm';
 import { Link } from 'react-router-dom';
 import { UserContext } from "../../Context";
+import NetworkError from '../response/NetworkError';
 const { Title } = Typography;
 
 const title = (<Title level={2} >Flights</Title>)
@@ -26,8 +27,20 @@ export default function Flights() {
     axios.get('http://localhost:3001/flights')
       .then((res) => {
 
-        setFlights(res.data)
-        setDisplayed(res.data)
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
+        let yyyy = today.getFullYear();
+        let upcomingFlights = res.data.filter((f) => {
+         if ((f.date.substring(6, 10) < yyyy) ||
+             (f.date.substring(6, 10) == yyyy && f.date.substring(3, 5) < mm) ||
+             (f.date.substring(6, 10) == yyyy && f.date.substring(3, 5) == mm && f.date.substring(0, 2) < dd)) {
+                return false;
+          }
+          return true;
+        })
+        setFlights(upcomingFlights)
+        setDisplayed(upcomingFlights)
 
       })
       .catch((e) => {
@@ -52,29 +65,33 @@ export default function Flights() {
       console.log(flight)
       for (const property in flight) {
         console.log(property)
-        // console.log(flight[property])
+        console.log("F property")
+        console.log(f[property])
+        console.log("input property")
+         console.log(flight[property])
 
         if (property == "noOfAdults" || property == "noOfChildren") {
-          if (f.nOfBusiness + f.nOfEconomy + f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)) {
+          if (f.remainingSeats[2] + f.remainingSeats[1]  + f.remainingSeats[0]  < (flight.noOfAdults + flight.noOfChildren)) {
             return false;
           }
         }
         else if (property == "cabin") {
 
-          console.log("HENAAAAAAAAA ")
           console.log(flight[property])
           switch (flight.cabin) {
             case "First":
-              console.log((f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)));
-              if (f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)) {
+             // console.log((f.nOfFirst < (flight.noOfAdults + flight.noOfChildren)));
+              if (f.remainingSeats[2] < (flight.noOfAdults + flight.noOfChildren)) {
                 return false;
               }
             case "Business":
-              if (f.nOfBusiness < (flight.noOfAdults + flight.noOfChildren))
+              if (f.remainingSeats[1] < (flight.noOfAdults + flight.noOfChildren)){
                 return false;
+              }
             case "Economy":
-              if (f.nOfEconomy < (flight.noOfAdults + flight.noOfChildren))
+              if (f.remainingSeats[0] < (flight.noOfAdults + flight.noOfChildren)){
                 return false;
+              }
           }
         }
         else if (flight[property] !== '' && f[property] !== flight[property]) {
@@ -93,19 +110,19 @@ export default function Flights() {
 
   const searchButton = (
     <div>
-      <Tooltip title="create flight">
+     {/* <Tooltip title="create flight">
         <Button shape="circle" >
           <Link to={{ pathname: `newFlight` }}  >
             <PlusOutlined />
           </Link></Button>
-      </Tooltip>
+     </Tooltip>*/}
       <Tooltip title="search">
         <Button style={{ marginLeft: '10px' }} onClick={showModal} shape="circle" icon={<SearchOutlined />} />
       </Tooltip>
     </div>)
 
   if (error) {
-    return (<h1>oops, There seems to have been a network error</h1>)
+    return (<NetworkError/>)
   }
 
   return (

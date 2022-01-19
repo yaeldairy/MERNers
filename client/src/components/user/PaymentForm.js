@@ -4,7 +4,7 @@ import axios from "axios";
 import React, { useState , useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context";
-import { Button, Card, Typography, Modal, Steps, Popconfirm, message } from 'antd';
+import { Button, Card, Typography, Modal, Steps, Popconfirm , Alert , message} from 'antd';
 import {FaCcStripe } from "react-icons/fa"
 const {Title} = Typography;
 const stripePromise = loadStripe("pk_test_51KH6wELePquds3rDYJlyvrCVLkIFTijWyb18tDaHClW7hwQWJTXHLWIZYiozGJya6kMOytEBwRDkgrEkbEAkn5M300NXV6Gv06");
@@ -35,12 +35,14 @@ function PaymentForm( {onClick , booking , amount} ){
     let navigate = useNavigate();
     const { accessToken } = useContext(UserContext);
     const [success , setSuccess] = useState(false)
+    const [error, setError] = useState(false);
     const stripe = useStripe()
     const elements = useElements()
     console.log(booking);
  
     const handleSubmit = async (e) => {
-      const hide = message.loading('Reserving your flights...')
+      const hide = message.loading('Reserving your flight');
+      console.log(elements.getElement(CardElement))
       e.preventDefault()
       const {error , paymentMethod} = await stripe.createPaymentMethod({
         type : "card",
@@ -53,37 +55,21 @@ function PaymentForm( {onClick , booking , amount} ){
         const {id} = paymentMethod
         await onClick(id);
         setSuccess(true);
-        
-    //     console.log(amount);
-    //     const {id} = paymentMethod
-       
-    //     const response = await axios({
-    //       method: 'post',
-    //       url: 'http://localhost:3001/user/bookTrip',
-    //       headers: { Authorization: `Bearer ${accessToken}` },
-    //       data: {
-    //         amount,
-    //         id
-    //       }
-    //     });
-    //     if(response.data.success){
-    //       console.log("Successful payment")
-    //       setSuccess(true)
-    //     }
+        message.success('Reservation made successfully.', 2)
      }
       catch(error){
           console.log("Error" , error)
-          hide()
+         // hide()
           message.error ('Unable to connect to the server. Please try again later.');
       }
     }
     else {
+      setError(error.message)
       console.log(error.message)
-      hide()
-      message.error ('Unable to connect to the server. Please try again later.');
+  
     }
-    hide()
-    message.success('Reservation made successfully.', 2)
+  
+    
     }
     const displayFlex ={ display: "flex", direction:"row", marginTop:'10px'}
     const title=(<div style={{displayFlex}}>
@@ -97,16 +83,17 @@ function PaymentForm( {onClick , booking , amount} ){
     return (
       <>
       
-        <Card type="inner" title={title} style={{ marginLeft:'30%' , marginRight:'30%', marginTop:'5%'}}>
-        {/* <div  style={{textAlign:'center'}}/> */}
-        <div  style={{textAlign:'center' , fontSize:'20px' , color:'#6495ED' , fontWeight:'bold' }}>Total Price : ${amount}</div>
-        <form onSubmit={handleSubmit} style={{marginLeft:'6%' , marginTop:'10%'}}>
+        <Card type="inner" title={title} style={{ marginLeft:'30%' , marginRight:'30%', marginTop:'5%', textAlign:'center'}}>
+        <form onSubmit={handleSubmit} style={{marginRight:'5%',marginLeft:'5%' , marginTop:'10%'}}>
           <fieldset className="FormGroup">
-              
+            <div className="FormRow" >
               <CardElement options={CARD_OPTIONS}/>
-            
+            </div>
           </fieldset>
           <div style={{ textAlign: 'center' }}>
+
+          {error && <Alert style={{marginTop:'30px'}} message={error} type="error" />}
+
           <Button size='large' style={{ marginTop: '50px' }} type="primary" ghost>
           <Popconfirm
             title="Are you sure you want to book this flight?"

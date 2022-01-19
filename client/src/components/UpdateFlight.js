@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react'; //use effect is for renders
+import React, { useState, useEffect, useContext  } from 'react'; //use effect is for renders
 import { Form, Input, Button, DatePicker, TimePicker, message, Card, Divider, Typography} from 'antd';
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
+import { UserContext } from "../Context";
+//import { UserContext } from "../Context";
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 const {Title} = Typography;
 
@@ -11,6 +13,8 @@ const {Title} = Typography;
 export default function UpdateFlight(){
     const location = useLocation();
     const { flight } = location.state;
+    const { accessToken } = useContext(UserContext);
+    //const { permissionLevel} = useContext(UserContext);
     const [flightData, setFlightData] = useState(flight);
     let navigate = useNavigate();
     const [form] = Form.useForm();
@@ -58,8 +62,13 @@ export default function UpdateFlight(){
     //TODO fix the .then and .catch bodies
     function onFinish (){
         const hide = message.loading('Updating Flight...',0)
-        axios.patch('http://localhost:3001/admin/updateFlight', flightData)
-            .then((res)=>{
+        axios({
+            method: 'patch', //should be patch
+            url: 'http://localhost:3001/admin/updateFlight',
+            headers: { Authorization: `Bearer ${accessToken}` },
+            data: { flightData}
+        })
+        .then((res)=>{
                 hide()
                 form.resetFields();
                 // console.log(res)
