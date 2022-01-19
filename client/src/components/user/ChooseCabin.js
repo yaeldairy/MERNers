@@ -6,7 +6,7 @@ import ChangeCheckout from './ChangeCheckout';
 const { Option } = Select;
 
 
-function ChooseCabin( { oldFlight, oldUserFlight, newFlight, type, price }) {
+function ChooseCabin({ oldFlight, oldUserFlight, newFlight, type, price }) {
     const [form] = Form.useForm();
     let navigate = useNavigate();
     // const { setCabin, setSeats } = useContext(UserContext);
@@ -20,30 +20,36 @@ function ChooseCabin( { oldFlight, oldUserFlight, newFlight, type, price }) {
 
     // const handleOk = () => {
     //     setIsModalVisible(false);
-        
+
     // };
 
     const handleCancel = () => {
         setIsModalVisible(false);
     };
+    var plus = oldFlight.price;
     const CalPrice = (price) => {
-        console.log((oldFlight.price * oldUserFlight.noOfSeats.number));
-        switch (cabin) {
+        if (oldUserFlight.cabin == "First")
+            plus += 200;
+        else if (oldUserFlight.cabin == "Business")
+            plus += 100
             
+        console.log(newFlight.price * oldUserFlight.noOfSeats.number);
+        console.log(plus * oldUserFlight.noOfSeats.number);
+        switch (cabin) {
             case "First":
-              console.log("price: " + (newFlight.price * oldUserFlight.noOfSeats.number) - ((oldFlight.price + 200) * oldUserFlight.noOfSeats.number))
-            return (newFlight.price * oldUserFlight.noOfSeats.number) - ((oldFlight.price + 200) * oldUserFlight.noOfSeats.number)
-          case "Business":
-              console.log("price: " +(newFlight.price * oldUserFlight.noOfSeats.number) - ((oldFlight.price + 100) * oldUserFlight.noOfSeats.number))
-            return (newFlight.price * oldUserFlight.noOfSeats.number) - ((oldFlight.price + 100) * oldUserFlight.noOfSeats.number)
-          case "Economy":
-              console.log("price: " + (newFlight.price * oldUserFlight.noOfSeats.number) - (oldFlight.price * oldUserFlight.noOfSeats.number))
-            return (newFlight.price * oldUserFlight.noOfSeats.number) - (oldFlight.price * oldUserFlight.noOfSeats.number)
-          default:
-            return 0;
-          // return flight.price - (price * seats)||0;//revisit- adjust to cabin type
+                // console.log("price: " + ((newFlight.price + 200) * oldUserFlight.noOfSeats.number) - (plus * oldUserFlight.noOfSeats.number))
+                return ((newFlight.price + 200) * oldUserFlight.noOfSeats.number) - (plus * oldUserFlight.noOfSeats.number)
+            case "Business":
+                // console.log("price: " + (newFlight.price * oldUserFlight.noOfSeats.number) - ((oldFlight.price + 100) * oldUserFlight.noOfSeats.number))
+                return ((newFlight.price + 100) * oldUserFlight.noOfSeats.number) - (plus * oldUserFlight.noOfSeats.number)
+            case "Economy":
+                // console.log("price: " + (newFlight.price * oldUserFlight.noOfSeats.number) - (oldFlight.price * oldUserFlight.noOfSeats.number))
+                return (newFlight.price * oldUserFlight.noOfSeats.number) - (plus * oldUserFlight.noOfSeats.number)
+            default:
+                return 0;
+            // return flight.price - (price * seats)||0;//revisit- adjust to cabin type
         }
-      }
+    }
     const handleSubmit = async () => {
         try {
             // const values = await form.validateFields();
@@ -51,7 +57,7 @@ function ChooseCabin( { oldFlight, oldUserFlight, newFlight, type, price }) {
             console.log(cabin);
             setIsModalVisible(false);
             // return <ChangeCheckout  />//return
-            navigate(`/changeCheckout`, { state: { oldFlight: oldFlight, oldUserFlight: oldUserFlight, newFlight: newFlight, cabin: cabin, type: type, pricediff: CalPrice(price)} })
+            navigate(`/changeCheckout`, { state: { oldFlight: oldFlight, oldUserFlight: oldUserFlight, newFlight: newFlight, cabin: cabin, type: type, pricediff: CalPrice(price) } })
         } catch (e) {
 
         }

@@ -59,15 +59,6 @@ export default function ViewItinerary() {
     const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
     //console.log(deptFlight.seat.length==0);
     
-
-    if (redirectSSD) {
-        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin={deptFlight.cabin} noOfSeats={deptFlight.noOfSeats} preChangeSeats={deptFlight.seat} />
-    }
-
-    if (redirectSSR) {
-        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSR} cabin={retFlight.cabin} noOfSeats={retFlight.noOfSeats} preChangeSeats={retFlight.seat} />
-    }
-
     //const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
     // console.log(deptFlight.seat.length==0);
     const onChangeSeatDClick = (e) => {

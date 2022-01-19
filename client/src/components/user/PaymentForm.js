@@ -91,8 +91,8 @@ function PaymentForm( {onClick , booking , amount} ){
       <>
       
         <Card type="inner" title={title} style={{ marginLeft:'30%' , marginRight:'30%', marginTop:'5%'}}>
-        <div  style={{textAlign:'center'}}/>
-        <div className="FormRow" style={{textAlign:'center'}}>Total Price : {amount}</div>
+        {/* <div  style={{textAlign:'center'}}/> */}
+        <div  style={{textAlign:'center' , fontSize:'20px' , color:'#6495ED' , fontWeight:'bold' }}>Total Price : ${amount}</div>
         <form onSubmit={handleSubmit} style={{marginLeft:'6%' , marginTop:'10%'}}>
           <fieldset className="FormGroup">
               

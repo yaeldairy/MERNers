@@ -62,19 +62,19 @@ let patchFlight = (id, updatedTakenSeats) => {
 
 exports.selectSeats = (req, res) => {
     let data = req.body;
-    User.findOne({ username: data.username })
+    User.findOne({ username: data.user.username })
         .then((result) => {
             let flightsArray = result.flights
             let flightIndex = flightsArray.findIndex(
                 (flight) => (flight._id).toString() === data.flightId)
             let currentFlight = flightsArray[flightIndex];
-            console.log(currentFlight)
+            // console.log(currentFlight)
             let oldSeats = (currentFlight.takenSeats)? currentFlight.takenSeats : [] ;
             currentFlight.takenSeats = data.seats
             flightsArray[flightIndex] = currentFlight
             let finalFlightsObject = { flights: flightsArray }
             let errorOccured = false;
-            patchUser(data.username, finalFlightsObject)
+            patchUser(data.user.username, finalFlightsObject)
                 .then(() => {
                     Flight.findById(data.flightId)
                         .then((rslt) => {
@@ -90,18 +90,22 @@ exports.selectSeats = (req, res) => {
                             }
                             )
                             .catch(()=>{
+                                console.log("error 1")
                                 errorOccured = true;
                             })
                         })
                         .catch(() => {
+                            console.log("error 2")
                             errorOccured = true;
                         })
                 })
                 .catch(() => {
+                    console.log("error 3")
                     errorOccured = true;
                 })
         })
         .catch(() => {
+            console.log("error 4")
             res.status(400).send({});
             return;
         })
@@ -293,7 +297,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
             { $inc: { 'remainingSeats.0': deptSeats } },
-            { $push: { takenSeats: {$each: deptFlight.seat} } }
+            { $pullAll: { takenSeats:  deptFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -303,7 +307,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
             { $inc: { 'remainingSeats.1': deptSeats } },//retest
-            { $push: { takenSeats: {$each: deptFlight.seat} } }
+            { $pullAll: { takenSeats:  deptFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -313,7 +317,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
             { $inc: { 'remainingSeats.2': deptSeats } },
-            { $push: { takenSeats: {$each: deptFlight.seat} } }
+            { $pullAll: { takenSeats:  deptFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -323,7 +327,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
             { $inc: { 'remainingSeats.0': retSeats } },
-            { $push: { takenSeats: {$each: retFlight.seat} } }
+            { $pullAll: { takenSeats:  retFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -333,7 +337,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
             { $inc: { 'remainingSeats.1': retSeats } },
-            { $push: { takenSeats: {$each: retFlight.seat} } }
+            { $pullAll: { takenSeats:  retFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -343,7 +347,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
             { $inc: { 'remainingSeats.2' : retSeats } },
-            { $push: { takenSeats: {$each: retFlight.seat} } }
+            { $pullAll: { takenSeats:  retFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -386,6 +390,7 @@ exports.makePayment = async(req,res,next) =>{
         
         let { amount, id } = req.body;
         
+        
         try {
           const total = amount;
           const payment = await stripe.paymentIntents.create({
@@ -424,7 +429,6 @@ exports.getReservations = (req,res)=>{
 
 exports.bookTrip = async (req,res) =>{
 
-    //console.log(req.body);
      let {departureFlight , returnFlight} = req.body;
      const {username , email }=req.body.user;
      const { bookingNumber , emailBody1 , emailBody2 } = req.body ;
@@ -435,10 +439,6 @@ exports.bookTrip = async (req,res) =>{
      const _id2 = req.body.returnFlight._id;
      const FId2 = mongoose.Types.ObjectId(_id2);
     
-    //  console.log(departureFlight);
-    //  console.log(returnFlight);
-    
-
      delete departureFlight.nOfEconomy;
      delete departureFlight.nOfBusiness;
      delete departureFlight.nOfFirst;
@@ -449,11 +449,7 @@ exports.bookTrip = async (req,res) =>{
      delete returnFlight.nOfFirst;
      delete returnFlight.remainingSeats;
      
-    //  console.log("----------------------");
-    //  console.log(departureFlight);
-    //  console.log(returnFlight);
-    //  console.log("----------------------");
-
+    
     try{
 
         const addUserf1 = await User.findOneAndUpdate({ username }, { $push: { flights: departureFlight} });
@@ -485,15 +481,8 @@ exports.editBooking = async(req,res) => {
     const oldF = req.body.oldFlight;
     newF._id = FId2;
     oldF._id = FId1;
-    // console.log(FId1);
-    // console.log(FId2);
-    // console.log(oldF);
-    // console.log(newF);
-    console.log(emailBody);
-    console.log(email);
-    // console.log("newUserFlight: ");
-    // console.log(newFlight);
-    // console.log(oldFlight);
+    //console.log(emailBody);
+    //console.log(email);
 
     try{
         const user1 = await User.findOneAndUpdate({username},{ $pull: { flights: { _id: Fid1 }}});
@@ -525,7 +514,7 @@ exports.getReservations = (req,res)=>{
 }
 
 exports.getBooking =  (req,res) => {
-    console.log(req.query)
+    //console.log(req.query)
     let bookingNum = (req.query).bookingNum;
     const {username} = req.body.user;
     User.findOne({ username: username })
@@ -543,7 +532,7 @@ exports.getBooking =  (req,res) => {
         deptFlight : deptFlight,
         retFlight : retFlight
     }
-    console.log(deptAndRet)
+    //console.log(deptAndRet)
       res.status(200).send(deptAndRet); 
     })
     .catch((err)=>{
