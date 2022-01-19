@@ -298,8 +298,38 @@ exports.cancelReservation = (req, res) => {
     console.log(username, booking, deptFlight, retFlight, email);
     const deptSeats = deptFlight.noOfSeats.number;
     const retSeats = retFlight.noOfSeats.number;
+    const deptTakenSeats = deptFlight.takenSeats;
+    const retTakenSeats = retFlight.takenSeats;
     console.log(deptSeats);
     console.log(retSeats);
+    //updating flight info
+    Flight.findById(deptFlight._id)
+        .then(async (rslt) => {
+            let currentlyTakenDeptSeatsUnfiltered = rslt.takenSeats
+            let updatedTakenDeptSeats = currentlyTakenDeptSeatsUnfiltered.filter((seat) => {
+                return !(deptTakenSeats.includes(seat))
+            })
+            let finalDeptTakenSeats = { takenSeats: updatedTakenDeptSeats }
+            await patchFlight({ _id: deptFlight._id }, finalDeptTakenSeats)
+        })
+        .catch((err) => {
+            console.log(err)
+        }
+        )
+    Flight.findById(retFlight._id)
+        .then(async (rslt) => {
+            let currentlyTakenRetSeatsUnfiltered = rslt.takenSeats
+            let updatedTakenRetSeats = currentlyTakenRetSeatsUnfiltered.filter((seat) => {
+                return !(retTakenSeats.includes(seat))
+            })
+            let finalRetTakenSeats = { takenSeats: updatedTakenRetSeats }
+            await patchFlight({ _id: retFlight._id }, finalRetTakenSeats)
+        })
+
+        .catch((err) => {
+            console.log(err)
+        })
+
     //update user info
     // var userId = mongoose.Types.ObjectId(uId);
     User.findOneAndUpdate(
@@ -315,7 +345,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
             { $inc: { 'remainingSeats.0': deptSeats } },
-            { $pull: { takenSeats: { $in: [deptFlight.takenSeats] } } }
+            { $pullAll: { takenSeats: deptFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -325,7 +355,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
             { $inc: { 'remainingSeats.1': deptSeats } },//retest
-            { $pull: { takenSeats: { $in: [deptFlight.takenSeats] } } }
+            { $pullAll: { takenSeats: deptFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -335,7 +365,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: deptFlight.flightNum },
             { $inc: { 'remainingSeats.2': deptSeats } },
-            { $pull: { takenSeats: { $in: [deptFlight.takenSeats] } } }
+            { $pullAll: { takenSeats: deptFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -345,7 +375,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
             { $inc: { 'remainingSeats.0': retSeats } },
-            { $pull: { takenSeats: { $in: [retFlight.takenSeats] } } }
+            { $pullAll: { takenSeats: retFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -355,7 +385,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
             { $inc: { 'remainingSeats.1': retSeats } },
-            { $pull: { takenSeats: { $in: [retFlight.takenSeats] } } }
+            { $pullAll: { takenSeats: retFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
@@ -365,7 +395,7 @@ exports.cancelReservation = (req, res) => {
         Flight.findOneAndUpdate(
             { flightNum: retFlight.flightNum },
             { $inc: { 'remainingSeats.2': retSeats } },
-            { $pull: { takenSeats: { $in: [retFlight.takenSeats] } } }
+            { $pullAll: { takenSeats: retFlight.takenSeats } }
         )
             .catch(err => {
                 console.log("error")
