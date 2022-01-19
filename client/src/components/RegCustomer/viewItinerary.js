@@ -16,10 +16,12 @@ export default function ViewItinerary() {
     const { accessToken } = useContext(UserContext);
     const [retFlight, setRetFlight] = useState(null);
     const [deptFlight, setDeptFlight] = useState(null);
-    let { booking } = location.state;
-    const [redirectSSD, setRedirectSSD]=useState(false);
-    const [redirectSSR, setRedirectSSR]=useState(false);
+    let { booking, editable } = location.state;
+    const [redirectSSD, setRedirectSSD] = useState(false);
+    const [redirectSSR, setRedirectSSR] = useState(false);
     const [currentFlight, setCurrentFlight] = useState({});
+    // var dseats = "Not Specified"
+    // var rseats = "Not Specified";
 
 
     useEffect(() => {
@@ -40,6 +42,15 @@ export default function ViewItinerary() {
                     let responseObject = res.data;
                     setDeptFlight(responseObject.deptFlight)
                     setRetFlight(responseObject.retFlight)
+                    // console.log("HEREEEEEEEEEEEEEEEEEEE")
+                    // console.log(responseObject.deptFlight.takenSeats.length==0)
+                    // console.log(deptFlight.takenSeats)
+                    // if (responseObject.deptFlight.takenSeats.length !== 0)
+                   
+                    //     dseats = deptFlight.takenSeats
+
+                    // if (responseObject.retFlight.takenSeats.length !== 0)
+                    //     rseats = retFlight.takenSeats
                 })
                 .catch((err) => {
                     console.log(err);
@@ -52,62 +63,63 @@ export default function ViewItinerary() {
 
     const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
     //console.log(deptFlight.seat.length==0);
-    
+
     //const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
     // console.log(deptFlight.seat.length==0);
     const onChangeSeatDClick = (e) => {
         e.preventDefault();
         axios({
             method: 'GET',
-            url:'http://localhost:3001/user/getFlight',
+            url: 'http://localhost:3001/user/getFlight',
 
             params: {
-                flightId:deptFlight._id
+                flightId: deptFlight._id
             }
-           ,
-             headers: {
+            ,
+            headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         })
-        .then ((res)=>{
-            setCurrentFlight(res.data);
-            setRedirectSSD(true);
-        })
-        .catch ((err) => {
-            console.log('Unable to get flight details')
-        })
+            .then((res) => {
+                setCurrentFlight(res.data);
+                setRedirectSSD(true);
+            })
+            .catch((err) => {
+                console.log('Unable to get flight details')
+            })
     }
 
     const onChangeSeatRClick = (e) => {
         e.preventDefault();
         axios({
             method: 'GET',
-            url:'http://localhost:3001/user/getFlight',
+            url: 'http://localhost:3001/user/getFlight',
 
             params: {
-                flightId:retFlight._id
+                flightId: retFlight._id
             }
-           ,
-             headers: {
+            ,
+            headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         })
-        .then ((res)=>{
-            setCurrentFlight(res.data);
-            setRedirectSSR(true);
-        })
-        .catch ((err) => {
-            console.log('Unable to get flight details')
-        })
+            .then((res) => {
+                setCurrentFlight(res.data);
+                setRedirectSSR(true);
+            })
+            .catch((err) => {
+                console.log('Unable to get flight details')
+            })
     }
-    if(redirectSSD){
-        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin = {deptFlight.cabin} noOfSeats = {deptFlight.noOfSeats} preChangeSeats = {deptFlight.takenSeats}/>
-      }
+    if (redirectSSD) {
+        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSD} cabin={deptFlight.cabin} noOfSeats={deptFlight.noOfSeats} preChangeSeats={deptFlight.takenSeats} booking={booking} />
+    }
 
-      if(redirectSSR){
-        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSR} cabin = {retFlight.cabin} noOfSeats = {retFlight.noOfSeats} preChangeSeats = {retFlight.takenSeats}/>
-      }
-    
+    if (redirectSSR) {
+        return <SeatSelection flight={currentFlight} setRedirect={setRedirectSSR} cabin={retFlight.cabin} noOfSeats={retFlight.noOfSeats} preChangeSeats={retFlight.takenSeats} booking={booking} />
+    }
+
+
 
     function sendEmail() {
         const emailBody = `<p>Hello,</p>
@@ -121,6 +133,7 @@ export default function ViewItinerary() {
             <p>Departure time: ${deptFlight.deptTime}</p>
             <p>Arrival time ${deptFlight.arrTime}</p>
             <p>Cabin: ${deptFlight.cabin}</p>
+            
             <br/>
             <p>Departure Flight: ${retFlight.flightNum}</p>
             <p>Departure Airport: ${retFlight.deptAirport}</p>
@@ -139,8 +152,7 @@ export default function ViewItinerary() {
             method: 'POST',
             url: 'http://localhost:3001/user/sendEmail',
             data: {
-                emailBody: emailBody
-
+                emailBody
             }, headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -168,14 +180,14 @@ export default function ViewItinerary() {
                     <Card title={<div style={{ display: "flex", direction: "row", marginTop: '10px' }} type="inner">
                         <FaPlane style={{ fontSize: '250%' }} />
                         <Title style={{ marginLeft: '15px' }} level={4} >Flight: {deptFlight.flightNum}</Title>
-                    </div>} extra={<>
+                    </div>} extra={editable ? <>
                         <a href="#" style={{ display: 'block' }}>
                             <Link to={{ pathname: `/changeFlight` }} state={{ type: deptFlight.type, flight: deptFlight, seatType: deptFlight.cabin }} >
                                 Change Flight
                             </Link>
                         </a><a href="#" style={{ display: 'block' }}
                             onClick={onChangeSeatDClick}
-                        >Edit Seats</a></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
+                        >Edit Seats</a></> : <></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
                         <Row>
                             <Col span={8} style={{ textAlign: 'left' }}>Departure airport:</Col>
                             <Col span={28}>{deptFlight.deptAirport}</Col>
@@ -209,13 +221,13 @@ export default function ViewItinerary() {
                     <Card title={<div style={{ display: "flex", direction: "row", marginTop: '10px' }} type="inner">
                         <FaPlane style={{ fontSize: '250%' }} />
                         <Title style={{ marginLeft: '15px' }} level={4} >Flight: {retFlight.flightNum}</Title>
-                    </div>} extra={<><a href="#" style={{ display: 'block' }}>
+                    </div>} extra={editable ? <><a href="#" style={{ display: 'block' }}>
                         <Link to={{ pathname: `/changeFlight` }} state={{ type: retFlight.type, flight: retFlight, seatType: retFlight.cabin }} >
                             Change Flight
                         </Link>
                     </a><a href="#" style={{ display: 'block' }}
                         onClick={onChangeSeatRClick}
-                    >Edit Seats</a></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
+                    >Edit Seats</a></> : <></>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }}>
                         <Row>
                             <Col span={8} style={{ textAlign: 'left' }}>Flight number:</Col>
                             <Col span={28}>{retFlight.flightNum}</Col>
