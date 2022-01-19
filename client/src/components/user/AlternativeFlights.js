@@ -133,7 +133,7 @@ function AlternativeFlights() {
 
     return (
       <div>
-        <Card title={<Title style={{ marginLeft: '15px' }} level={2} >Select alternative {type} flight</Title>} bordered={false}
+        <Card title={<Title style={{ marginLeft: '15px' }} level={2} >Select Alternative {type.charAt(0).toUpperCase() + type.slice(1)} Flight</Title>} bordered={false}
           style={{ marginLeft: '10%', marginRight: '10%', marginTop: '5%' }}  >
 
 

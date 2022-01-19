@@ -1,15 +1,17 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-
-import {Avatar, Layout, Menu} from 'antd';
-
-import {CrownOutlined, LogoutOutlined, SketchOutlined, UserOutlined} from '@ant-design/icons';
+import { useState, useContext, useEffect } from 'react';
+import {Avatar, Layout, Menu, Button} from 'antd';
+import {LoginOutlined } from '@ant-design/icons';
 import { Redirect , Link} from 'react-router-dom';
+import { UserContext } from "../../Context";
 
 const {Header} = Layout;
 
-function Header() {
-  
+function HeaderNav() {
+
+  const { accessToken } = useContext(UserContext);
+
   return (
     <Header  id="header"
             style={{
@@ -19,16 +21,20 @@ function Header() {
               left: 0,
             }}>
       <div style={{display: 'flex', flexDirection:'row-reverse'}}>
-        
+      <img src='/logo.png' className='logo'/>  
+     { !accessToken &&
       <Menu theme="dark" mode="horizontal" id="menu" defaultSelectedKeys={['1']}>
-      <Menu.Item key="10" icon={  <PlusOutlined  style={{color:'white'}}/>}>
+      <Menu.Item key="10" icon={  <LoginOutlined  style={{color:'white'}}/>}>
             <Link to={"/login"} style={{color: 'white'}}>Login</Link>
       </Menu.Item>  
-      </Menu> 
-
-    </div>
+      </Menu>
+     }       
+      </div>
+   
+        <img  src='/logo.png' className='logo'/>   
      
+        
     </Header>
   );
 }
-export default Header;
+export default HeaderNav;
