@@ -2,29 +2,31 @@ const Flight = require ('../db/models/flight');
 const mongoose= require('mongoose');
 
 
-exports.allFlights = (req, res)=> {
+exports.testRoute = (req, res) => {
+   
+    console.log("req.body.user on next print")
     
-    Flight.find({},(error, response)=>{
+    console.log(req.body.user)
 
-        if (response){      
-            res.status(200).send(response)
-        }
-        else{
-            res.status(400).send(error)
-        }
-    })
-    
-}
+    return res.status(200).send("test route succesfull");
+
+ 
+  };
+
+
+
 
 exports.updateFlight =(req,res)=> {
 
-    const {_id,flightNum,deptAirport,arrAirport,deptTime,arrTime,date,nOfEconomy,nOfBusiness, nOfFirst} = req.body;
-    // console.log(req.body);
+    const {_id,flightNum,deptAirport,arrAirport,deptTime,arrTime,duration,date,arrDate,nOfEconomy,nOfBusiness, nOfFirst, price, remainingSeats} = req.body.flightData;
+    console.log(req.body);
+    console.log("FLIGHT DATA");
+    console.log(req.body.flightData);
     var objectId = mongoose.Types.ObjectId(_id);
     // console.log(objectId);
 
 
-    Flight.findByIdAndUpdate(objectId,{flightNum,deptAirport,arrAirport,deptTime,arrTime,date,nOfEconomy,nOfBusiness, nOfFirst},(error, response)=>{
+    Flight.findByIdAndUpdate(objectId,{flightNum,deptAirport,arrAirport,deptTime,arrTime,duration,date,arrDate,nOfEconomy,nOfBusiness, nOfFirst,price, remainingSeats},(error, response)=>{
         if (response){
             res.status(200).send(response)
         }
@@ -55,8 +57,7 @@ exports.deleteFlight =(req,res)=> {
 };
 
 exports.insertFlight = (req, res) => {
-
-    createFlight(req.body)
+    createFlight(req.body.flightData)
         .then((result) => {
             res.status(201).send({id: result._id});
         })
