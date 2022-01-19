@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 const { Title, Text } = Typography;
 
 const buttonStyle= {
+  // color : 'white',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between'

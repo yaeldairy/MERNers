@@ -11,7 +11,7 @@ const { Title } = Typography;
 
 
 
-export default function ViewItenerary() {
+export default function ViewItinerary() {
     const location = useLocation();
     const { user } = location.state;
     const {accessToken} = useContext(UserContext)
@@ -19,8 +19,10 @@ export default function ViewItenerary() {
     const [previousFlights, setPreviousFlights] = useState([]);
     const [error, setError] = useState(false);
     const [userData, setUserData] = useState(user);
-    let reservations = userData.flights;//<------ new API call
-    let bookings = userData.bookingReferences;//<------ new API call
+    const [reservations,setReservations] = useState([]);
+    const [bookings,setBookings] = useState([]);
+    //let reservations = userData.flights;//<------ new API call
+    //let bookings = userData.bookingReferences;//<------ new API call
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0
@@ -29,8 +31,8 @@ export default function ViewItenerary() {
     //var upcomingFlights = [];
     //var previousFlights = [];
 
-    useEffect(() => {
-        axios({
+    useEffect( async() => {
+       axios({
             method: 'GET',
             url:'http://localhost:3001/user/reservations',
 
@@ -40,25 +42,26 @@ export default function ViewItenerary() {
         })
         .then ((res)=>{
             let responseObject = res.data;
-            bookings = responseObject.bookings
-            reservations = responseObject.reservations;
-            console.log('response:')
-            console.log(responseObject)
+            setBookings(responseObject.bookings)
+            setReservations(responseObject.reservations);
         })
         .catch ((err) => {
             console.log('Unable to access DB') //TODO maybe change it to display an error message
             setError(true)
         })
         //console.log(bookings)
+    }, [])
+
+    useEffect(() => {
         getUpcomingTrips();
         getPreviousTrips();
-
-    }, [])
+    }, [bookings, reservations])
 
 
 
     function getUpcomingTrips() {
-        //console.log("upcoming")
+        console.log('current reservations')
+        console.log(reservations)
         let upcoming=[]
         for (const booking of bookings) {
             //console.log(booking);
@@ -75,7 +78,7 @@ export default function ViewItenerary() {
                                 tempTrip = trip;
                             }
                             else {
-                                upcoming.push({ booking: booking, deptFlight: tempTrip, retFlight: trip });
+                                upcoming.push({ booking: booking, deptFlight: trip, retFlight: tempTrip });
                                 //console.log("pushed");
                                 tempTrip = null;
                                 break;
@@ -89,7 +92,7 @@ export default function ViewItenerary() {
                         }
                         else {
                             //console.log("pushed")
-                            upcoming.push({ booking: booking, deptFlight: trip, retFlight: tempTrip });
+                            upcoming.push({ booking: booking, deptFlight: tempTrip, retFlight: trip });
                             tempTrip = null;
                             break;
                         }

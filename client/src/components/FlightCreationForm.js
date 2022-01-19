@@ -80,9 +80,9 @@ export default function FlightCreationForm (){
                 hide()
                 form.resetFields();
                 // console.log(res) 
-                message.success('Fligh added successfully. Redirecting...', 2)
+                message.success('Flight added successfully. Redirecting...', 2)
                 .then(function () {
-                    window.location.href='/' 
+                    navigate('/')
                 }
                 )
                  

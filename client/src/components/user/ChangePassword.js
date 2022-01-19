@@ -3,6 +3,7 @@ import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import {useState, useContext} from 'react';
 import {UserContext} from "../../Context";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const { Title } = Typography;
 
 export default function ChangePassword() {
@@ -11,6 +12,7 @@ export default function ChangePassword() {
     const { username, accessToken } = useContext(UserContext);
     const [loading, setLoading]= useState(false);
     const [error, setError]= useState(false);
+    let navigate = useNavigate();
 
     const onSubmit = async () => {
 
@@ -38,6 +40,7 @@ export default function ChangePassword() {
                  }
               });    
          message.success('Password changed successfully');
+         navigate('/profile')
 
         } catch (e) {
         

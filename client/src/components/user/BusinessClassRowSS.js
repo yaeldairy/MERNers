@@ -47,7 +47,7 @@ export default function BusinessClassRowSS({flight, updateFinalSelectionList,set
         console.log(selectedSeats)
         updateFinalSelectionList(selectedSeats);
     }, [selectedSeats])
-    let economyClassSeats = rows.map(row => {
+    let businessClassSeats = rows.map(row => {
         if (row === rows.length + startIndex -1) {
             return (
                 <div className='FirstClassrow' key={row}>
@@ -93,7 +93,7 @@ export default function BusinessClassRowSS({flight, updateFinalSelectionList,set
     return (
         <div>
             {
-                economyClassSeats
+                businessClassSeats
             }
         </div>
     );

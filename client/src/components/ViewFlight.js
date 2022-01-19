@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
@@ -20,7 +20,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 
 export default function ViewFlight() {
-
+  let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation();
@@ -34,7 +34,7 @@ export default function ViewFlight() {
         id: flight._id
       }
     }).then((res) => {
-      window.location.href = '/'
+      navigate('/');
       // console.log(res)
       // console.log("flight deleted")          
 

@@ -1,11 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { Button, Card, Typography } from 'antd';
 import { FaPlane, FaLongArrowAltRight } from "react-icons/fa";
 import axios from 'axios';
 import { message, Popconfirm } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from "../../Context";
 const { Title, Text } = Typography;
 
@@ -13,16 +13,18 @@ const { Title, Text } = Typography;
 const buttonStyle = {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    color: 'white'
 }
 const displayFlex = { display: "flex", direction: "row", marginTop: '10px' }
 
 
 function FlightListItem({ booking, deptFlight, retFlight, amount, userData, editable }) {
-
+    let navigate = useNavigate();
     const { accessToken } = useContext(UserContext);
     const location = useLocation();
-    console.log(location.pathname); 
+    console.log(location.pathname);
+    // const [flag, setFlag] = useState(false);
     // var vis = true;
 
     const title = (<div style={displayFlex}>
@@ -59,30 +61,36 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
         ).then((res) => {
             hide()
             message.success('Reservation cancelled. A confirmation email will be sent.', 2);
-            window.location.href='/' ;
-            // window.location.href=location.pathname ;
+            navigate('/');
+            navigate('/bookings', { state: { userData } });
 
         }).catch((err) => {
             hide()
             message.error('Unable to connect to the server. Please try again later.');
 
         });
-
+        // if (flag === true) {
+        //     console.log("flag")
+        //     navigate('/bookings', { state: { user: userData } })
+        // }
+        // else console.log(flag);
     };
+
 
     return (
         <div>
-            <Card 
-                style={{ marginTop: 16, 
+            <Card
+                style={{
+                    marginTop: 16,
                     // visibility: vis ? 'visible' : 'hidden' 
                 }}
                 type="inner"
                 title={title}
-                extra={<><Button style={{display: 'block'}}><Link to={{ pathname: `/bookings/${booking}` }} state={{ booking: booking, userData: userData, deptFlight: deptFlight, retFlight: retFlight, amount }}>
+                extra={<><Button style={{ display: 'block' }}><Link to={{ pathname: `/bookings/${booking}` }} state={{ booking: booking, editable: editable }}>
                     View Itinerary
                 </Link>
                 </Button>&nbsp;
-                    {editable ? <Button type="primary" style={{buttonStyle, display: 'block'}}>
+                    {editable ? <Button type="primary" style={{ buttonStyle, display: 'block' }}>
                         <Popconfirm title="Are you sure you want to cancel this trip?" onConfirm={handler} okText="Yes" cancelText="No">
                             <a href="#">Cancel Trip</a>
                         </Popconfirm>

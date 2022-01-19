@@ -1,9 +1,9 @@
-import React, { useState } from 'react'; //use effect is for renders
+import React, { useState, useEffect } from 'react'; //use effect is for renders
 import { Form, Input, Button, message, Card, Divider, Typography } from 'antd';
 import "antd/dist/antd.css";
 // import moment from 'moment';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { UserContext } from "../../Context";
 
@@ -12,20 +12,13 @@ const { Title } = Typography;
 
 //ba3d el edit eh?
 export default function EditProfile() {
+    let navigate = useNavigate();
     const { accessToken ,username} = useContext(UserContext);
     const location = useLocation();
     const { user } = location.state;
     const [userData, setUserData] = useState([user]);
-    console.log(userData[0].firstName);
+    // console.log(userData[0].firstName);
     const [form] = Form.useForm();
-    // form.setFieldsValue({
-    //     firstnameInput: userData.firstName,
-    //     lastnameInput: userData.lastName,
-    //     emailInput: userData.email,
-    //     addressInput: userData.homeAddress,
-    //     countrycodeInput: userData.countryCode,
-    //     telephonenumberInput: userData.phoneNumber,
-    //     passportnumberInput: userData.passportNumber});
     function handler(event) {
 
         setUserData({
@@ -51,7 +44,7 @@ export default function EditProfile() {
     //TODO fix the .then and .catch bodies
     async function onFinish() {
         const hide = message.loading('Updating Your Profile...', 0)
-        console.log(accessToken)
+        // console.log(accessToken)
 
         try{
             const edit = await axios({
@@ -62,7 +55,7 @@ export default function EditProfile() {
             });
             hide()
             message.success('Data updated successfully. Redirecting...', 4)
-            window.location.href='/' ;
+            navigate('/');
 
         }
         catch(e){
@@ -78,7 +71,7 @@ export default function EditProfile() {
         //     .then((res) => {
         //         hide()
         //         message.success('Data updated successfully. Redirecting...', 4)
-        //         window.location.href='/' ;
+        //         
         //     })
         //     .catch((err) => {
         //         hide()
@@ -105,6 +98,7 @@ export default function EditProfile() {
                         addressInput: userData[0].homeAddress,
                         countrycodeInput: userData[0].countryCode,
                         telephonenumberInput: userData[0].phoneNumber,
+                        telephonenumber2Input: userData[0].phoneNumber2,
                         passportnumberInput: userData[0].passportNumber
                     }}
                     onFinish={onFinish}
@@ -164,10 +158,15 @@ export default function EditProfile() {
                             onChange={event => handler(event)} />
                     </Form.Item>
 
-                    <Form.Item name='telephonenumberInput' label='Telephone Number'
-                        rules={[{ required: true, message: 'Please enter a valid phone number!' }, { whitespace: true }, {  }]}>
+                    <Form.Item name='telephonenumberInput' label='Primary Phone Number'
+                        rules={[{ required: true, message: 'Please input your phone number!' }, { whitespace: true }, { pattern: /^(?:\d*)$/, message: 'Phone number must be a number!' }]}>
                         <Input name='phoneNumber'
                             onChange={event => handler(event)} />
+                    </Form.Item>
+
+                    <Form.Item name='telephonenumber2Input' label='Secondary Phone Number'
+                        rules={[{ pattern: /^(?:\d*)$/, message: 'Phone number must be a number!' }]}>
+                        <Input name='phoneNumber2' onChange={event => handler(event)} />
                     </Form.Item>
 
                     {/* <Form.Item

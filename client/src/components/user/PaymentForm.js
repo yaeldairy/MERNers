@@ -30,7 +30,7 @@ const CARD_OPTIONS = {
   },
 };
 
-function PaymentForm( {onClick , booking } ){
+function PaymentForm( {onClick , booking , amount} ){
 
     let navigate = useNavigate();
     const { accessToken } = useContext(UserContext);
@@ -38,6 +38,7 @@ function PaymentForm( {onClick , booking } ){
     const [error, setError] = useState(false);
     const stripe = useStripe()
     const elements = useElements()
+    console.log(booking);
  
     const handleSubmit = async (e) => {
       console.log(elements.getElement(CardElement))
@@ -46,21 +47,28 @@ function PaymentForm( {onClick , booking } ){
         type : "card",
         card: elements.getElement(CardElement)
       })
+      console.log(error)
      if(!error){
       try{
         console.log(paymentMethod)
         const {id} = paymentMethod
-        onClick(id);
+        await onClick(id);
         setSuccess(true);
      }
       catch(error){
           console.log("Error" , error)
+          hide()
+          message.error ('Unable to connect to the server. Please try again later.');
       }
     }
     else {
       setError(error.message)
       console.log(error.message)
+      hide()
+      message.error ('Unable to connect to the server. Please try again later.');
     }
+    hide()
+    message.success('Reservation made successfully.', 2)
     }
     const displayFlex ={ display: "flex", direction:"row", marginTop:'10px'}
     const title=(<div style={{displayFlex}}>
@@ -69,7 +77,7 @@ function PaymentForm( {onClick , booking } ){
     </div>)
 
     if (success) {
-      navigate("/viewItenerary", {  state : {booking}  })
+      navigate(`/bookings/${booking}`, { state : {booking: booking, editable: true} })
     }
     return (
       <>

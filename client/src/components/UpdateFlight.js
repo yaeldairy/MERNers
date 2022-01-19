@@ -3,10 +3,7 @@ import { Form, Input, Button, DatePicker, TimePicker, message, Card, Divider, Ty
 import "antd/dist/antd.css";
 import moment from 'moment';
 import axios from 'axios';
-import { UserContext } from "../Context";
-import Unauthorized from './response/Unauthorized';
-
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 const {Title} = Typography;
 
 
@@ -16,6 +13,7 @@ export default function UpdateFlight(){
     const { flight } = location.state;
     const { permissionLevel} = useContext(UserContext);
     const [flightData, setFlightData] = useState(flight);
+    let navigate = useNavigate();
     const [form] = Form.useForm();
     const oldEconomy  = parseInt(flight.nOfEconomy)
     const oldBusiness = parseInt(flight.nOfBusiness)
@@ -68,7 +66,7 @@ export default function UpdateFlight(){
                 // console.log(res)
                 message.success('Fligh updated successfully. Redirecting...', 2)
                 .then(function () {
-                    window.location.href='/' 
+                    navigate('/');
                 }
                 )
             })

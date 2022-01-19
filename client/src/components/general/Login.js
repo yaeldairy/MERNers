@@ -1,11 +1,11 @@
 import 'antd/dist/antd.css';
 import { useState, useContext, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import axios from 'axios';
 import { Divider } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone,  UserOutlined, LockOutlined } from '@ant-design/icons';
 import { UserContext } from "../../Context";
 import NavBar from '../NavBar';
 import {
@@ -30,7 +30,7 @@ function Login() {
   if (location.state) {
     path = location.state.path;
   }
-  const { setAccessToken, setPermissionLevel, setUsername } = useContext(UserContext);
+  const { accessToken, setAccessToken, setPermissionLevel, setUsername } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -77,7 +77,7 @@ function Login() {
       // console.log()
       if (e.errorFields)
         setError("Please fill all input fields")
-      else if(e.response.data.errors)
+      else if (e.response.data.errors)
         setError(e.response.data.errors);
       else
         setError("Oops, There seems to be a network problem, please try again :/")
@@ -98,24 +98,23 @@ function Login() {
           type='inner'
           style={{ marginLeft: '15%', marginRight: '15%', marginTop: '5%' }}>
 
-          <Form form={form} name="New Activity">
+          <Form form={form} name="normal_login"
+      className="login-form">
 
             <Form.Item
               name="username"
-              label="username"
               rules={[
                 {
                   required: true,
                   message: 'Please enter username',
                 },
               ]}>
-                <Input placeholder="Username: " allowClear/>
+              <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" allowClear />
               {/* <TextArea placeholder="Username:" allowClear /> */}
             </Form.Item>
 
             <Form.Item
               name="password"
-              label="password"
               rules={[
                 {
                   required: true,
@@ -124,11 +123,12 @@ function Login() {
               ]}>
               {/* <TextArea placeholder="Password:" allowClear/> */}
               <Input.Password
-                placeholder="Password: "
+                 prefix={<LockOutlined className="site-form-item-icon" />}
+                placeholder="Password"
                 iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
-                allowClear 
-                // onKeyDown={(e)=>{if (e.key === 'Enter') {onSubmit}}}
-                />
+                allowClear
+              // onKeyDown={(e)=>{if (e.key === 'Enter') {onSubmit}}}
+              />
             </Form.Item>
 
             {error && <Alert message={error} type="error" />}
@@ -136,6 +136,8 @@ function Login() {
             <Button type="primary" onClick={onSubmit} style={{marginTop:'30px'}}>
               Login
             </Button>
+            Dont have an account? <a href = "#">
+               {/* href="http://localhost:3000/signup"> */}<Link to = {{ pathname: `/signup` }}>Register now!</Link></a>
           </Form>
         </Card>
       </Spin>

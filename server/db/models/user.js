@@ -30,7 +30,10 @@ const Schema = mongoose.Schema;
         phoneNumber: {
             type:String, 
             required: true
-        }, 
+        },
+        phoneNumber2: {
+            type:String
+        },  
         email: {
             type:String, 
             required: true
