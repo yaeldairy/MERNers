@@ -36,3 +36,34 @@ MERN Stack
 - Express(.js) - Node.js web framework
 - React(.js) - a client-side JavaScript framework
 - Node(.js) - the premier JavaScript web server
+as well as Nodemailer and Stripe API
+
+## UI Design
+Mainly Ant Design was used for the UI design portion and MUI(material UI) was briefly used.
+
+## Features
+Admin:
+- Create flight
+
+Guest User:
+- Sign up
+- Search flights with criteria
+- View flight information
+- Start making a booking up until the checkout
+
+Registered User:
+- Login
+- View profile
+- Edit profile
+- Change password
+- Search for flights with criteria
+- View flight information
+- Complete making a reservation with chosen cabin and number of seats (including payment with Stripe API)
+- Recieve emails with details related to bookings (confirmation/updates/cancellation/..etc)
+- Email themselves copies of itineraries
+- View reservations
+- View specific bookings/Itinerary
+- Cancel upcoming reservations (with refund)
+- Edit bookings (change flights with option to change selected cabin class and pay/ get refunded if there's a difference)
+- Choosing/Updating seats in a reserved flight in specified cabin
+- Logout
