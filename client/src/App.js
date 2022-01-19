@@ -34,7 +34,7 @@ import ChangePassword from './components/user/ChangePassword';
 import AdminLogin from './components/general/AdminLogin';
 import SiderAdmin from './components/navigation/SiderAdmin';
 import SiderUser from './components/navigation/SiderUser';
-import { Header } from 'antd/lib/layout/layout';
+import HeaderNav  from './components/navigation/HeaderNav'
 
 //import AvailableFlights from './components/general/ReturnFlights';
 // import { Navigate, useNavigate } from 'react-router-dom';
@@ -54,7 +54,7 @@ function App() {
             {/* <NavBar /> */}
             <Router>
             {/*(accessToken)?(<NavBar style={{zIndex:2}}/>):(<></>)*/}
-             <Header/>
+             <HeaderNav/>
             {/*(!accessToken)?(<><Button type="primary" onClick={handler} style={{zIndex:2,float: "right", marginRight: '3%', marginTop: '2%'}}>
                   <Link to={{pathname:`/login`}} state={{ path }} >
                         Login

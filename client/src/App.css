@@ -114,11 +114,20 @@ margin-bottom: 0;
   color: #757575;
 }
 
-.seatSelectionMain{
+/* .seatSelectionMain{
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  width: 100vw;
+  height: 100vh;
   flex: 1;
+} */
+
+.seatSelectionMain{
+  display: flex;
+
+  width: 100vw;
+  height: 100vh;
 }
 
 .seatColorGuideLayout{
@@ -144,22 +153,22 @@ margin-bottom: 0;
 .rightHalfSS{
   background-color: #f9f9f9;
   align-items: stretch;
-  width: 50%;
-  height: 505px;
+  width: 80vw;
+  height:750px;
   overflow-y: auto;
   flex: 1;
+  margin-top: -45px;
 }
 .leftHalfSS{
-  background-color: #ffffff;
+  background-color: #f0f2f5;
   align-items: stretch;
-  width: 50%;
-  height: 100%;
+  width: 20vw;
+  height: 100vh;
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  margin-left: 50px;
-  margin-top: 50px;
+  margin-right: -50px;
 }
 
 .navstyle{
@@ -295,4 +304,15 @@ margin-bottom: 0;
   box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
   border: none;
   transition: 0.5s;
+}
+.logo{
+position:absolute;
+left:0;
+top:0;
+margin-left:10px;
+margin-top:10px;
+max-width:250px;
+max-height:150px;
+width: auto;
+height: auto;
 }
