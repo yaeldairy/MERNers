@@ -21,7 +21,7 @@ function SeatReservationDetails({flight, selectedSeats, cabin}) {
             <p className='legendText'>Booking Passenger </p>
             <div>
 
-                <p className='nameStyling'>{username}</p>
+                <p className='nameStyling'>{username.replaceAll('"', '')}</p>
             </div>
             <p className='legendText'>Flight Information </p>
 

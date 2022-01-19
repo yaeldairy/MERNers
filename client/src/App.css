@@ -100,14 +100,14 @@ margin-bottom: 0;
 }
 
 .seat.legendSeatFadingTop{
-  background: linear-gradient(#ffffff,70%,#dbdbdb);
+  background: linear-gradient(#f0f2f5,70%,#dbdbdb);
   font-size: 55%;
   padding: 0px;
   font-weight: 600;
   color: #757575;
 }
 .seat.legendSeatFadingBottom{
-  background: linear-gradient(#dbdbdb,30%,#ffffff);
+  background: linear-gradient(#dbdbdb,30%,#f0f2f5);
   font-size: 55%;
   padding: 0px;
   font-weight: 600;
@@ -125,7 +125,6 @@ margin-bottom: 0;
 
 .seatSelectionMain{
   display: flex;
-
   width: 100vw;
   height: 100vh;
 }
@@ -154,21 +153,22 @@ margin-bottom: 0;
   background-color: #f9f9f9;
   align-items: stretch;
   width: 80vw;
-  height:750px;
+  
+  height:100vh;
   overflow-y: auto;
   flex: 1;
-  margin-top: -45px;
+  margin-top: -50px;
 }
 .leftHalfSS{
   background-color: #f0f2f5;
-  align-items: stretch;
   width: 20vw;
-  height: 100vh;
+  
+  height: 70vh;
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  margin-right: -50px;
+  justify-content: space-between;
+  margin-right: -45px;
 }
 
 .navstyle{
@@ -225,7 +225,8 @@ margin-bottom: 0;
 
 .planeStyling{
   background-color: #ffffff;
-  width: 300px;
+  width: 30vw;
+  height:100vw;
 }
 
 .buttonsContainer{
@@ -305,14 +306,15 @@ margin-bottom: 0;
   border: none;
   transition: 0.5s;
 }
+
 .logo{
-position:absolute;
-left:0;
-top:0;
-margin-left:10px;
-margin-top:10px;
-max-width:250px;
-max-height:150px;
-width: auto;
-height: auto;
-}
+  position:absolute;
+  left:0;
+  top:0;
+  margin-left:10px;
+  margin-top:10px;
+  max-width:250px;
+  max-height:150px;
+  width: auto;
+  height: auto;
+  }
