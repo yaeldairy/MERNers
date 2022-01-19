@@ -36,7 +36,6 @@ function SiderAdmin() {
              }}>
 
         <Menu id="menu" theme='dark' defaultSelectedKeys={['1']} mode="inline">
-
           <Menu.Item key="1" icon={<HomeOutlined style={{color:'white'}}/>}>
             <Link to={"/"} style={{color: 'white'}}>All Flights</Link>
           </Menu.Item>
