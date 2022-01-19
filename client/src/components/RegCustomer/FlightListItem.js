@@ -86,7 +86,7 @@ function FlightListItem({ booking, deptFlight, retFlight, amount, userData, edit
                 }}
                 type="inner"
                 title={title}
-                extra={<><Button style={{ display: 'block' }}><Link to={{ pathname: `/bookings/${booking}` }} state={{ booking: booking }}>
+                extra={<><Button style={{ display: 'block' }}><Link to={{ pathname: `/bookings/${booking}` }} state={{ booking: booking, editable: editable }}>
                     View Itinerary
                 </Link>
                 </Button>&nbsp;

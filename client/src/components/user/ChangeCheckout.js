@@ -125,7 +125,7 @@ function ChangeCheckout() {
                     oldFlight,
                 }
             });
-            navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber } })
+            navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber, editable: true } })
         }
         else if (pricediff < 0) {
             const updateBooking = await axios({
@@ -140,7 +140,7 @@ function ChangeCheckout() {
                     oldFlight,
                 }
             });
-            navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber } })
+            navigate(`/bookings/${oldUserFlight.bookingNumber}`, { state: { booking: oldUserFlight.bookingNumber, editable: true } })
         }
         else {
             const updateBooking = await axios({

@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom'
 const { Title, Text } = Typography;
 
 const buttonStyle= {
+  // color : 'white',
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    color : 'white'
+    justifyContent: 'space-between'
 }
 const displayFlex ={ display: "flex", direction: "row", marginTop:'10px'}
 
@@ -28,7 +28,7 @@ function FlightListItem({flight, hideButton, departureFlight }) {
     }
     if(departureFlight){
 
-      return (<Button type="primary" style={buttonStyle}> 
+      return (<Button type="primary" style={buttonStyle} > 
        <Link to={{pathname:`/returnFlight/${flight.flightNum}`}} state={{ flight, departureFlight }}>
          Flight Details
       </Link> </Button>)

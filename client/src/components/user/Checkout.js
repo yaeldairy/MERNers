@@ -26,38 +26,38 @@ function generateBookingNumber(length) {
 
 function Checkout() {
 
-  const { accessToken, departureFlight, returnFlight, cabin, noOfSeats , username } = useContext(UserContext);
+  const { accessToken, departureFlight, returnFlight, cabin, noOfSeats, username } = useContext(UserContext);
   const [success, setSuccess] = useState(false)
-  const [bookingNumber, setBookingNum]=useState(null)
+  const [bookingNumber, setBookingNum] = useState(null)
   console.log(departureFlight);
   console.log(returnFlight);
 
-  useEffect(()=>{
+  useEffect(() => {
     setBookingNum(generateBookingNumber(7));
-  },[])
+  }, [])
 
   const newSeats = () => {
 
     //const { remainingSeats } = departureFlight;
-    const { remainingSeats : seatsReturn } = returnFlight;
-    const { remainingSeats : seatsDeparture } = departureFlight;
+    const { remainingSeats: seatsReturn } = returnFlight;
+    const { remainingSeats: seatsDeparture } = departureFlight;
     console.log("new Seats call");
     console.log(seatsDeparture[0]);
     console.log(seatsReturn[0]);
-     let seats=noOfSeats.number;
+    let seats = noOfSeats.number;
     switch (cabin) {
 
       case "First":
-        seatsReturn[2] =  seatsReturn[2]-seats;
-        seatsDeparture[2] =  seatsDeparture[2]-seats;
+        seatsReturn[2] = seatsReturn[2] - seats;
+        seatsDeparture[2] = seatsDeparture[2] - seats;
         break;
       case "Business":
-        seatsReturn[1] =  seatsReturn[1]-seats;
-        seatsDeparture[1] = seatsDeparture[1]-seats;
+        seatsReturn[1] = seatsReturn[1] - seats;
+        seatsDeparture[1] = seatsDeparture[1] - seats;
         break;
       case "Economy":
-        seatsReturn[0] = seatsReturn[0]-seats;
-        seatsDeparture[0] = seatsDeparture[0]-seats;
+        seatsReturn[0] = seatsReturn[0] - seats;
+        seatsDeparture[0] = seatsDeparture[0] - seats;
         break;
     }
     console.log(seatsDeparture);
@@ -79,17 +79,17 @@ function Checkout() {
 
   }
 
-
-
+  var value = Math.round(calculatePrice(departureFlight)) + Math.round(calculatePrice(returnFlight));
+  console.log(value);
   const onClick = async (id) => {
 
     //e.preventDefault();
-  
+
     newSeats();
 
     console.log(noOfSeats)
     try {
-    
+
       const emailBody1 = `<p>Hello,</p>
       <br/>
       <p>This is to confirm your booking number ${bookingNumber} for flights ${departureFlight.flightNum} and ${returnFlight.flightNum}.</p>
@@ -120,42 +120,45 @@ function Checkout() {
             <p>Arrival time: ${returnFlight.arrTime}</p>
             <p>Cabin: ${cabin}</p>
             <br/>
+            <p>Please go the booking page to choose your seats.</p>
+            <br/>
             <p>Enjoy your trip!</p>
             <br/>
             <p>Best wishes,</p>
             <p>ACL Airlines</p>`;
-           console.log(id)
-            const flightOne = await axios({ 
-              method: 'patch', //should be patch
-              url: 'http://localhost:3001/user/bookTrip',
-              headers: { Authorization: `Bearer ${accessToken}` },
-              data: {
-                id,
-                amount:calculatePrice(departureFlight)+calculatePrice(returnFlight),
-                emailBody1, 
-                emailBody2,
-               bookingNumber,
-               departureFlight: {
-                 ... departureFlight,
-                 type: "departure",
-                 takenSeats: [],
-                 noOfSeats, 
-                 cabin,
-                 price: calculatePrice(departureFlight),
-                 bookingNumber
-                },
-               returnFlight :{
-                ... returnFlight,
-                type: "return",
-                takenSeats: [],
-                noOfSeats, 
-                cabin,
-                price: calculatePrice(returnFlight),
-                bookingNumber
+      console.log(id)
 
-               }
-              }
-            });
+      const flightOne = await axios({
+        method: 'patch', //should be patch
+        url: 'http://localhost:3001/user/bookTrip',
+        headers: { Authorization: `Bearer ${accessToken}` },
+        data: {
+          id,
+          amount: value,
+          emailBody1,
+          emailBody2,
+          bookingNumber,
+          departureFlight: {
+            ...departureFlight,
+            type: "departure",
+            takenSeats: [],
+            noOfSeats,
+            cabin,
+            price: calculatePrice(departureFlight),
+            bookingNumber
+          },
+          returnFlight: {
+            ...returnFlight,
+            type: "return",
+            takenSeats: [],
+            noOfSeats,
+            cabin,
+            price: calculatePrice(returnFlight),
+            bookingNumber
+
+          }
+        }
+      });
       //setSuccess(true)
 
     } catch (e) {
@@ -165,7 +168,7 @@ function Checkout() {
   }
 
   const onConfirm = async (e) => {
-      setSuccess(true);
+    setSuccess(true);
 
   }
 
@@ -173,9 +176,9 @@ function Checkout() {
 
   if (success) {
     //return <BookingSuccess departureFlight={departureFlight} returnFlight={returnFlight} />
-    return <StripePay amount={calculatePrice(departureFlight) + calculatePrice(returnFlight)} 
-    booking={bookingNumber}
-    onClick={onClick}/>
+    return <StripePay amount={value}
+      booking={bookingNumber}
+      onClick={onClick} />
   }
 
   return (
@@ -192,8 +195,8 @@ function Checkout() {
       <div style={{ textAlign: 'center' }}>
 
         <Button size='large' style={{ marginTop: '50px' }} type="primary"
-        onClick={onConfirm}>    
-            Proceed to payment       
+          onClick={onConfirm}>
+          Proceed to payment
         </Button>
 
       </div>

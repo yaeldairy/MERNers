@@ -215,6 +215,8 @@ exports.updateProfile = (req, res) => {
 
 function sendMail(email, emailBody) {
     //send email
+    // console.log(email)
+    // console.log(emailBody)
     // console.log("send email backend");
     let transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -241,22 +243,36 @@ function sendMail(email, emailBody) {
         subject: "ACL Airlines notification",
         html: emailBody,
     };
-
+    // var res;
     transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
-            console.log("error", err);
+            // console.log("error");
+            console.log(err)
+            // res = "error";
+
         } else {
-            // res.
-            console.log("success");
+            // console.log("success");
+            console.log(info);
+            // res = "success";
         }
-    });
+    })
+    // .then(()=>{
+
+    // });
+    // return res;
 
 }
 
 exports.sendEmail = (req, res) => {
-    const { email, emailBody } = req.body;
-    sendMail(email, emailBody);
-    res.status(200).send("successful");
+    const { emailBody } = req.body;
+    // console.log("Email");
+    // console.log(req.body.user.email);
+    const response = sendMail(req.body.user.email, emailBody);
+    // console.log(response)
+    // if (response == "success")
+        res.status(200).send("success");
+    // else
+    //     res.status(400).send("error")
 }
 
 exports.addFlight = (req, res) => {
