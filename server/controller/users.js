@@ -189,10 +189,9 @@ exports.updateProfile = (req, res) => {
     console.log("I was here")
     console.log(req.body)
 
-    const { _id, username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber } = req.body;
-    var objectId = mongoose.Types.ObjectId(_id);
+    const { _id, username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, phoneNumber2, email, passportNumber } = req.body;
 
-    User.findByIdAndUpdate({username}, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, email, passportNumber }, (error, response) => {
+    User.findOneAndUpdate({username}, { username, password, firstName, lastName, homeAddress, countryCode, phoneNumber, phoneNumber2, email, passportNumber }, (error, response) => {
         console.log(response)
         console.log(error)
 

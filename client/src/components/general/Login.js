@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import { Divider } from 'antd';
 import { SyncOutlined } from '@ant-design/icons';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone,  UserOutlined, LockOutlined } from '@ant-design/icons';
 import { UserContext } from "../../Context";
 import NavBar from '../NavBar';
 import {
@@ -95,24 +95,23 @@ function Login() {
         <Card title={<Title level={3} >Login</Title>}
           style={{ marginLeft: '15%', marginRight: '15%', marginTop: '5%' }}>
 
-          <Form form={form} name="New Activity">
+          <Form form={form} name="normal_login"
+      className="login-form">
 
             <Form.Item
               name="username"
-              label="username"
               rules={[
                 {
                   required: true,
                   message: 'Please enter username',
                 },
               ]}>
-              <Input placeholder="Username: " allowClear />
+              <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" allowClear />
               {/* <TextArea placeholder="Username:" allowClear /> */}
             </Form.Item>
 
             <Form.Item
               name="password"
-              label="password"
               rules={[
                 {
                   required: true,
@@ -121,7 +120,8 @@ function Login() {
               ]}>
               {/* <TextArea placeholder="Password:" allowClear/> */}
               <Input.Password
-                placeholder="Password: "
+                 prefix={<LockOutlined className="site-form-item-icon" />}
+                placeholder="Password"
                 iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                 allowClear
               // onKeyDown={(e)=>{if (e.key === 'Enter') {onSubmit}}}
@@ -130,9 +130,10 @@ function Login() {
 
             {error && <Alert message={error} type="error" />}
 
-            <Button type="primary" onClick={onSubmit}  >
-              Login
+            <Button style={{width:"100%"}} type="primary" onClick={onSubmit}>
+              Log in
             </Button>
+            Dont have an account? <a href="http://localhost:3000/signup">Register now!</a>
           </Form>
         </Card>
       </Spin>

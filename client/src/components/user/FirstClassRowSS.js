@@ -13,10 +13,15 @@ export default function FirstClassRowSS({flight, updateFinalSelectionList,setCom
     for (let index = 1; index <= Math.ceil(seatNumber / 4.0); index++) {
         rows.push(index);
     }
-    useEffect(()=>{
-        console.log("First seats"+ totalSeats)
-
-    },[])
+    useEffect(() => {
+        updateFinalSelectionList(selectedSeats);
+        if (remainingSeats == 0){
+            setCompleted(true)
+        }
+        else if (remainingSeats == 1){
+            setCompleted(false)
+        }
+    }, [selectedSeats])
 
     let missingSeats = ((Math.ceil(seatNumber / 4.0)) * 4) - seatNumber;
     let lastClass = (missingSeats > 0) ? 'seat nCSeat' : 'seat availableSeat';

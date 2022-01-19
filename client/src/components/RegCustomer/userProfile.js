@@ -13,15 +13,10 @@ const { Title } = Typography;
 
 export default function UserProfile() {
   const { accessToken } = useContext(UserContext);
-  const location = useLocation();
+  //const location = useLocation();
   const [userData, setUserData] = useState([]);
  
   useEffect(() => {
-    console.log("USERRRRR " +userData)
-    console.log("ACCESS "+ accessToken)
-    // if (accessToken == null)
-    //   return <Navigate to="/login" state={{ path: '/' }} />;
-    if (location.state == null) {
       axios.get('http://localhost:3001/user/getProfile', {
         headers: {
           'Authorization': `Bearer ${accessToken}`
@@ -29,17 +24,12 @@ export default function UserProfile() {
       })
         .then((res) => {
           setUserData(res.data);
-          console.log("prof res" + res.data);
-
+          console.log("prof res");
+          console.log(res.data)
         })
         .catch((err) => {
           console.log("prof err" + err)
         })
-    }
-    else {
-      const { user } = location.state;
-      setUserData(user);
-    }
   },[]);
 
   // const userData =
@@ -81,6 +71,7 @@ export default function UserProfile() {
   //   }] 
   // }
 
+  if (userData.phoneNumber2 === ''){
   return (
       <div>
         <Card title={<Title level={2} style={{textAlign:'left'}}>Profile</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} >
@@ -119,6 +110,49 @@ export default function UserProfile() {
 
       </div>
   )
+  }
+  else{
+    return (
+      <div>
+        <Card title={<Title level={2} style={{textAlign:'left'}}>Profile</Title>} bordered={true} style={{ marginLeft: '5%', marginRight: '5%', marginTop: '5%' }} >
+       <Descriptions layout="horizontal" column={1} bordered>
+        <Descriptions.Item label="Username" >
+        {userData.username}
+        </Descriptions.Item>
+        <Descriptions.Item label="Email" >
+        {userData.email}
+        </Descriptions.Item>
+        <Descriptions.Item label="Address" span>
+        {userData.homeAddress}
+        </Descriptions.Item>
+        <Descriptions.Item label="Primary Phone Number" span>
+        {userData.countryCode}{userData.phoneNumber}
+        </Descriptions.Item>
+        <Descriptions.Item label="Secondary Phone Number" span>
+        {userData.countryCode}{userData.phoneNumber2}
+        </Descriptions.Item>
+        <Descriptions.Item label="Passport Number" >
+        {userData.passportNumber}
+        </Descriptions.Item>
+        </Descriptions>
+        </Card>
 
+        <Divider />
+        <div justify="space-around">
+          <Button type="primary" size="large">
+            <Link to={{ pathname: `/profile/${userData.username}/edit` }} state={{ user: userData }}>
+              Edit Profile
+            </Link>
+          </Button>&nbsp;&nbsp;&nbsp;
+          <Button type="primary" size="large">
+            <Link to={{ pathname: `/changePassword` }} >
+              Change Password
+            </Link>
+          </Button>
+        </div>
+
+      </div>
+  )
+  }
 
 }

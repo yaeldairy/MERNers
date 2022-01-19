@@ -16,27 +16,29 @@ exports.insertUser = (req, res) => {
     lastName, 
     homeAddress,
     countryCode,
-    phoneNumber, 
+    phoneNumber,
+    phoneNumber2, 
     email,
     passportNumber}  = req.body;
     let newUser;
-    console.log("Password")
-    console.log(req.body.password)
   
 
     bcrypt.hash(password, 10)
 
     .then((result)=>{
-         newUser ={ username,
+        newUser ={ username,
             password: result,
             firstName,
             lastName, 
             homeAddress,
             countryCode,
-            phoneNumber, 
+            phoneNumber,
+            phoneNumber2, 
             email,
             passportNumber,
+            bookingReferences: [],
         flights:[]}
+        console.log(newUser)
          createUser(newUser)
         .then((result) => {
             res.status(201).send({id: result._id});

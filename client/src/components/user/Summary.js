@@ -30,7 +30,7 @@ return (
               <p>Flight Date : {deptFlight.date} </p>
               <p>Departure Time : {deptFlight.deptTime} </p>
               <p>Arrival Time : {deptFlight.arrTime} </p>
-              <p>Flight Price : {depPrice} </p>
+              <p>Flight Price : {(depPrice).toFixed(2)} </p>
               <p>Cabin Class : {cabin} </p>
               <p>Number of Adult Tickets : {nOfAdults} </p>
               <p>Number of Child Tickets : {nOfChild} </p>
@@ -44,12 +44,12 @@ return (
               <p>Flight Date : {retFlight.date}</p>
               <p>Departure Time : {retFlight.deptTime}</p>
               <p>Arrival Time : {retFlight.arrTime}</p>
-              <p>Flight Price : {retPrice}</p>
+              <p>Flight Price : {(retPrice).toFixed(2)}</p>
               <p>Cabin Class : {cabin}</p>
               <p>Number of Adult Tickets : {nOfAdults}</p>
               <p>Number of Child Tickets : {nOfChild}</p>
             </Card>
-            <h2 style={{textAlign:'center'}}>Total Price : {depPrice+retPrice} $ </h2>
+            <h2 style={{textAlign:'center'}}>Total Price : {(depPrice+retPrice).toFixed(2)} $ </h2>
          </div>}
            {/* <Button>
               <Popconfirm title="Are you sure you want to book these flights?" onConfirm={handlerr} okText="Yes" cancelText="No" icon={<CheckOutlined style={{ color: 'red' }} />}>

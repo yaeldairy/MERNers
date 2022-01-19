@@ -20,10 +20,6 @@ export default function ViewItinerary() {
     const [redirectSSD, setRedirectSSD]=useState(false);
     const [redirectSSR, setRedirectSSR]=useState(false);
     const [currentFlight, setCurrentFlight] = useState({});
-    // const [deptFlight, setDeptFlight]= useState();
-    // const [retFlight, setRetFlight]= useState();
-    //set deptFlight w retFlight bel response
-    console.log(location.state);
 
 
     useEffect(() => {
@@ -41,8 +37,6 @@ export default function ViewItinerary() {
                 }
             })
                 .then((res) => {
-                    console.log("I WAS HERE")
-                    console.log(res.data)
                     let responseObject = res.data;
                     setDeptFlight(responseObject.deptFlight)
                     setRetFlight(responseObject.retFlight)
@@ -56,11 +50,9 @@ export default function ViewItinerary() {
 
     }, [])
 
-    const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
+    //const [currentSelectedSeats, setCurrentSelectedSeats] = useState([]);
     const onChangeSeatDClick = (e) => {
         e.preventDefault();
-        console.log('dept flight ID')
-        console.log(deptFlight._id)
         axios({
             method: 'GET',
             url:'http://localhost:3001/user/getFlight',

@@ -9,11 +9,7 @@ export default function EconomyClassRowSS({flight,updateFinalSelectionList,setCo
     let rows = [];
     let seatNumber = flight.nOfEconomy;//total number of economy seats
     let startIndex = Math.ceil(flight.nOfFirst / 4.0) +  Math.ceil(flight.nOfBusiness / 6.0) + 2;
-    useEffect(()=>{
-        console.log("Economy seats"+ totalSeats)
-
-    },[])
-
+    
     for (let index = startIndex; index <= startIndex + Math.ceil(seatNumber / 6.0) -1; index++) {
         rows.push(index);
     }

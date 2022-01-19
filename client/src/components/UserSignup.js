@@ -18,6 +18,7 @@ export default function UserSignup() {
         homeAddress: "",
         countryCode: "",
         phoneNumber: "",
+        phoneNumber2: "",
         email: "",
         passportNumber: "",
         flights:[]
@@ -44,7 +45,7 @@ export default function UserSignup() {
                 hide()
                 form.resetFields();
                 // console.log(res) 
-                message.success('Sign up complete. Redirecting...', 2)
+                message.success('Sign up successful! Redirecting...', 2)
                     .then(function () {
                         navigate('/');
                     }
@@ -96,14 +97,14 @@ export default function UserSignup() {
                         <Input.Password />
                     </Form.Item>
 
-                    <Form.Item name='fNameInput' label='First Name'
+                    <Form.Item name='firstNameInput' label='First Name'
                         rules={[{ required: true, message: 'Please input your first name!' }, { whitespace: true }]}>
-                        <Input name='fName' onChange={event => handler(event)} />
+                        <Input name='firstName' onChange={event => handler(event)} />
                     </Form.Item>
 
-                    <Form.Item name='lNameInput' label='Last Name'
+                    <Form.Item name='lastNameInput' label='Last Name'
                         rules={[{ required: true, message: 'Please input your last name!' }, { whitespace: true }]}>
-                        <Input name='lName' onChange={event => handler(event)} />
+                        <Input name='lastName' onChange={event => handler(event)} />
                     </Form.Item>
 
                     <Form.Item name='homeAddressInput' label='Home Address'
@@ -111,19 +112,19 @@ export default function UserSignup() {
                         <Input name='homeAddress' onChange={event => handler(event)} />
                     </Form.Item>
 
-                    <Form.Item name='cCodeInput' label='Country Code'
+                    <Form.Item name='countryCodeInput' label='Country Code'
                         rules={[{ required: true, message: 'Please input your country code!' }, { whitespace: true }]}>
-                        <Input name='cCode' onChange={event => handler(event)} />
+                        <Input name='countryCode' onChange={event => handler(event)} />
                     </Form.Item>
 
-                    <Form.Item name='phoneNumInput' label='Primary Phone Number'
+                    <Form.Item name='phoneNumberInput' label='Primary Phone Number'
                         rules={[{ required: true, message: 'Please input your phone number!' }, { whitespace: true }, { pattern: /^(?:\d*)$/, message: 'Phone number must be a number!' }]}>
-                        <Input name='phoneNum' onChange={event => handler(event)} />
+                        <Input name='phoneNumber' onChange={event => handler(event)} />
                     </Form.Item>
 
-                    <Form.Item name='phoneNum2Input' label='Additional Phone Number'
+                    <Form.Item name='phoneNumber2Input' label='Secondary Phone Number'
                         rules={[{ pattern: /^(?:\d*)$/, message: 'Phone number must be a number!' }]}>
-                        <Input name='phoneNum2' onChange={event => handler(event)} />
+                        <Input name='phoneNumber2' onChange={event => handler(event)} />
                     </Form.Item>
 
                     <Form.Item name='emailInput' label='Email'
@@ -131,15 +132,15 @@ export default function UserSignup() {
                         <Input name='email' onChange={event => handler(event)} />
                     </Form.Item>
 
-                    <Form.Item name='passportNumInput' label='Passport Number'
+                    <Form.Item name='passportNumberInput' label='Passport Number'
                         rules={[{ required: true, message: 'Please input your passport number!' }, { whitespace: true }]}>
-                        <Input name='passportNum' onChange={event => handler(event)} />
+                        <Input name='passportNumber' onChange={event => handler(event)} />
                     </Form.Item>
 
 
 
                     <Button type="primary" htmlType="submit">
-                        Create
+                        Sign up
                     </Button>
                 </Form>
             </Card>
